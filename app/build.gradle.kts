@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("de.mannodermaus.android-junit5")
 }
 
 android {
@@ -50,6 +51,11 @@ android {
 
 dependencies {
 
+    testImplementation(libs.test.assertk)
+    testImplementation(libs.bundles.junit5)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    // TODO: clear up dependencies
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.0")
