@@ -15,11 +15,13 @@ import java.time.temporal.TemporalAdjusters
 
 class PlantsHomeViewModelTest {
 
+    private lateinit var plantCacheFake: PlantCacheFake
     private lateinit var viewModel: PlantsHomeViewModel
 
     @BeforeEach
     fun setup() {
-        viewModel = PlantsHomeViewModel()
+        plantCacheFake.resetData()
+        viewModel = PlantsHomeViewModel(plantCacheFake)
     }
 
     @Test

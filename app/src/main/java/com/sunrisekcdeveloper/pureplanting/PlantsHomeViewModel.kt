@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class PlantsHomeViewModel(
+    private val plantCache: PlantCache
 ): ViewModel() {
     val plants: StateFlow<List<Plant>>
         get() = _plants
