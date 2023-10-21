@@ -54,6 +54,7 @@ dependencies {
 
     testImplementation(libs.test.assertk)
     testImplementation(libs.bundles.junit5)
+    implementation(libs.test.turbine)
     testRuntimeOnly(libs.junit.jupiter.engine)
 
     // TODO: clear up dependencies
