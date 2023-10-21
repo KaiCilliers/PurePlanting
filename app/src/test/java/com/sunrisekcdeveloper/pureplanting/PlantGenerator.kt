@@ -1,12 +1,12 @@
 package com.sunrisekcdeveloper.pureplanting
 
 import java.time.DayOfWeek
-import java.time.LocalDateTime
-import java.time.LocalTime
 import java.util.UUID
 
 fun plant(
-    id: UUID = UUID.randomUUID()
+    id: UUID = UUID.randomUUID(),
+    waterDays: List<DayOfWeek> = listOf(DayOfWeek.MONDAY),
+    wateringHour: Int = 0
 ): Plant {
     return Plant(
         id = id,
@@ -15,8 +15,8 @@ fun plant(
         description = "fermentum",
         imageSrcUri = "",
         wateringInfo = WateringInfo(
-            atHour = LocalTime.now(),
-            dayOfTheWeek = DayOfWeek.MONDAY,
+            atHour = wateringHour,
+            days = waterDays,
             amount = "dictumst"
         )
     )
