@@ -1,9 +1,9 @@
 package com.sunrisekcdeveloper.pureplanting
 
-import java.time.Clock
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.TemporalAdjusters
+import java.util.Stack
 import java.util.UUID
 
 data class Plant(
@@ -13,30 +13,30 @@ data class Plant(
     val description: String,
     val imageSrcUri: String,
     val wateringInfo: WateringInfo,
+    val previousWaterDates: Stack<LocalDateTime> = Stack()
 ) {
-    fun upcomingWateringDate(clock: Clock = Clock.systemDefaultZone()): LocalDateTime {
-        val now = LocalDateTime.now(clock)
-        val wateringDaysSorted = wateringInfo.days.sorted()
 
-        val isTodayWateringDay = wateringDaysSorted.contains(now.dayOfWeek)
-        val isWaterHourExceeded = now.hour >= wateringInfo.atHour
+    private val nextWateringDate: LocalDateTime? = null
 
-        val next = when {
-            isTodayWateringDay && !isWaterHourExceeded -> {
-                now.with(LocalTime.of(wateringInfo.atHour, 0))
-            }
-
-            else -> {
-                val nextWaterDay = if (wateringDaysSorted.any { it > now.dayOfWeek }) {
-                    wateringDaysSorted.first { it > now.dayOfWeek }
-                } else {
-                    wateringDaysSorted.first()
+    fun nextWateringDate(now: LocalDateTime): LocalDateTime {
+        return nextWateringDate ?: run {
+            val wateringDaysSorted = wateringInfo.days.sorted()
+            val isTodayWateringDay = wateringDaysSorted.contains(now.dayOfWeek)
+            val isWaterHourExceeded = now.hour >= wateringInfo.atHour
+            when {
+                isTodayWateringDay && !isWaterHourExceeded -> {
+                    now.with(LocalTime.of(wateringInfo.atHour, 0))
                 }
-                now
-                    .with(TemporalAdjusters.next(nextWaterDay))
-                    .with(LocalTime.of(wateringInfo.atHour, 0))
+
+                else -> {
+                    val nextWaterDay = if (wateringDaysSorted.any { it > now.dayOfWeek }) {
+                        wateringDaysSorted.first { it > now.dayOfWeek }
+                    } else {
+                        wateringDaysSorted.first()
+                    }
+                    now.with(TemporalAdjusters.next(nextWaterDay)).with(LocalTime.of(wateringInfo.atHour, 0))
+                }
             }
         }
-        return next
     }
 }

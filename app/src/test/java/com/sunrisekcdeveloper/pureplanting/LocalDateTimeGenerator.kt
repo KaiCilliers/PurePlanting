@@ -9,12 +9,11 @@ fun today(
     dayOfWeek: DayOfWeek,
     hour: Int = 0,
 ): LocalDateTime {
-    return now().apply {
-        if (this.dayOfWeek != dayOfWeek) {
-            with(TemporalAdjusters.next(dayOfWeek))
-            with(LocalTime.of(hour, 0))
-        }
-    }
+    return if (now().dayOfWeek != dayOfWeek) {
+        now()
+            .with(TemporalAdjusters.next(dayOfWeek))
+            .with(LocalTime.of(hour, 0))
+    } else now()
 }
 
 fun now(): LocalDateTime = LocalDateTime.now()
