@@ -13,7 +13,7 @@ import java.time.Clock
 import java.time.LocalDateTime
 
 class PlantsHomeViewModel(
-    private val plantCache: PlantCache,
+    plantCache: PlantCache,
     private val clock: Clock = Clock.systemDefaultZone(),
 ): ViewModel() {
 
@@ -31,10 +31,6 @@ class PlantsHomeViewModel(
             }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), emptyList())
-
-    fun addPlant(plant: Plant) {
-        plantCache.save(plant)
-    }
 
     fun setFilter(filter: PlantFilter) {
         activeFilter.update { filter }

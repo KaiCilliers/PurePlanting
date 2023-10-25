@@ -18,6 +18,7 @@ import java.time.Clock
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import kotlin.time.Duration.Companion.days
+import kotlin.time.toJavaDuration
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PlantsHomeViewModelTest {
@@ -63,7 +64,7 @@ class PlantsHomeViewModelTest {
             awaitItem() // initial emission
 
             val plantToAdd = plant()
-            viewModel.addPlant(plantToAdd)
+            plantCacheFake.save(plantToAdd)
 
             val emission2 = awaitItem()
             assertThat(emission2.size).isEqualTo(1)
@@ -74,13 +75,21 @@ class PlantsHomeViewModelTest {
     @Test
     fun `by default, expect only plants that need to get watered soon`() = runTest {
         // SETUP
+        val today = today(DayOfWeek.THURSDAY)
+        var actualToday = LocalDateTime.now(mutableClock)
+
+        while(actualToday.dayOfWeek != today.dayOfWeek) {
+            mutableClock.advanceTimeBy(1.days.toJavaDuration())
+            actualToday = LocalDateTime.now(mutableClock)
+        }
+
         plantCacheFake.resetData(
             listOf(
                 plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY)),
                 plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY)),
                 plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)),
                 plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY))
-            ).map { it.nextWateringDate(LocalDateTime.now()) }
+            ).map { it.nextWateringDate(today) }
         )
         val plantsFlow = viewModel.plants
 
