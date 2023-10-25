@@ -11,11 +11,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import java.time.Clock
 import java.time.LocalDateTime
+import java.util.UUID
 
 class PlantsHomeViewModel(
-    plantCache: PlantCache,
+    private val plantCache: PlantCache,
     private val clock: Clock = Clock.systemDefaultZone(),
 ): ViewModel() {
+
+    private var lastRemovedPlant: Plant? = null
 
     private val allPlants: StateFlow<List<Plant>> = plantCache
         .observe()
@@ -34,6 +37,15 @@ class PlantsHomeViewModel(
 
     fun setFilter(filter: PlantFilter) {
         activeFilter.update { filter }
+    }
+
+    fun removePlant(plantId: UUID) {
+        lastRemovedPlant = plantCache.find(plantId)
+        plantCache.remove(plantId)
+    }
+
+    fun undoRemove(plantId: UUID) {
+        plantCache.save(lastRemovedPlant!!)
     }
 }
 

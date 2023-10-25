@@ -2,6 +2,7 @@ package com.sunrisekcdeveloper.pureplanting
 
 import app.cash.turbine.test
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
 import kotlinx.coroutines.Dispatchers
@@ -147,6 +148,58 @@ class PlantsHomeViewModelTest {
 
             viewModel.setFilter(PlantFilter.HISTORY)
             assertThat(awaitItem().size).isEqualTo(3)
+        }
+    }
+
+    @Test
+    fun `remove plant, current list of plants is refreshed`() = runTest {
+        // SETUP
+        val allPlants = listOf(
+            plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY)).water(),
+            plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY)).water(),
+            plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)),
+            plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.TUESDAY)).water(),
+            plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.MONDAY)),
+        )
+        plantCacheFake.resetData(allPlants)
+
+        // ACTION & ASSERTIONS
+        viewModel.plants.test {
+            awaitItem()
+
+            viewModel.removePlant(allPlants.first().id)
+
+            val emission = awaitItem()
+            assertThat(emission.size).isEqualTo(allPlants.size - 1)
+        }
+    }
+
+    @Test
+    fun `undo previous removed plant, removed plant is returned and can be found in current plant list`() = runTest {
+        // SETUP
+        val allPlants = listOf(
+            plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY)).water(),
+            plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY)).water(),
+            plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)),
+            plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.TUESDAY)).water(),
+            plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.MONDAY)),
+        )
+        val plantToRemove = allPlants.first()
+        plantCacheFake.resetData(allPlants)
+
+        // ACTION & ASSERTIONS
+        viewModel.plants.test {
+            awaitItem()
+
+            viewModel.removePlant(plantToRemove.id)
+
+            val emission = awaitItem()
+            assertThat(emission.size).isEqualTo(allPlants.size - 1)
+
+            viewModel.undoRemove(plantToRemove.id)
+            val emission2 = awaitItem()
+            assertThat(emission2.size).isEqualTo(allPlants.size)
+            assertThat(emission2).contains(plantToRemove)
         }
     }
 

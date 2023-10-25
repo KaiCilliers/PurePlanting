@@ -9,4 +9,3 @@ interface PlantCache {
     fun find(plantId: UUID): Plant?
     fun observe(): Flow<List<Plant>>
 }
-
