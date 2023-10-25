@@ -22,10 +22,10 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.toJavaDuration
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class PlantsHomeViewModelTest {
+class PlantsViewModelTest {
 
     private lateinit var plantCacheFake: PlantCacheFake
-    private lateinit var viewModel: PlantsHomeViewModel
+    private lateinit var viewModel: PlantsViewModel
     private lateinit var mutableClock: MutableClock
 
     @BeforeEach
@@ -33,7 +33,7 @@ class PlantsHomeViewModelTest {
         Dispatchers.setMain(StandardTestDispatcher())
         mutableClock = MutableClock(Clock.systemDefaultZone())
         plantCacheFake = PlantCacheFake()
-        viewModel = PlantsHomeViewModel(plantCacheFake, mutableClock)
+        viewModel = PlantsViewModel(plantCacheFake, mutableClock)
     }
 
     @AfterEach

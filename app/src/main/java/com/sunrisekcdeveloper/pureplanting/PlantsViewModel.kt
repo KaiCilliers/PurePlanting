@@ -1,8 +1,8 @@
 package com.sunrisekcdeveloper.pureplanting
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.zhuinden.flowcombinetuplekt.combineTuple
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,11 +13,11 @@ import java.time.Clock
 import java.time.LocalDateTime
 import java.util.UUID
 
-class PlantsHomeViewModel(
+class PlantsViewModel(
     private val plantCache: PlantCache,
     private val clock: Clock = Clock.systemDefaultZone(),
-): ViewModel() {
-
+) {
+    private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
     private var lastRemovedPlant: Plant? = null
 
     private val allPlants: StateFlow<List<Plant>> = plantCache
