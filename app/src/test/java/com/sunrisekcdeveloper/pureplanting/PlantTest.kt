@@ -1,6 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting
 
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -120,6 +121,81 @@ class PlantTest {
         // ASSERTIONS
         assertThat(before).isFalse()
         assertThat(after).isTrue()
+    }
+
+    @Test
+    fun `plant needs water soon when next watering date is today`() = runTest {
+        // SETUP
+        val today = today(
+            dayOfWeek = DayOfWeek.MONDAY,
+            hour = 0
+        )
+        val plants = listOf(
+            plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.SATURDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY), wateringHour = 12),
+        )
+
+        // ACTION
+        val plantsThatNeedsToBeWateredSoon = plants
+            .map { it.nextWateringDate(today) }
+            .filter { it.needsWaterSoon(today) }
+
+        // ASSERTIONS
+        assertThat(plantsThatNeedsToBeWateredSoon.map { it.id }).contains(plants[0].id)
+        assertThat(plantsThatNeedsToBeWateredSoon.map { it.id }).contains(plants[2].id)
+        assertThat(plantsThatNeedsToBeWateredSoon.size).isEqualTo(4)
+    }
+
+    @Test
+    fun `plant needs water soon when next watering date is tomorrow`() = runTest {
+        // SETUP
+        val today = today(
+            dayOfWeek = DayOfWeek.MONDAY,
+            hour = 0
+        )
+        val plants = listOf(
+            plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.SATURDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY), wateringHour = 12),
+            plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.THURSDAY), wateringHour = 12),
+        )
+
+        // ACTION
+        val plantsThatNeedsToBeWateredSoon = plants
+            .map { it.nextWateringDate(today) }
+            .filter { it.needsWaterSoon(today) }
+
+        // ASSERTIONS
+        assertThat(plantsThatNeedsToBeWateredSoon.map { it.id }).contains(plants[1].id)
+        assertThat(plantsThatNeedsToBeWateredSoon.map { it.id }).contains(plants[4].id)
+        assertThat(plantsThatNeedsToBeWateredSoon.size).isEqualTo(5)
+    }
+
+    @Test
+    fun `plant has been forgotten when the next watering date is the previous day compared to today`() = runTest {
+        // SETUP
+        val today = today(DayOfWeek.THURSDAY)
+        val plant = plant(
+            waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY)
+        ).nextWateringDate(today)
+
+        // ACTION
+        val newPlant = plant
+            .water()
+            .nextWateringDate(today)
+
+        // ASSERTIONS
+        assertThat(newPlant.hasBeenWatered).isFalse()
+        assertThat(newPlant.wateringInfo.nextWateringDay.dayOfWeek).isEqualTo(DayOfWeek.FRIDAY)
+        assertThat(newPlant.wateringInfo.previousWaterDates.size).isEqualTo(1)
+        assertThat(newPlant.forgotToWater(today(DayOfWeek.SATURDAY))).isTrue()
     }
 
 }

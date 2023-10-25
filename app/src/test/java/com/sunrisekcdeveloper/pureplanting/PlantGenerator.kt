@@ -8,7 +8,7 @@ import java.util.UUID
 fun plant(
     id: UUID = UUID.randomUUID(),
     waterDays: List<DayOfWeek> = listOf(DayOfWeek.MONDAY),
-    wateringHour: Int = 0,
+    wateringHour: Int = 12,
     previousWateringDate: Stack<LocalDateTime> = Stack()
 ): Plant {
     return Plant(

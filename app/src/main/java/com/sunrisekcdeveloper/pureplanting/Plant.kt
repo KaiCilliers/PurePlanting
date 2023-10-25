@@ -12,6 +12,7 @@ data class Plant(
 ) {
 
     private var nextWateringDate: LocalDateTime? = null
+
     val hasBeenWatered: Boolean
         get() = wateringInfo.previousWaterDates.peek() > wateringInfo.nextWateringDay
 
@@ -57,6 +58,15 @@ data class Plant(
                 previousWaterDates = wateringInfo.previousWaterDates.apply { pop() }
             )
         )
+    }
+
+    fun needsWaterSoon(now: LocalDateTime): Boolean {
+        return wateringInfo.nextWateringDay.dayOfWeek == now.dayOfWeek
+                || wateringInfo.nextWateringDay.dayOfWeek == now.dayOfWeek.plus(1)
+    }
+
+    fun forgotToWater(now: LocalDateTime): Boolean {
+        return wateringInfo.nextWateringDay.dayOfWeek <= now.minusDays(1).dayOfWeek
     }
 
 }
