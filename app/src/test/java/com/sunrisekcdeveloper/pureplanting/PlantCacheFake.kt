@@ -12,7 +12,9 @@ class PlantCacheFake : PlantCache {
     override fun save(plant: Plant) {
         plants.update {
             it.toMutableList().apply {
-                add(plant)
+                val existingIndex = this.map { it.id }.indexOf(plant.id)
+                if (existingIndex >= 0) this[existingIndex] = plant
+                else add(plant)
             }
         }
     }
@@ -34,4 +36,6 @@ class PlantCacheFake : PlantCache {
     fun resetData(plants: List<Plant> = emptyList()) {
         this.plants.value = plants
     }
+
+    fun all(): List<Plant> = plants.value
 }
