@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting
+package com.sunrisekcdeveloper.pureplanting.features.presentation.plants
 
 import assertk.assertThat
 import assertk.assertions.contains

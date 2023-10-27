@@ -3,7 +3,7 @@ package com.sunrisekcdeveloper.pureplanting.workers
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.sunrisekcdeveloper.pureplanting.PlantCache
+import com.sunrisekcdeveloper.pureplanting.features.component.PlantCache
 
 class DailyPlantReminderWorker(
     ctx: Context,

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.ui.theme
+package com.sunrisekcdeveloper.pureplanting.app.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

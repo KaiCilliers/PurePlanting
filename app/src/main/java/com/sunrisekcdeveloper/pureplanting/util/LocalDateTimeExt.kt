@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting
+package com.sunrisekcdeveloper.pureplanting.util
 
 import android.text.format.DateUtils
 import java.lang.Math.abs

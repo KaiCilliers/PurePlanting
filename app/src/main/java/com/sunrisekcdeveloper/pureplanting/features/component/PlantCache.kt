@@ -1,5 +1,6 @@
-package com.sunrisekcdeveloper.pureplanting
+package com.sunrisekcdeveloper.pureplanting.features.component
 
+import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.Plant
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 

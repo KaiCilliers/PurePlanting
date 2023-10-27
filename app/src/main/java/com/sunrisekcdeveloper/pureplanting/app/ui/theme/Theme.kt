@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.ui.theme
+package com.sunrisekcdeveloper.pureplanting.app.ui.theme
 
 import android.app.Activity
 import android.os.Build
