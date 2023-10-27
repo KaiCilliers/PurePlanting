@@ -4,7 +4,9 @@ import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.update
+import java.time.LocalDateTime
 import java.util.UUID
 
 class PlantCacheFake : PlantCache {
@@ -35,8 +37,8 @@ class PlantCacheFake : PlantCache {
 
     override fun observe(): Flow<List<Plant>> = plants
 
-    override fun allThatNeedsWateringSoon(): List<Plant> {
-        return emptyList()
+    override fun allThatNeedsWateringSoon(now: LocalDateTime): List<Plant> {
+        return plants.value.filter { it.needsWaterSoon(now) }
     }
 
     fun resetData(plants: List<Plant> = emptyList()) {

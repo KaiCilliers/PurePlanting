@@ -31,3 +31,13 @@ fun plant(
         )
     )
 }
+
+fun plantThatNeedsWaterSoon(
+    today: LocalDateTime,
+    offsetFutureDays: Long = 0,
+): Plant {
+    return plant(
+        waterDays = listOf(today.plusDays(1 + offsetFutureDays).dayOfWeek),
+        wateringHour = today.hour.plus(1)
+    ).nextWateringDate(today)
+}

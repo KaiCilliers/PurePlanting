@@ -8,4 +8,22 @@ data class NotificationDomain(
     val created: LocalDateTime,
     val seen: Boolean,
     val type: PlantNotificationType,
-)
+) {
+    companion object {
+        fun createWaterSoon(): NotificationDomain {
+            return create(PlantNotificationType.WATER_SOON)
+        }
+
+        fun createForgotToWater(): NotificationDomain {
+            return create(PlantNotificationType.FORGOT_TO_WATER)
+        }
+
+        private fun create(type: PlantNotificationType): NotificationDomain {
+            return NotificationDomain(
+                created = LocalDateTime.now(),
+                seen = false,
+                type = type,
+            )
+        }
+    }
+}

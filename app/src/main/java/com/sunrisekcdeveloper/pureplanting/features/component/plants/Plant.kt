@@ -13,23 +13,17 @@ data class Plant(
     val wateringInfo: WateringInfo,
 ) {
 
-    private var nextWateringDate: LocalDateTime? = null
-
     val hasBeenWatered: Boolean
         get() = wateringInfo.previousWaterDates.peek() > wateringInfo.nextWateringDay
 
     fun nextWateringDate(now: LocalDateTime): Plant {
-        val date = nextWateringDate ?: run {
-            nextWateringDate(
-                now,
-                wateringInfo.days,
-                wateringInfo.atHour
-            )
-        }.also { nextWateringDate = it }
-
         return copy(
             wateringInfo = wateringInfo.copy(
-                nextWateringDay = date
+                nextWateringDay = nextWateringDate(
+                    now,
+                    wateringInfo.days,
+                    wateringInfo.atHour
+                )
             )
         )
     }
