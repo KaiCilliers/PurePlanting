@@ -1,6 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.notifications
 
-import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.Plant
+import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import java.time.LocalDateTime
 
 sealed class PlantNotification(

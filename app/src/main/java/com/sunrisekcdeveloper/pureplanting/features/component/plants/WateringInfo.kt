@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.features.presentation.plants
+package com.sunrisekcdeveloper.pureplanting.features.component.plants
 
 import java.time.DayOfWeek
 import java.time.LocalDateTime

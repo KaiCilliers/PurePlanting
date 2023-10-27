@@ -1,6 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.plantdetail
 
-import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.Plant
+import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 
 class PlantDetailsViewModel(
     private val plant: Plant

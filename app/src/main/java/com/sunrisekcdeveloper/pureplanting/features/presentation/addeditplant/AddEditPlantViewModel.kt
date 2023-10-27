@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
 
-import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.Plant
-import com.sunrisekcdeveloper.pureplanting.features.component.PlantCache
+import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
+import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

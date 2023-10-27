@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.shared_test
 
-import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.Plant
-import com.sunrisekcdeveloper.pureplanting.features.component.PlantCache
+import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
+import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
