@@ -1,5 +1,8 @@
-package com.sunrisekcdeveloper.pureplanting
+package com.sunrisekcdeveloper.shared_test
 
+import com.sunrisekcdeveloper.pureplanting.Plant
+import com.sunrisekcdeveloper.pureplanting.PlantDetails
+import com.sunrisekcdeveloper.pureplanting.WateringInfo
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.util.Stack

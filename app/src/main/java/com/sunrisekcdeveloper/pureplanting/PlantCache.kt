@@ -8,4 +8,5 @@ interface PlantCache {
     fun remove(plantId: UUID)
     fun find(plantId: UUID): Plant?
     fun observe(): Flow<List<Plant>>
+    fun allThatNeedsWateringSoon(): List<Plant>
 }

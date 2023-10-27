@@ -16,4 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "PurePlanting"
 include(":app")
- 
+include(":shared-test")

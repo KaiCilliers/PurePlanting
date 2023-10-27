@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting
+package com.sunrisekcdeveloper.shared_test
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope

@@ -52,11 +52,15 @@ android {
 
 dependencies {
 
+    androidTestImplementation(libs.androidx.work.testing)
     testImplementation(libs.test.assertk)
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.test.coroutines)
     testImplementation(libs.test.turbine)
     testRuntimeOnly(libs.junit.jupiter.engine)
+    implementation(libs.androidx.work.runtimeKtx)
+    testImplementation(project(":shared-test"))
+    androidTestImplementation(project(":shared-test"))
 
     // TODO: clear up dependencies
     implementation("androidx.core:core-ktx:1.9.0")

@@ -7,6 +7,8 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isGreaterThan
 import assertk.assertions.isTrue
+import com.sunrisekcdeveloper.shared_test.plant
+import com.sunrisekcdeveloper.shared_test.today
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import java.time.DayOfWeek

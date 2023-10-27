@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting
+package com.sunrisekcdeveloper.shared_test
 
 import java.time.Clock
 import java.time.DayOfWeek

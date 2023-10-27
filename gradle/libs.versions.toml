@@ -4,6 +4,7 @@ androidx-compose-foundation = "1.4.3"
 androidx-compose-material = "1.4.3"
 andriodx-activity-compose = "1.7.1"
 androidx-core-splashscreen = "1.0.1"
+androidx-workManager = "2.8.1"
 
 simple-stack-core = "2.8.0"
 simple-stack-extensions = "2.3.3"
@@ -23,15 +24,16 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose-foundation" }
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose-material" }
-andoridx-compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-compose-material"}
+andoridx-compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-compose-material" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "andriodx-activity-compose" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-core-splashscreen" }
+androidx-work-runtimeKtx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-workManager" }
 
 simple-stack-core = { module = "com.github.Zhuinden:simple-stack", version.ref = "simple-stack-core" }
 simple-stack-extensions = { module = "com.github.Zhuinden:simple-stack-extensions", version.ref = "simple-stack-extensions" }
 simple-stack-compose = { module = "com.github.Zhuinden:simple-stack-compose-integration", version.ref = "simple-stack-compose" }
 
-fragment-viewbinding-delegate = { module = "com.github.Zhuinden:fragmentviewbindingdelegate-kt", version.ref = "fragment-viewbinding-delegate"}
+fragment-viewbinding-delegate = { module = "com.github.Zhuinden:fragmentviewbindingdelegate-kt", version.ref = "fragment-viewbinding-delegate" }
 
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
@@ -40,6 +42,7 @@ junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", vers
 test-assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
 test-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
+androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "androidx-workManager" }
 
 [bundles]
 androidx-compose = ["androidx-compose-ui-ui", "androidx-compose-ui-tooling", "androidx-compose-ui-tooling-preview", "androidx-compose-material", "androidx-compose-foundation", "andoridx-compose-material-icons"]
