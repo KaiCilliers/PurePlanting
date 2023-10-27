@@ -8,6 +8,7 @@ import androidx.work.WorkerParameters
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationDomain
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationsCache
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
+import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
 import java.time.Clock
 import java.time.LocalDateTime
 import java.util.UUID
@@ -17,6 +18,7 @@ class ForgotToWaterWorker(
     params: WorkerParameters,
     private val plantCache: PlantCache,
     private val notificationsCache: NotificationsCache,
+    private val systemNotification: SystemNotification,
     private val clock: Clock = Clock.systemDefaultZone(),
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
@@ -29,6 +31,7 @@ class ForgotToWaterWorker(
             if (forgotToWater && plant != null) {
                 val notification = NotificationDomain.createForgotToWater(plant)
                 notificationsCache.save(notification)
+                systemNotification.send(notification)
             }
 
             Result.success()
@@ -42,10 +45,11 @@ class ForgotToWaterWorker(
     class Factory(
         private val plantCache: PlantCache,
         private val notificationsCache: NotificationsCache,
+        private val systemNotification: SystemNotification,
         private val clock: Clock = Clock.systemDefaultZone(),
     ) : WorkerFactory() {
         override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker {
-            return ForgotToWaterWorker(appContext, workerParameters, plantCache, notificationsCache, clock)
+            return ForgotToWaterWorker(appContext, workerParameters, plantCache, notificationsCache, systemNotification, clock)
         }
     }
 

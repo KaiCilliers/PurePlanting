@@ -7,12 +7,14 @@ import androidx.work.Data
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.PlantNotificationType
+import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
 import com.sunrisekcdeveloper.shared_test.MutableClock
 import com.sunrisekcdeveloper.shared_test.NotificationCacheFake
 import com.sunrisekcdeveloper.shared_test.PlantCacheFake
 import com.sunrisekcdeveloper.shared_test.plantThatNeedsWaterSoon
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.instanceOf
+import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers
 import org.junit.After
 import org.junit.Before
@@ -27,6 +29,7 @@ class ForgotToWaterWorkerTest {
     private lateinit var context: Context
     private lateinit var plantCacheFake: PlantCacheFake
     private lateinit var notificationCacheFake: NotificationCacheFake
+    private lateinit var systemNotification: SystemNotification
     private lateinit var mutableClock: MutableClock
 
     @Before
@@ -35,6 +38,7 @@ class ForgotToWaterWorkerTest {
         notificationCacheFake = NotificationCacheFake()
         mutableClock = MutableClock(Clock.systemDefaultZone())
         context = ApplicationProvider.getApplicationContext()
+        systemNotification = SystemNotification(context)
     }
 
     @After
@@ -50,7 +54,7 @@ class ForgotToWaterWorkerTest {
         // SETUP
         val plant = plantThatNeedsWaterSoon(LocalDateTime.now(mutableClock))
         val worker = TestListenableWorkerBuilder<ForgotToWaterWorker>(context)
-            .setWorkerFactory(ForgotToWaterWorker.Factory(plantCacheFake, notificationCacheFake, mutableClock))
+            .setWorkerFactory(ForgotToWaterWorker.Factory(plantCacheFake, notificationCacheFake, systemNotification, mutableClock))
             .setInputData(Data.Builder().putString(ForgotToWaterWorker.INPUT_PARAM_PLANT_ID, plant.id.toString()).build())
             .build()
 
@@ -60,8 +64,8 @@ class ForgotToWaterWorkerTest {
         runBlocking {
             val result = worker.doWork()
 
-            ViewMatchers.assertThat(result, CoreMatchers.`is`(ListenableWorker.Result.success()))
-            ViewMatchers.assertThat(notificationCacheFake.all().size, CoreMatchers.`is`(0))
+            ViewMatchers.assertThat(result, `is`(ListenableWorker.Result.success()))
+            ViewMatchers.assertThat(notificationCacheFake.all().size, `is`(0))
         }
     }
 
@@ -70,7 +74,7 @@ class ForgotToWaterWorkerTest {
         // SETUP
         val plant = plantThatNeedsWaterSoon(LocalDateTime.now(mutableClock))
         val worker = TestListenableWorkerBuilder<ForgotToWaterWorker>(context)
-            .setWorkerFactory(ForgotToWaterWorker.Factory(plantCacheFake, notificationCacheFake, mutableClock))
+            .setWorkerFactory(ForgotToWaterWorker.Factory(plantCacheFake, notificationCacheFake, systemNotification, mutableClock))
             .setInputData(Data.Builder().putString(ForgotToWaterWorker.INPUT_PARAM_PLANT_ID, plant.id.toString()).build())
             .build()
 
@@ -81,11 +85,11 @@ class ForgotToWaterWorkerTest {
         runBlocking {
             val result = worker.doWork()
 
-            ViewMatchers.assertThat(result, CoreMatchers.`is`(ListenableWorker.Result.success()))
-            ViewMatchers.assertThat(notificationCacheFake.all().size, CoreMatchers.`is`(1))
-            ViewMatchers.assertThat(notificationCacheFake.all().first().type, CoreMatchers.`is`(PlantNotificationType.FORGOT_TO_WATER))
-            ViewMatchers.assertThat(notificationCacheFake.all().first().seen, CoreMatchers.`is`(false))
-            ViewMatchers.assertThat(notificationCacheFake.all().first().created, CoreMatchers.`is`(Matchers.lessThan(LocalDateTime.now())))
+            ViewMatchers.assertThat(result, `is`(ListenableWorker.Result.success()))
+            ViewMatchers.assertThat(notificationCacheFake.all().size, `is`(1))
+            ViewMatchers.assertThat(notificationCacheFake.all().first().type, `is`(instanceOf(PlantNotificationType.ForgotToWater::class.java)))
+            ViewMatchers.assertThat(notificationCacheFake.all().first().seen, `is`(false))
+            ViewMatchers.assertThat(notificationCacheFake.all().first().created, `is`(Matchers.lessThan(LocalDateTime.now())))
         }
     }
 
@@ -95,7 +99,7 @@ class ForgotToWaterWorkerTest {
         notificationCacheFake.throwException = true
         val plant = plantThatNeedsWaterSoon(LocalDateTime.now(mutableClock))
         val worker = TestListenableWorkerBuilder<ForgotToWaterWorker>(context)
-            .setWorkerFactory(ForgotToWaterWorker.Factory(plantCacheFake, notificationCacheFake, mutableClock))
+            .setWorkerFactory(ForgotToWaterWorker.Factory(plantCacheFake, notificationCacheFake, systemNotification, mutableClock))
             .setInputData(Data.Builder().putString(ForgotToWaterWorker.INPUT_PARAM_PLANT_ID, plant.id.toString()).build())
             .build()
 
@@ -107,8 +111,8 @@ class ForgotToWaterWorkerTest {
             val result = worker.doWork()
 
             notificationCacheFake.throwException = false
-            ViewMatchers.assertThat(result, CoreMatchers.`is`(ListenableWorker.Result.failure()))
-            ViewMatchers.assertThat(notificationCacheFake.all().size, CoreMatchers.`is`(0))
+            ViewMatchers.assertThat(result, `is`(ListenableWorker.Result.failure()))
+            ViewMatchers.assertThat(notificationCacheFake.all().size, `is`(0))
         }
     }
 

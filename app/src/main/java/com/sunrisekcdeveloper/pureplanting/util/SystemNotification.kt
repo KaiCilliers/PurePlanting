@@ -15,7 +15,6 @@ import com.sunrisekcdeveloper.pureplanting.features.component.notifications.Noti
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.PlantNotificationType
 
 class SystemNotification(
-    private val domainNotification: NotificationDomain,
     private val ctx: Context,
 ) {
     private val isNotificationPermissionGranted: Boolean
@@ -27,7 +26,7 @@ class SystemNotification(
         }
 
     @SuppressLint("MissingPermission")
-    fun sendNewNotification() {
+    fun send(domainNotification: NotificationDomain) {
         ensureChannelExists(domainNotification.type)
         val notification: Notification = createNotification(domainNotification.type)
         if (isNotificationPermissionGranted) {

@@ -8,6 +8,7 @@ import androidx.work.WorkerParameters
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationDomain
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationsCache
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
+import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
 import java.time.Clock
 import java.time.LocalDateTime
 
@@ -16,6 +17,7 @@ class DailyPlantReminderWorker(
     params: WorkerParameters,
     private val plantCache: PlantCache,
     private val notificationsCache: NotificationsCache,
+    private val systemNotification: SystemNotification,
     private val clock: Clock = Clock.systemDefaultZone(),
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
@@ -25,7 +27,7 @@ class DailyPlantReminderWorker(
             if (plantsThatNeedsWatering.isNotEmpty()) {
                 val notification = NotificationDomain.createWaterSoon(plantsThatNeedsWatering.size)
                 notificationsCache.save(notification)
-                // on notification tap, open app on plant list screen with upcoming filter selected, i.e. default filter option
+                systemNotification.send(notification)
             }
 
             Result.success()
@@ -39,10 +41,11 @@ class DailyPlantReminderWorker(
     class Factory(
         private val plantCache: PlantCache,
         private val notificationsCache: NotificationsCache,
+        private val systemNotification: SystemNotification,
         private val clock: Clock = Clock.systemDefaultZone(),
     ) : WorkerFactory() {
         override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker? {
-            return DailyPlantReminderWorker(appContext, workerParameters, plantCache, notificationsCache, clock)
+            return DailyPlantReminderWorker(appContext, workerParameters, plantCache, notificationsCache, systemNotification, clock)
         }
     }
 
