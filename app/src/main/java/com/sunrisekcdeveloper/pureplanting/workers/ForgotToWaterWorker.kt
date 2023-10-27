@@ -10,8 +10,9 @@ import com.sunrisekcdeveloper.pureplanting.features.component.notifications.Noti
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import java.time.Clock
 import java.time.LocalDateTime
+import java.util.UUID
 
-class DailyPlantReminderWorker(
+class ForgotToWaterWorker(
     ctx: Context,
     params: WorkerParameters,
     private val plantCache: PlantCache,
@@ -20,12 +21,14 @@ class DailyPlantReminderWorker(
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         return try {
-            val plantsThatNeedsWatering = PlantCache.Smart(plantCache).allThatNeedsWateringSoon(LocalDateTime.now(clock))
+            val plantId = inputData.getString(INPUT_PARAM_PLANT_ID)
+            val plant = plantCache.find(UUID.fromString(plantId))
+            val forgotToWater = plant?.forgotToWater(LocalDateTime.now(clock)) ?: false
 
-            if (plantsThatNeedsWatering.isNotEmpty()) {
-                val notification = NotificationDomain.createWaterSoon()
+            // on notification tap, open app on specific plant detail screen
+            if (forgotToWater) {
+                val notification = NotificationDomain.createForgotToWater()
                 notificationsCache.save(notification)
-                // on notification tap, open app on plant list screen with upcoming filter selected, i.e. default filter option
             }
 
             Result.success()
@@ -41,13 +44,12 @@ class DailyPlantReminderWorker(
         private val notificationsCache: NotificationsCache,
         private val clock: Clock = Clock.systemDefaultZone(),
     ) : WorkerFactory() {
-        override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker? {
-            return DailyPlantReminderWorker(appContext, workerParameters, plantCache, notificationsCache, clock)
+        override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker {
+            return ForgotToWaterWorker(appContext, workerParameters, plantCache, notificationsCache, clock)
         }
     }
 
     companion object {
-        const val TAG = "DailyPlantReminderWorkerTag"
-
+        const val INPUT_PARAM_PLANT_ID = "forgot_to_water_plant_id"
     }
 }

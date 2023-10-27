@@ -9,5 +9,13 @@ interface PlantCache {
     fun remove(plantId: UUID)
     fun find(plantId: UUID): Plant?
     fun observe(): Flow<List<Plant>>
-    fun allThatNeedsWateringSoon(now: LocalDateTime): List<Plant>
+    fun all(): List<Plant>
+
+    class Smart(
+        private val origin: PlantCache
+    ) {
+        fun allThatNeedsWateringSoon(now: LocalDateTime): List<Plant> {
+            return origin.all().filter { it.needsWaterSoon(now) }
+        }
+    }
 }
