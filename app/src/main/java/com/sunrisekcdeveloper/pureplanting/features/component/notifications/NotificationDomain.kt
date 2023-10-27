@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.component.notifications
 
+import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -10,12 +11,17 @@ data class NotificationDomain(
     val type: PlantNotificationType,
 ) {
     companion object {
-        fun createWaterSoon(): NotificationDomain {
-            return create(PlantNotificationType.WATER_SOON)
+        fun createWaterSoon(plantsToWaterCount: Int): NotificationDomain {
+            return create(PlantNotificationType.DailyWaterReminder(
+                notificationContent = "Hey, you have $plantsToWaterCount plants to water today"
+            ))
         }
 
-        fun createForgotToWater(): NotificationDomain {
-            return create(PlantNotificationType.FORGOT_TO_WATER)
+        fun createForgotToWater(targetPlant: Plant): NotificationDomain {
+            return create(PlantNotificationType.ForgotToWater(
+                targetPlant = targetPlant,
+                notificationContent = "Hey, you forgot to water your ${targetPlant.details.name}"
+            ))
         }
 
         private fun create(type: PlantNotificationType): NotificationDomain {

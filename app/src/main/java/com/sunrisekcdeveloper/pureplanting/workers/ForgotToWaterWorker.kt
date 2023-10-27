@@ -26,8 +26,8 @@ class ForgotToWaterWorker(
             val forgotToWater = plant?.forgotToWater(LocalDateTime.now(clock)) ?: false
 
             // on notification tap, open app on specific plant detail screen
-            if (forgotToWater) {
-                val notification = NotificationDomain.createForgotToWater()
+            if (forgotToWater && plant != null) {
+                val notification = NotificationDomain.createForgotToWater(plant)
                 notificationsCache.save(notification)
             }
 

@@ -23,7 +23,7 @@ class DailyPlantReminderWorker(
             val plantsThatNeedsWatering = PlantCache.Smart(plantCache).allThatNeedsWateringSoon(LocalDateTime.now(clock))
 
             if (plantsThatNeedsWatering.isNotEmpty()) {
-                val notification = NotificationDomain.createWaterSoon()
+                val notification = NotificationDomain.createWaterSoon(plantsThatNeedsWatering.size)
                 notificationsCache.save(notification)
                 // on notification tap, open app on plant list screen with upcoming filter selected, i.e. default filter option
             }
