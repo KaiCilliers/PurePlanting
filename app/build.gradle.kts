@@ -36,6 +36,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        languageVersion = "1.9" // data objects
     }
     buildFeatures {
         compose = true
@@ -48,6 +49,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+kotlin.sourceSets.all() {
+    languageSettings.enableLanguageFeature("DataObjects")
 }
 
 dependencies {
@@ -64,7 +69,7 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
     implementation(libs.androidx.work.runtimeKtx)
 
-    // TODO: clear up dependencies
+// TODO: clear up dependencies
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.0")
