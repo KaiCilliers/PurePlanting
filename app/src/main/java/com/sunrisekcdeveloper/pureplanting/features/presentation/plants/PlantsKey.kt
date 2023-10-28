@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 data object PlantsKey : FragmentKey() {
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
-            add(PlantsViewModel(InMemoryPlantCache()))
+            add(PlantsViewModel(InMemoryPlantCache(), backstack = backstack))
         }
     }
 

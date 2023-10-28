@@ -2,7 +2,13 @@ package com.sunrisekcdeveloper.pureplanting.features.presentation.plants
 
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
+import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.AddEditPlantKey
+import com.sunrisekcdeveloper.pureplanting.features.presentation.notifications.NotificationsKey
+import com.sunrisekcdeveloper.pureplanting.features.presentation.plantdetail.PlantDetailKey
 import com.zhuinden.flowcombinetuplekt.combineTuple
+import com.zhuinden.simplestack.Backstack
+import com.zhuinden.simplestack.Bundleable
+import com.zhuinden.statebundle.StateBundle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +24,8 @@ import java.util.UUID
 class PlantsViewModel(
     private val plantCache: PlantCache,
     private val clock: Clock = Clock.systemDefaultZone(),
-) {
+    private val backstack: Backstack,
+) : Bundleable {
     private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
     private var lastRemovedPlant: Plant? = null
 
@@ -48,6 +55,28 @@ class PlantsViewModel(
 
     fun undoRemove(plantId: UUID) {
         plantCache.save(lastRemovedPlant!!)
+    }
+
+    fun navigateToNotification() {
+        backstack.goTo(NotificationsKey)
+    }
+
+    fun navigateToAddPlant() {
+        backstack.goTo(AddEditPlantKey)
+    }
+
+    fun navigateToPlantDetail(plant: Plant) {
+        backstack.goTo(PlantDetailKey)
+    }
+
+    override fun toBundle(): StateBundle = StateBundle().apply {
+        putString("activeFilter", activeFilter.value.toString())
+    }
+
+    override fun fromBundle(bundle: StateBundle?) {
+        bundle?.run {
+            activeFilter.update { PlantListFilter.valueOf(getString("activeFilter", PlantListFilter.UPCOMING.toString())) }
+        }
     }
 }
 

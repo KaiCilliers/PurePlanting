@@ -11,12 +11,18 @@ class PlantsFragment : ComposeFragment() {
     @Composable
     override fun FragmentComposable(backstack: Backstack) {
         val viewModel = remember { backstack.lookup<PlantsViewModel>() }
+
         val activeFilter = viewModel.activeFilter.collectAsState()
+        val plants = viewModel.plants.collectAsState()
 
         PlantsScreen(
             plantsFilterOption = PlantListFilter.values().toList(),
             selectedFilter = activeFilter,
-            onFilterSelected = { viewModel.setFilter(it) }
+            onFilterSelected = { viewModel.setFilter(it) },
+            plants = plants,
+            onPlantTapped = viewModel::navigateToPlantDetail,
+            onNotificationIconTapped = viewModel::navigateToNotification,
+            onAddIconTapped = viewModel::navigateToAddPlant,
         )
     }
 }
