@@ -131,7 +131,7 @@ class PlantsViewModelTest {
             awaitItem()
 
             advanceTimeBy(0.days, mutableClock) // move to Saturday
-            viewModel.setFilter(PlantFilter.FORGOT)
+            viewModel.setFilter(PlantListFilter.FORGOT_TO_WATER)
             assertThat(awaitItem().size).isEqualTo(2)
         }
 
@@ -154,7 +154,7 @@ class PlantsViewModelTest {
         viewModel.plants.test {
             awaitItem()
 
-            viewModel.setFilter(PlantFilter.HISTORY)
+            viewModel.setFilter(PlantListFilter.HISTORY)
             assertThat(awaitItem().size).isEqualTo(3)
         }
     }

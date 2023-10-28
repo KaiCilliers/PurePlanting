@@ -1,24 +1,22 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.plants
 
-import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.AddEditPlantKey
-import com.sunrisekcdeveloper.pureplanting.features.presentation.notifications.NotificationsKey
-import com.sunrisekcdeveloper.pureplanting.features.presentation.plantdetail.LargeText
-import com.sunrisekcdeveloper.pureplanting.features.presentation.plantdetail.PlantDetailKey
-import com.sunrisekcdeveloper.pureplanting.features.presentation.plantdetail.SimpleSetupPreview
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import com.sunrisekcdeveloper.pureplanting.navigation.ComposeFragment
 import com.zhuinden.simplestack.Backstack
+import com.zhuinden.simplestackextensions.servicesktx.lookup
 
 class PlantsFragment : ComposeFragment() {
     @Composable
     override fun FragmentComposable(backstack: Backstack) {
-        SimpleSetupPreview {
-            LargeText(text = "Plants")
-            LargeText(text = "Add Plant", modifier = Modifier.clickable { backstack.goTo(AddEditPlantKey) })
-            LargeText(text = "Notifications", modifier = Modifier.clickable { backstack.goTo(NotificationsKey) })
-            LargeText(text = "Plant Detail", modifier = Modifier.clickable { backstack.goTo(PlantDetailKey) })
-        }
+        val viewModel = remember { backstack.lookup<PlantsViewModel>() }
+        val activeFilter = viewModel.activeFilter.collectAsState()
+
+        PlantsScreen(
+            plantsFilterOption = PlantListFilter.values().toList(),
+            selectedFilter = activeFilter,
+            onFilterSelected = { viewModel.setFilter(it) }
+        )
     }
 }

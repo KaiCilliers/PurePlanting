@@ -26,14 +26,19 @@ abstract class ComposeFragment : KeyedFragment() {
             // Dispose the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                PurePlantingTheme {
-                    Surface(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        FragmentComposable(backstack)
-                    }
-                }
+                ThemeSurfaceWrapper { FragmentComposable(backstack) }
             }
         }
+    }
+}
+
+@Composable
+fun ThemeSurfaceWrapper(
+    content: @Composable () -> Unit,
+) {
+    PurePlantingTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize()
+        ) { content() }
     }
 }

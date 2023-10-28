@@ -25,19 +25,19 @@ class PlantsViewModel(
     private val allPlants: StateFlow<List<Plant>> = plantCache
         .observe()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), emptyList())
-    private val activeFilter = MutableStateFlow(PlantFilter.UPCOMING)
+    val activeFilter = MutableStateFlow(PlantListFilter.UPCOMING)
 
     val plants: StateFlow<List<Plant>> = combineTuple(allPlants, activeFilter).map { (plants, filter) ->
         plants.filter { plant ->
             when (filter) {
-                PlantFilter.UPCOMING -> plant.needsWaterSoon(LocalDateTime.now(clock))
-                PlantFilter.FORGOT -> plant.forgotToWater(LocalDateTime.now(clock))
-                PlantFilter.HISTORY -> plant.wateringInfo.previousWaterDates.isNotEmpty()
+                PlantListFilter.UPCOMING -> plant.needsWaterSoon(LocalDateTime.now(clock))
+                PlantListFilter.FORGOT_TO_WATER -> plant.forgotToWater(LocalDateTime.now(clock))
+                PlantListFilter.HISTORY -> plant.wateringInfo.previousWaterDates.isNotEmpty()
             }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), emptyList())
 
-    fun setFilter(filter: PlantFilter) {
+    fun setFilter(filter: PlantListFilter) {
         activeFilter.update { filter }
     }
 
@@ -51,6 +51,6 @@ class PlantsViewModel(
     }
 }
 
-enum class PlantFilter {
-    UPCOMING, FORGOT, HISTORY
+enum class PlantListFilter {
+    UPCOMING, FORGOT_TO_WATER, HISTORY
 }
