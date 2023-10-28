@@ -51,6 +51,10 @@ android {
 }
 
 dependencies {
+    testImplementation(project(":shared-test"))
+    androidTestImplementation(project(":shared-test"))
+
+    implementation(libs.bundles.simplestack)
 
     androidTestImplementation(libs.androidx.work.testing)
     testImplementation(libs.test.assertk)
@@ -59,8 +63,6 @@ dependencies {
     testImplementation(libs.test.turbine)
     testRuntimeOnly(libs.junit.jupiter.engine)
     implementation(libs.androidx.work.runtimeKtx)
-    testImplementation(project(":shared-test"))
-    androidTestImplementation(project(":shared-test"))
 
     // TODO: clear up dependencies
     implementation("androidx.core:core-ktx:1.9.0")

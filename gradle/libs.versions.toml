@@ -46,6 +46,6 @@ androidx-work-testing = { group = "androidx.work", name = "work-testing", versio
 
 [bundles]
 androidx-compose = ["androidx-compose-ui-ui", "androidx-compose-ui-tooling", "androidx-compose-ui-tooling-preview", "androidx-compose-material", "androidx-compose-foundation", "andoridx-compose-material-icons"]
-simplestack = ["simple-stack-core", "simple-stack-extensions", "simple-stack-compose"]
+simplestack = ["simple-stack-core", "simple-stack-extensions"]
 # TODO testing bundle with junit5/assertk/turbine
 junit5 = ["junit-jupiter-api", "junit-jupiter-params"]
