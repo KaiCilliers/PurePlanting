@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentActivity
 import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.PlantsKey
 import com.sunrisekcdeveloper.pureplanting.navigation.FragmentStateChanger
 import com.zhuinden.simplestack.BackHandlingModel
 import com.zhuinden.simplestack.Backstack
@@ -43,7 +44,7 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
             .setStateChanger(SimpleStateChanger(this))
             .setScopedServices(DefaultServiceProvider())
             .setGlobalServices(globalServices)
-            .install(this, androidContentFrame, History.of(null))
+            .install(this, androidContentFrame, History.of(PlantsKey))
 
         backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
         backstack.observeAheadOfTimeWillHandleBackChanged(this, backPressedCallback::isEnabled::set)
