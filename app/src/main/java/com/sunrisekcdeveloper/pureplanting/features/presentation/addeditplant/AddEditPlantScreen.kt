@@ -1,22 +1,47 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.navigation.ThemeSurfaceWrapper
+import java.io.File
+import java.text.SimpleDateFormat
 import java.time.DayOfWeek
+import java.util.Date
 
 @Composable
 fun AddEditPlantScreen(
@@ -37,10 +62,51 @@ fun AddEditPlantScreen(
     onAddPlantTap: (Plant) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    var uri: Uri? = null
+
+    var capturedImageUri by remember {
+        mutableStateOf(imgSrcUri.toUri())
+    }
+
+    val context = LocalContext.current
+
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccessful ->
+        if (isSuccessful) {
+            uri?.let {
+                imgSrcUriUpdater(it.toString())
+                capturedImageUri = it
+            }
+        } else {
+            uri = null
+        }
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
     ) {
+
+        Icon(imageVector = Icons.Filled.Image, contentDescription = "",
+            modifier = Modifier
+                .size(42.dp)
+                .clickable {
+                    uri = context.createTempFileUri()
+                    cameraLauncher.launch(uri)
+                })
+
+        if (capturedImageUri.path?.isNotEmpty() == true) {
+            Image(
+                modifier = Modifier
+                    .padding(16.dp, 8.dp)
+                    .size(320.dp),
+                painter = rememberAsyncImagePainter(capturedImageUri),
+                contentDescription = "",
+            )
+        }
+
         Spacer(modifier = Modifier.height(12.dp))
         LabelAndPlaceHolderTextField(text = name, onValueChanged = nameUpdater)
 
@@ -60,9 +126,6 @@ fun AddEditPlantScreen(
         LabelAndPlaceHolderTextField(text = amountOfWater, onValueChanged = amountOfWaterUpdater)
 
         Spacer(modifier = Modifier.height(12.dp))
-        LabelAndPlaceHolderTextField(text = imgSrcUri, onValueChanged = imgSrcUriUpdater)
-
-        Spacer(modifier = Modifier.height(12.dp))
 
         Button(onClick = {
             val newPlant = Plant.createNewPlant(
@@ -79,6 +142,20 @@ fun AddEditPlantScreen(
             Text(text = "Create a Plant")
         }
     }
+}
+
+fun Context.createTempFileUri(): Uri {
+    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val imageFileName = "PNG_" + timeStamp + "_"
+    val image = File.createTempFile(
+        imageFileName, /* prefix */
+        ".png", /* suffix */
+        filesDir
+    )
+    return FileProvider.getUriForFile(
+        this,
+        "com.sunrisekcdeveloper.pureplanting" + ".provider", image
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
