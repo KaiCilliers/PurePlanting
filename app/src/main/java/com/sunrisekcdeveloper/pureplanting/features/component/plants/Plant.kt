@@ -1,5 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.features.component.plants
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -7,14 +9,15 @@ import java.time.temporal.TemporalAdjusters
 import java.util.Stack
 import java.util.UUID
 
+@Parcelize
 data class Plant(
     val id: UUID = UUID.randomUUID(),
     val details: PlantDetails,
     val wateringInfo: WateringInfo,
-) {
+): Parcelable {
 
     val hasBeenWatered: Boolean
-        get() = wateringInfo.previousWaterDates.peek() > wateringInfo.nextWateringDay
+        get() = wateringInfo.previousWaterDates.size > 0 && wateringInfo.previousWaterDates.peek() > wateringInfo.nextWateringDay
 
     fun nextWateringDate(now: LocalDateTime): Plant {
         return copy(

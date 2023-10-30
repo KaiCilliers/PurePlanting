@@ -1,20 +1,24 @@
 package com.sunrisekcdeveloper.pureplanting.features.component.plants
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.util.Stack
 
+@Parcelize
 data class WateringInfo(
     val atHour: Int,
     val days: List<DayOfWeek>,
     val amount: String,
     val nextWateringDay: LocalDateTime,
     val previousWaterDates: Stack<LocalDateTime> = Stack()
-)
+) : Parcelable
 
+@Parcelize
 data class PlantDetails(
     val name: String,
     val size: String,
     val description: String,
     val imageSrcUri: String,
-)
+) : Parcelable

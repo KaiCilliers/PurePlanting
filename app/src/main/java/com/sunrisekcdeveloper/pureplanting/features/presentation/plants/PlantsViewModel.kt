@@ -62,11 +62,11 @@ class PlantsViewModel(
     }
 
     fun navigateToAddPlant() {
-        backstack.goTo(AddEditPlantKey)
+        backstack.goTo(AddEditPlantKey())
     }
 
     fun navigateToPlantDetail(plant: Plant) {
-        backstack.goTo(PlantDetailKey)
+        backstack.goTo(PlantDetailKey(plant))
     }
 
     override fun toBundle(): StateBundle = StateBundle().apply {

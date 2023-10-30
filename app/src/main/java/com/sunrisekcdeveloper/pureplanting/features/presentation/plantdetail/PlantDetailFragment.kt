@@ -1,28 +1,33 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.plantdetail
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.AddEditPlantKey
 import com.sunrisekcdeveloper.pureplanting.navigation.ComposeFragment
 import com.zhuinden.simplestack.Backstack
+import com.zhuinden.simplestackextensions.servicesktx.lookup
 
 class PlantDetailFragment : ComposeFragment() {
     @Composable
     override fun FragmentComposable(backstack: Backstack) {
-        SimpleSetupPreview {
-            LargeText(text = "Plant Detail")
-            LargeText(text = "Edit Plant", modifier = Modifier.clickable { backstack.goTo(AddEditPlantKey) })
-            LargeText(text = "Go Back", modifier = Modifier.clickable { backstack.goBack() })
-        }
+        val viewModel = remember { backstack.lookup<PlantDetailsViewModel>() }
+
+        val plant = viewModel.activePlant.collectAsState()
+
+        PlantDetailScreen(
+            plant = plant,
+            onWateredButtonTapped = viewModel::waterPlant
+        )
     }
 }
 
+// todo remove below
 @Composable
 fun LargeText(
     text: String,
