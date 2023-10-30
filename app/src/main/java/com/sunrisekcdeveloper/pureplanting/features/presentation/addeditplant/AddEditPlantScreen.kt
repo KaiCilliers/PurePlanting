@@ -34,11 +34,12 @@ fun AddEditPlantScreen(
     amountOfWaterUpdater: (String) -> Unit,
     imgSrcUri: String,
     imgSrcUriUpdater: (String) -> Unit,
-    onAddPlantTap: (Plant) -> Unit
+    onAddPlantTap: (Plant) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(12.dp))
         LabelAndPlaceHolderTextField(text = name, onValueChanged = nameUpdater)

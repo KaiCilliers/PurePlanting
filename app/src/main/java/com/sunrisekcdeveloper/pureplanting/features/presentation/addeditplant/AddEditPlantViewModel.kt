@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
 
+import androidx.compose.runtime.mutableStateListOf
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import com.zhuinden.simplestack.Bundleable
@@ -18,6 +19,8 @@ class AddEditPlantViewModel(
 
     private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
 
+    val visiblePermissionDialogQueue = mutableStateListOf<String>()
+
     val image = MutableStateFlow( plant?.details?.imageSrcUri ?: "")
     val name = MutableStateFlow(plant?.details?.name ?: "")
     val description = MutableStateFlow( plant?.details?.description ?: "")
@@ -31,6 +34,19 @@ class AddEditPlantViewModel(
             createPlant()
         } else {
             updatePlant()
+        }
+    }
+
+    fun dismissDialog() {
+        visiblePermissionDialogQueue.removeFirst()
+    }
+
+    fun onPermissionResult(
+        permission: String,
+        isGranted: Boolean
+    ) {
+        if(!isGranted && !visiblePermissionDialogQueue.contains(permission)) {
+            visiblePermissionDialogQueue.add(permission)
         }
     }
 
