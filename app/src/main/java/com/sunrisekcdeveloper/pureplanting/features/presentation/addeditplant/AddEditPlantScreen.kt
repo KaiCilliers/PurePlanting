@@ -8,14 +8,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -82,6 +85,11 @@ fun AddEditPlantScreen(
         }
     }
 
+    val galleryImagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { imgUri ->
+        capturedImageUri = imgUri ?: return@rememberLauncherForActivityResult
+        imgSrcUriUpdater(imgUri.toString())
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -89,13 +97,22 @@ fun AddEditPlantScreen(
             .verticalScroll(rememberScrollState())
     ) {
 
-        Icon(imageVector = Icons.Filled.Image, contentDescription = "",
-            modifier = Modifier
-                .size(42.dp)
-                .clickable {
-                    uri = context.createTempFileUri()
-                    cameraLauncher.launch(uri)
-                })
+        Row {
+            Icon(imageVector = Icons.Filled.Camera, contentDescription = "",
+                modifier = Modifier
+                    .size(42.dp)
+                    .clickable {
+                        uri = context.createTempFileUri()
+                        cameraLauncher.launch(uri)
+                    })
+            Spacer(modifier = Modifier.width(100.dp))
+            Icon(imageVector = Icons.Filled.Image, contentDescription = "",
+                modifier = Modifier
+                    .size(42.dp)
+                    .clickable {
+                        galleryImagePickerLauncher.launch("image/*")
+                    })
+        }
 
         if (capturedImageUri.path?.isNotEmpty() == true) {
             Image(
