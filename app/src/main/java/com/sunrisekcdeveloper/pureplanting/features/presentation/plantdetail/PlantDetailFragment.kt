@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
+import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.AddEditPlantKey
 import com.sunrisekcdeveloper.pureplanting.navigation.ComposeFragment
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestackextensions.servicesktx.lookup
@@ -22,7 +23,8 @@ class PlantDetailFragment : ComposeFragment() {
 
         PlantDetailScreen(
             plant = plant,
-            onWateredButtonTapped = viewModel::waterPlant
+            onWateredButtonTapped = viewModel::waterPlant,
+            onEditPlantTapped = { backstack.goTo(AddEditPlantKey(it)) }
         )
     }
 }

@@ -21,6 +21,7 @@ import java.time.DayOfWeek
 fun PlantDetailScreen(
     plant: State<Plant>,
     onWateredButtonTapped: (Plant) -> Unit,
+    onEditPlantTapped: (Plant) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column {
@@ -49,6 +50,10 @@ fun PlantDetailScreen(
             LargeText(text = plant.value.hasBeenWatered.toString())
         }
 
+        Button(onClick = { onEditPlantTapped(plant.value) }) {
+            Text(text = "Edit Plant")
+        }
+
         if(!plant.value.hasBeenWatered) {
             Button(onClick = { onWateredButtonTapped(plant.value) }) {
                 Text(text = "Mark as watered")
@@ -74,7 +79,8 @@ private fun PlantDetailScreen_Preview() {
 
         PlantDetailScreen(
             plant = mutableStateOf(plant),
-            onWateredButtonTapped = {}
+            onWateredButtonTapped = {},
+            onEditPlantTapped = {}
         )
     }
 }

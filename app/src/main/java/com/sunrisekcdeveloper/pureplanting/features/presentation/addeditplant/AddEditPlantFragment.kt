@@ -42,7 +42,7 @@ class AddEditPlantFragment : ComposeFragment() {
                 amountOfWaterUpdater = { newValue -> viewModel.wateringAmount.update { newValue } },
                 onAddPlantTap = {
                     viewModel.savePlant()
-                    backstack.goBack()
+                    backstack.jumpToRoot()
                 },
             )
         }
