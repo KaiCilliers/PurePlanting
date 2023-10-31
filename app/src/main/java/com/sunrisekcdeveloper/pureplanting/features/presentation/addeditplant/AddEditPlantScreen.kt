@@ -161,6 +161,7 @@ fun AddEditPlantScreen(
     }
 }
 
+// TODO: worker to clear temp files
 fun Context.createTempFileUri(): Uri {
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
     val imageFileName = "PNG_" + timeStamp + "_"

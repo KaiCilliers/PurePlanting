@@ -47,6 +47,7 @@ class AddEditPlantFragment : ComposeFragment() {
 
             val dialogQueue = viewModel.visiblePermissionDialogQueue
 
+            // TODO: move permissions to button tap for camera of image picker
             val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.RequestMultiplePermissions(),
                 onResult = { perms ->
