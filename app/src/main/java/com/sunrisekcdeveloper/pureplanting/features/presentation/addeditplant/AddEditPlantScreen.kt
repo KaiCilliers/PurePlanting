@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
 
 import android.annotation.SuppressLint
@@ -33,12 +35,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.navigation.ThemeSurfaceWrapper
 import java.io.File
@@ -90,6 +92,29 @@ fun AddEditPlantScreen(
         imgSrcUriUpdater(imgUri.toString())
     }
 
+    var showSizeDialog by remember { mutableStateOf(false) }
+    var showDatesDialog by remember { mutableStateOf(false) }
+
+    var selectedPlantSize: PlantSize by remember { mutableStateOf(PlantSize.Medium()) }
+    var selectedWateringDates: List<DayOfWeek> by remember { mutableStateOf(listOf(DayOfWeek.MONDAY)) }
+
+    // todo animate dialog visibility
+    if(showSizeDialog) {
+        PPSizeSelectionDialog(
+            dismiss = { showSizeDialog = false },
+            initialSelection = selectedPlantSize,
+            updateSelection = { selectedPlantSize = it }
+        )
+    }
+
+    if (showDatesDialog) {
+        PPDateSelectionDialog(
+            dismiss = { showDatesDialog = false },
+            initialSelections = selectedWateringDates,
+            updateSelection = { selectedWateringDates = it }
+        )
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -123,6 +148,18 @@ fun AddEditPlantScreen(
                 contentDescription = "",
             )
         }
+
+        PPTextFieldReadOnly(
+            text = stringResource(id = selectedPlantSize.textResId),
+            onClick = { showSizeDialog = true }
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+
+        PPTextFieldReadOnly(
+            text = selectedWateringDates.map { it.name.substring(0, 3) }.joinToString(", "),
+            onClick = { showDatesDialog = true }
+        )
+        Spacer(modifier = Modifier.height(12.dp))
 
         Spacer(modifier = Modifier.height(12.dp))
         LabelAndPlaceHolderTextField(text = name, onValueChanged = nameUpdater)
@@ -162,7 +199,7 @@ fun AddEditPlantScreen(
 }
 
 // TODO: worker to clear temp files
-fun Context.createTempFileUri(): Uri {
+private fun Context.createTempFileUri(): Uri {
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
     val imageFileName = "PNG_" + timeStamp + "_"
     val image = File.createTempFile(
