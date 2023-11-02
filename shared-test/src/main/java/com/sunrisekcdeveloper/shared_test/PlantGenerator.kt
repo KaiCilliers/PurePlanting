@@ -26,7 +26,7 @@ fun plant(
         wateringInfo = WateringInfo(
             atHour = wateringHour,
             days = waterDays,
-            amount = "dictumst",
+            amount = "240 ml",
             nextWateringDay = LocalDateTime.now(),
             previousWaterDates = previousWateringDate,
             atMin = 0

@@ -30,7 +30,7 @@ class SystemNotification(
         ensureChannelExists(domainNotification.type)
         val notification: Notification = createNotification(domainNotification.type)
         if (isNotificationPermissionGranted) {
-            NotificationManagerCompat.from(ctx).notify(domainNotification.id.sumOf { it.digitToInt() }, notification)
+            NotificationManagerCompat.from(ctx).notify(domainNotification.id.sumOf { if (it.isDigit()) it.digitToInt() else 0 }, notification)
         }
     }
 
