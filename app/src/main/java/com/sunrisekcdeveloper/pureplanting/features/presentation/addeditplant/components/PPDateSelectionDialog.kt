@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
+package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
+package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components
 
 import androidx.annotation.StringRes
 import com.sunrisekcdeveloper.pureplanting.R

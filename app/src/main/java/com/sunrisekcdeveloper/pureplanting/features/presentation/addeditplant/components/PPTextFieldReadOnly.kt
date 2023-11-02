@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
+package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize

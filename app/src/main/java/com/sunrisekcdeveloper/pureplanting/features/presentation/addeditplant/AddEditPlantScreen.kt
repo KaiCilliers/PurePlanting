@@ -42,11 +42,16 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
+import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPDateSelectionDialog
+import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPSizeSelectionDialog
+import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPTextFieldReadOnly
+import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
 import com.sunrisekcdeveloper.pureplanting.navigation.ThemeSurfaceWrapper
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.util.Date
+import java.util.Locale
 
 @Composable
 fun AddEditPlantScreen(
@@ -200,7 +205,7 @@ fun AddEditPlantScreen(
 
 // TODO: worker to clear temp files
 private fun Context.createTempFileUri(): Uri {
-    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     val imageFileName = "PNG_" + timeStamp + "_"
     val image = File.createTempFile(
         imageFileName, /* prefix */
