@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.Fragment
+import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
 import com.sunrisekcdeveloper.pureplanting.navigation.ComposeFragment
 import com.sunrisekcdeveloper.pureplanting.navigation.ThemeSurfaceWrapper
 import com.sunrisekcdeveloper.pureplanting.util.CameraPermissionTextProvider
@@ -26,7 +27,6 @@ import com.sunrisekcdeveloper.pureplanting.util.ReadMediaImagesPermissionTextPro
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestackextensions.servicesktx.lookup
 import kotlinx.coroutines.flow.update
-import java.time.DayOfWeek
 
 class AddEditPlantFragment : ComposeFragment() {
 
@@ -69,7 +69,7 @@ class AddEditPlantFragment : ComposeFragment() {
             val imgSrcUri by viewModel.image.collectAsState()
             val size by viewModel.size.collectAsState()
             val wateringDays by viewModel.wateringDays.collectAsState()
-            val wateringHour by viewModel.wateringHour.collectAsState()
+            val wateringTime by viewModel.wateringTime.collectAsState()
             val wateringAmount by viewModel.wateringAmount.collectAsState()
 
             Box {
@@ -79,13 +79,13 @@ class AddEditPlantFragment : ComposeFragment() {
                     description = description,
                     descriptionUpdater = { newValue -> viewModel.description.update { newValue } },
                     size = size,
-                    sizeUpdater = { newValue -> viewModel.size.update { newValue } },
+                    sizeUpdater = { newValue -> viewModel.size.update { PlantSize.valueOf(newValue) } },
                     imgSrcUri = imgSrcUri,
                     imgSrcUriUpdater = { newValue -> viewModel.image.update { newValue } },
                     daysToWater = wateringDays,
-                    daysToWaterUpdater = { newValue -> viewModel.wateringDays.update { listOf(DayOfWeek.FRIDAY) } },
-                    wateringHour = wateringHour,
-                    wateringHourUpdater = { newValue -> viewModel.wateringHour.update { newValue.toInt() } },
+                    daysToWaterUpdater = { newValue -> viewModel.wateringDays.update { newValue } },
+                    wateringTime = wateringTime,
+                    wateringTimeUpdater = { newValue -> viewModel.wateringTime.update { newValue } },
                     amountOfWater = wateringAmount,
                     amountOfWaterUpdater = { newValue -> viewModel.wateringAmount.update { newValue } },
                     onAddPlantTap = {

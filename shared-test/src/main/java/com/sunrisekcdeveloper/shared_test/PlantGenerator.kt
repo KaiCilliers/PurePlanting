@@ -3,6 +3,7 @@ package com.sunrisekcdeveloper.shared_test
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantDetails
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.WateringInfo
+import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.util.Stack
@@ -18,7 +19,7 @@ fun plant(
         id = id,
         details = PlantDetails(
         name = "Mitchel Cortez",
-        size = "pharetra",
+        size = PlantSize.Medium.name,
         description = "fermentum",
         imageSrcUri = "",
         ),
@@ -28,6 +29,7 @@ fun plant(
             amount = "dictumst",
             nextWateringDay = LocalDateTime.now(),
             previousWaterDates = previousWateringDate,
+            atMin = 0
         )
     )
 }

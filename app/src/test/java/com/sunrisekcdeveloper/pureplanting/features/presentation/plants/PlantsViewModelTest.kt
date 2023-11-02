@@ -11,6 +11,7 @@ import com.sunrisekcdeveloper.shared_test.PlantCacheFake
 import com.sunrisekcdeveloper.shared_test.advanceTimeBy
 import com.sunrisekcdeveloper.shared_test.plant
 import com.sunrisekcdeveloper.shared_test.today
+import com.zhuinden.simplestack.Backstack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
@@ -40,7 +41,7 @@ class PlantsViewModelTest {
         Dispatchers.setMain(StandardTestDispatcher())
         mutableClock = MutableClock(Clock.systemDefaultZone())
         plantCacheFake = PlantCacheFake()
-        viewModel = PlantsViewModel(plantCacheFake, mutableClock)
+        viewModel = PlantsViewModel(plantCacheFake, mutableClock, Backstack())
     }
 
     @AfterEach

@@ -32,7 +32,7 @@ fun PPSizeSelectionDialog(
     updateSelection: (PlantSize) -> Unit,
 ) {
 
-    val plantSizeOptions = listOf(PlantSize.Small(), PlantSize.Medium(), PlantSize.Large(), PlantSize.XLarge())
+    val plantSizeOptions = listOf(PlantSize.Small, PlantSize.Medium, PlantSize.Large, PlantSize.XLarge)
     var currentSelection by remember { mutableStateOf(initialSelection) }
 
     Dialog(onDismissRequest = { dismiss() }) {
@@ -80,7 +80,7 @@ fun PPSizeSelectionDialog(
 @Composable
 private fun PPSingleSelectionDialog_Preview() {
 
-    var selection: PlantSize by remember { mutableStateOf(PlantSize.Medium()) }
+    var selection: PlantSize by remember { mutableStateOf(PlantSize.Medium) }
 
     PPSizeSelectionDialog(
         dismiss = { },

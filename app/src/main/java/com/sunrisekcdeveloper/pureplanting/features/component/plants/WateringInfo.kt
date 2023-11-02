@@ -9,6 +9,7 @@ import java.util.Stack
 @Parcelize
 data class WateringInfo(
     val atHour: Int,
+    val atMin: Int,
     val days: List<DayOfWeek>,
     val amount: String,
     val nextWateringDay: LocalDateTime,

@@ -48,7 +48,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
-import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPDateSelectionDialog
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPSizeSelectionDialog
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPTextFieldReadOnly
@@ -63,23 +62,24 @@ import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditPlantScreen(
     name: String,
     nameUpdater: (String) -> Unit,
     description: String,
     descriptionUpdater: (String) -> Unit,
-    size: String,
+    size: PlantSize,
     sizeUpdater: (String) -> Unit,
     daysToWater: List<DayOfWeek>,
-    daysToWaterUpdater: (String) -> Unit,
-    wateringHour: Int,
-    wateringHourUpdater: (String) -> Unit,
+    daysToWaterUpdater: (List<DayOfWeek>) -> Unit,
+    wateringTime: LocalTime,
+    wateringTimeUpdater: (LocalTime) -> Unit,
     amountOfWater: String,
     amountOfWaterUpdater: (String) -> Unit,
     imgSrcUri: String,
     imgSrcUriUpdater: (String) -> Unit,
-    onAddPlantTap: (Plant) -> Unit,
+    onAddPlantTap: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -108,9 +108,9 @@ fun AddEditPlantScreen(
     var showDatesDialog by remember { mutableStateOf(false) }
     var showTimeDialog by remember { mutableStateOf(false) }
 
-    var selectedPlantSize: PlantSize by remember { mutableStateOf(PlantSize.Medium()) }
-    var selectedWateringDates: List<DayOfWeek> by remember { mutableStateOf(listOf(DayOfWeek.MONDAY)) }
-    var selectedTime: String by remember { mutableStateOf("12:00") }
+    var selectedPlantSize: PlantSize by remember { mutableStateOf(size) }
+    var selectedWateringDates: List<DayOfWeek> by remember { mutableStateOf(daysToWater) }
+    var selectedTime: LocalTime by remember { mutableStateOf(wateringTime) }
     var showingTimeTouchInput by remember { mutableStateOf(false) }
     val timeFormatter = remember { DateTimeFormatter.ofPattern("HH:mm") }
 
@@ -119,7 +119,10 @@ fun AddEditPlantScreen(
         PPSizeSelectionDialog(
             dismiss = { showSizeDialog = false },
             initialSelection = selectedPlantSize,
-            updateSelection = { selectedPlantSize = it }
+            updateSelection = {
+                selectedPlantSize = it
+                sizeUpdater(it.name)
+            }
         )
     }
 
@@ -127,7 +130,10 @@ fun AddEditPlantScreen(
         PPDateSelectionDialog(
             dismiss = { showDatesDialog = false },
             initialSelections = selectedWateringDates,
-            updateSelection = { selectedWateringDates = it }
+            updateSelection = {
+                selectedWateringDates = it
+                daysToWaterUpdater(it)
+            }
         )
     }
 
@@ -136,8 +142,8 @@ fun AddEditPlantScreen(
         PPTimePickerDialog(
             onCancel = { showTimeDialog = false },
             onConfirm = {
-                val time = LocalTime.of(timeDialogState.hour, timeDialogState.minute, 0, 0)
-                selectedTime = time.format(timeFormatter)
+                selectedTime = LocalTime.of(timeDialogState.hour, timeDialogState.minute, 0, 0)
+                wateringTimeUpdater(selectedTime)
                 showTimeDialog = false
             },
             toggle = {
@@ -189,9 +195,8 @@ fun AddEditPlantScreen(
             Icon(imageVector = Icons.Filled.Image, contentDescription = "",
                 modifier = Modifier
                     .size(42.dp)
-                    .clickable {
-                        galleryImagePickerLauncher.launch("image/*")
-                    })
+                    .clickable { galleryImagePickerLauncher.launch("image/*") }
+            )
         }
 
         if (capturedImageUri.path?.isNotEmpty() == true) {
@@ -211,43 +216,39 @@ fun AddEditPlantScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         PPTextFieldReadOnly(
-            text = selectedWateringDates.map { it.name.substring(0, 3) }.joinToString(", "),
+            text = selectedWateringDates.joinToString(", ") { it.name.substring(0, 3) },
             onClick = { showDatesDialog = true }
         )
         Spacer(modifier = Modifier.height(12.dp))
 
         PPTextFieldReadOnly(
-            text = selectedTime,
+            text = selectedTime.format(timeFormatter),
             onClick = { showTimeDialog = true }
         )
         Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(12.dp))
-        LabelAndPlaceHolderTextField(text = name, onValueChanged = nameUpdater)
-
-        Spacer(modifier = Modifier.height(12.dp))
-        LabelAndPlaceHolderTextField(text = description, onValueChanged = descriptionUpdater)
-
-        Spacer(modifier = Modifier.height(12.dp))
-        LabelAndPlaceHolderTextField(text = wateringHour.toString(), onValueChanged = wateringHourUpdater)
-
-        Spacer(modifier = Modifier.height(12.dp))
-        LabelAndPlaceHolderTextField(text = amountOfWater, onValueChanged = amountOfWaterUpdater)
-
+        TextField(
+            value = name,
+            onValueChange = nameUpdater,
+        )
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(onClick = {
-            val newPlant = Plant.createNewPlant(
-                imageSrc = imgSrcUri,
-                name = name,
-                description = description,
-                size = size,
-                wateringDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY),
-                wateringHour = wateringHour,
-                wateringAmount = amountOfWater,
-            )
-            onAddPlantTap(newPlant)
-        }) {
+        TextField(
+            value = description,
+            onValueChange = descriptionUpdater,
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+
+        TextField(
+            value = amountOfWater,
+            onValueChange = amountOfWaterUpdater,
+            suffix = { Text(" ml") }
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            onClick = { onAddPlantTap() }
+        ) {
             Text(text = "Create a Plant")
         }
     }
@@ -268,20 +269,6 @@ private fun Context.createTempFileUri(): Uri {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LabelAndPlaceHolderTextField(
-    text: String,
-    onValueChanged: (String) -> Unit
-) {
-    TextField(
-        value = text,
-        onValueChange = onValueChanged,
-        label = { Text(text = "Your Label") },
-        placeholder = { Text(text = "Your Placeholder/Hint") },
-    )
-}
-
 @SuppressLint("UnrememberedMutableState")
 @Preview
 @Composable
@@ -292,17 +279,17 @@ private fun AddEditPlantScreen_Preview() {
             nameUpdater = {},
             description = "posidonium",
             descriptionUpdater = {},
-            size = "dolore",
+            size = PlantSize.Large,
             sizeUpdater = {},
-            daysToWater = listOf(),
+            daysToWater = listOf(DayOfWeek.MONDAY),
             daysToWaterUpdater = {},
-            wateringHour = 9647,
-            wateringHourUpdater = {},
+            wateringTime = LocalTime.of(1, 1),
+            wateringTimeUpdater = {},
             amountOfWater = "appetere",
             amountOfWaterUpdater = {},
             imgSrcUri = "expetendis",
             imgSrcUriUpdater = {},
-            onAddPlantTap = {}
+            onAddPlantTap = {},
         )
     }
 }

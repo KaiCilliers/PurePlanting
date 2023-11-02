@@ -64,6 +64,7 @@ data class Plant(
             size: String,
             wateringDays: List<DayOfWeek>,
             wateringHour: Int,
+            atMin: Int = 0,
             wateringAmount: String,
         ): Plant {
             return createNewPlantWithId(
@@ -73,6 +74,7 @@ data class Plant(
                 description = description,
                 size = size,
                 wateringDays = wateringDays,
+                atMin = atMin,
                 wateringHour = wateringHour,
                 wateringAmount = wateringAmount,
             )
@@ -86,6 +88,7 @@ data class Plant(
             size: String,
             wateringDays: List<DayOfWeek>,
             wateringHour: Int,
+            atMin: Int = 0,
             wateringAmount: String,
         ): Plant {
             return Plant(
@@ -98,6 +101,7 @@ data class Plant(
                 ),
                 wateringInfo = WateringInfo(
                     atHour = wateringHour,
+                    atMin = atMin,
                     days = wateringDays,
                     amount = wateringAmount,
                     previousWaterDates = Stack(),
