@@ -53,7 +53,7 @@ data class Plant(
     }
 
     fun forgotToWater(now: LocalDateTime): Boolean {
-        return wateringInfo.nextWateringDay.dayOfWeek <= now.minusDays(1).dayOfWeek
+        return wateringInfo.nextWateringDay.isBefore(now)
     }
 
     companion object {

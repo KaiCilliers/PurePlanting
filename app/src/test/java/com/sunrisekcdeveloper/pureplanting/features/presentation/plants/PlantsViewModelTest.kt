@@ -19,7 +19,6 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Ignore
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -111,7 +110,6 @@ class PlantsViewModelTest {
         }
     }
 
-    @Ignore("Flaky test, it fails when local time moves on by a day. This can be fixed")
     @Test
     fun `forgot to water filter selected, expect only plants that was forgotten`() = runTest {
         // SETUP
@@ -122,7 +120,7 @@ class PlantsViewModelTest {
                 plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY)),
                 plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)),
                 plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.TUESDAY)),
-                plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.MONDAY)),
+                plant(waterDays = listOf(DayOfWeek.MONDAY)),
             ).map { it.nextWateringDate(today) }
         )
 
@@ -131,7 +129,7 @@ class PlantsViewModelTest {
             awaitItem()
             awaitItem()
 
-            advanceTimeBy(0.days, mutableClock) // move to Saturday
+            advanceTimeBy(2.days, mutableClock) // move to Saturday
             viewModel.setFilter(PlantListFilter.FORGOT_TO_WATER)
             assertThat(awaitItem().size).isEqualTo(2)
         }
