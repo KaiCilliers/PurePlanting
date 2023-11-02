@@ -22,11 +22,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.outlined.Keyboard
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TimeInput
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,11 +52,14 @@ import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPDateSelectionDialog
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPSizeSelectionDialog
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPTextFieldReadOnly
+import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPTimePickerDialog
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
 import com.sunrisekcdeveloper.pureplanting.navigation.ThemeSurfaceWrapper
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
@@ -74,12 +84,9 @@ fun AddEditPlantScreen(
 ) {
 
     var uri: Uri? = null
-
-    var capturedImageUri by remember {
-        mutableStateOf(imgSrcUri.toUri())
-    }
-
+    var capturedImageUri by remember { mutableStateOf(imgSrcUri.toUri()) }
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
 
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccessful ->
         if (isSuccessful) {
@@ -99,12 +106,16 @@ fun AddEditPlantScreen(
 
     var showSizeDialog by remember { mutableStateOf(false) }
     var showDatesDialog by remember { mutableStateOf(false) }
+    var showTimeDialog by remember { mutableStateOf(false) }
 
     var selectedPlantSize: PlantSize by remember { mutableStateOf(PlantSize.Medium()) }
     var selectedWateringDates: List<DayOfWeek> by remember { mutableStateOf(listOf(DayOfWeek.MONDAY)) }
+    var selectedTime: String by remember { mutableStateOf("12:00") }
+    var showingTimeTouchInput by remember { mutableStateOf(false) }
+    val timeFormatter = remember { DateTimeFormatter.ofPattern("HH:mm") }
 
     // todo animate dialog visibility
-    if(showSizeDialog) {
+    if (showSizeDialog) {
         PPSizeSelectionDialog(
             dismiss = { showSizeDialog = false },
             initialSelection = selectedPlantSize,
@@ -117,6 +128,45 @@ fun AddEditPlantScreen(
             dismiss = { showDatesDialog = false },
             initialSelections = selectedWateringDates,
             updateSelection = { selectedWateringDates = it }
+        )
+    }
+
+    if (showTimeDialog) {
+        val timeDialogState = rememberTimePickerState()
+        PPTimePickerDialog(
+            onCancel = { showTimeDialog = false },
+            onConfirm = {
+                val time = LocalTime.of(timeDialogState.hour, timeDialogState.minute, 0, 0)
+                selectedTime = time.format(timeFormatter)
+                showTimeDialog = false
+            },
+            toggle = {
+                if (configuration.screenHeightDp > 400) {
+                    IconButton(onClick = { showingTimeTouchInput = !showingTimeTouchInput }) {
+                        val icon = if (showingTimeTouchInput) {
+                            Icons.Outlined.Keyboard
+                        } else {
+                            Icons.Outlined.Schedule
+                        }
+                        Icon(
+                            icon,
+                            contentDescription = if (showingTimeTouchInput) {
+                                "Switch to Text Input"
+                            } else {
+                                "Switch to Touch Input"
+                            }
+                        )
+                    }
+                }
+            },
+            content = {
+                if (showingTimeTouchInput && configuration.screenHeightDp > 400) {
+                    // todo place this someplace else
+                    TimePicker(state = timeDialogState)
+                } else {
+                    TimeInput(state = timeDialogState)
+                }
+            }
         )
     }
 
@@ -166,17 +216,17 @@ fun AddEditPlantScreen(
         )
         Spacer(modifier = Modifier.height(12.dp))
 
+        PPTextFieldReadOnly(
+            text = selectedTime,
+            onClick = { showTimeDialog = true }
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+
         Spacer(modifier = Modifier.height(12.dp))
         LabelAndPlaceHolderTextField(text = name, onValueChanged = nameUpdater)
 
         Spacer(modifier = Modifier.height(12.dp))
         LabelAndPlaceHolderTextField(text = description, onValueChanged = descriptionUpdater)
-
-        Spacer(modifier = Modifier.height(12.dp))
-        LabelAndPlaceHolderTextField(text = size, onValueChanged = sizeUpdater)
-
-        Spacer(modifier = Modifier.height(12.dp))
-        LabelAndPlaceHolderTextField(text = daysToWater.toString(), onValueChanged = daysToWaterUpdater)
 
         Spacer(modifier = Modifier.height(12.dp))
         LabelAndPlaceHolderTextField(text = wateringHour.toString(), onValueChanged = wateringHourUpdater)
