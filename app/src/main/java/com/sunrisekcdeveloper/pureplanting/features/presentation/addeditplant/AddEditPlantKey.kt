@@ -17,7 +17,7 @@ data class AddEditPlantKey(
         with(serviceBinder) {
             val key = getKey<AddEditPlantKey>()
 
-            add(AddEditPlantViewModel(lookup<PlantCache>(), key.plant))
+            add(AddEditPlantViewModel(lookup<PlantCache>(), key.plant, backstack))
         }
     }
 

@@ -23,8 +23,8 @@ class PlantDetailFragment : ComposeFragment() {
 
         PlantDetailScreen(
             plant = plant,
-            onWateredButtonTapped = viewModel::waterPlant,
-            onEditPlantTapped = { backstack.goTo(AddEditPlantKey(it)) }
+            onWateredButtonTapped = { viewModel.waterPlant() },
+            onEditPlantTapped = { backstack.goTo(AddEditPlantKey(plant.value)) }
         )
     }
 }

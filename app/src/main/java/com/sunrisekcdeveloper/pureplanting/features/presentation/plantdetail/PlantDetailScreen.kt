@@ -26,8 +26,8 @@ import java.util.Locale
 @Composable
 fun PlantDetailScreen(
     plant: State<Plant>,
-    onWateredButtonTapped: (Plant) -> Unit,
-    onEditPlantTapped: (Plant) -> Unit,
+    onWateredButtonTapped: () -> Unit,
+    onEditPlantTapped: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -74,12 +74,12 @@ fun PlantDetailScreen(
             LargeText(text = plant.value.hasBeenWatered.toString())
         }
 
-        Button(onClick = { onEditPlantTapped(plant.value) }) {
+        Button(onClick = { onEditPlantTapped() }) {
             Text(text = "Edit Plant")
         }
 
         if (!plant.value.hasBeenWatered) {
-            Button(onClick = { onWateredButtonTapped(plant.value) }) {
+            Button(onClick = { onWateredButtonTapped() }) {
                 Text(text = "Mark as watered")
             }
         }

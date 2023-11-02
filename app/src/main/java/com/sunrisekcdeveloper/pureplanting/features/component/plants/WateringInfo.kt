@@ -4,7 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.time.DayOfWeek
 import java.time.LocalDateTime
-import java.util.Stack
 
 @Parcelize
 data class WateringInfo(
@@ -13,7 +12,7 @@ data class WateringInfo(
     val days: List<DayOfWeek>,
     val amount: String,
     val nextWateringDay: LocalDateTime,
-    val previousWaterDates: Stack<LocalDateTime> = Stack()
+    val previousWaterDates: List<LocalDateTime> = emptyList()
 ) : Parcelable
 
 @Parcelize

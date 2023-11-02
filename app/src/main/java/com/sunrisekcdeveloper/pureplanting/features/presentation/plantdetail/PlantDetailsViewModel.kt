@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
 class PlantDetailsViewModel(
-    private val plant: Plant,
+    plant: Plant,
     private val plantCache: PlantCache,
 ) {
 
     var activePlant = MutableStateFlow(plant)
 
-    fun waterPlant(plant: Plant) {
-        val watered = plant.water()
+    fun waterPlant() {
+        val watered = activePlant.value.water()
         plantCache.save(watered)
         activePlant.update { watered }
     }

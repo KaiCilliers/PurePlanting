@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
+import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.statebundle.StateBundle
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +18,7 @@ import java.time.LocalTime
 class AddEditPlantViewModel(
     private val plantCache: PlantCache,
     private val plant: Plant?,
+    private val backstack: Backstack,
 ) : Bundleable {
 
     private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
@@ -67,6 +69,7 @@ class AddEditPlantViewModel(
         plantCache.save(newPlant)
         // notification can be sent after sending
         // navigation can be performed now
+        backstack.jumpToRoot()
     }
 
     private fun updatePlant() = viewModelScope.launch {
@@ -88,6 +91,7 @@ class AddEditPlantViewModel(
         plantCache.save(updatedPlant)
         // notification can be sent after sending
         // navigation can be performed now
+        backstack.jumpToRoot()
     }
 
     companion object {

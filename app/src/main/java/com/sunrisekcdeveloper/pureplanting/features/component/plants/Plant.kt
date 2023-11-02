@@ -6,7 +6,6 @@ import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.TemporalAdjusters
-import java.util.Stack
 import java.util.UUID
 
 @Parcelize
@@ -17,7 +16,7 @@ data class Plant(
 ): Parcelable {
 
     val hasBeenWatered: Boolean
-        get() = wateringInfo.previousWaterDates.size > 0 && wateringInfo.previousWaterDates.peek() > wateringInfo.nextWateringDay
+        get() = wateringInfo.previousWaterDates.isNotEmpty() && wateringInfo.previousWaterDates.last() > wateringInfo.nextWateringDay
 
     fun nextWateringDate(now: LocalDateTime): Plant {
         return copy(
@@ -34,7 +33,9 @@ data class Plant(
     fun water(): Plant {
         return copy(
             wateringInfo = wateringInfo.copy(
-                previousWaterDates = wateringInfo.previousWaterDates.apply { push(LocalDateTime.now()) }
+                previousWaterDates = wateringInfo.previousWaterDates.toMutableList().apply {
+                    add(LocalDateTime.now())
+                }
             )
         )
     }
@@ -42,7 +43,9 @@ data class Plant(
     fun undoPreviousWatering(): Plant {
         return copy(
             wateringInfo = wateringInfo.copy(
-                previousWaterDates = wateringInfo.previousWaterDates.apply { pop() }
+                previousWaterDates = wateringInfo.previousWaterDates.toMutableList().apply {
+                    removeLast()
+                }
             )
         )
     }
@@ -104,7 +107,7 @@ data class Plant(
                     atMin = atMin,
                     days = wateringDays,
                     amount = wateringAmount,
-                    previousWaterDates = Stack(),
+                    previousWaterDates = emptyList(),
                     nextWateringDay = nextWateringDate(LocalDateTime.now(), wateringDays, wateringHour)
                 )
             )
