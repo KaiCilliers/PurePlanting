@@ -34,6 +34,30 @@ fun plant(
     )
 }
 
+fun plant(
+    name: String = "Test Plant",
+    nextWateringDate: LocalDateTime,
+    previousWateredDates: List<LocalDateTime> = emptyList(),
+): Plant {
+    return Plant(
+        id = UUID.randomUUID(),
+        details = PlantDetails(
+            name = name,
+            size = "Small",
+            description = "Desc",
+            imageSrcUri = "imgs src"
+        ),
+        wateringInfo = WateringInfo(
+            atHour = nextWateringDate.hour,
+            atMin = nextWateringDate.minute,
+            days = listOf(nextWateringDate.dayOfWeek),
+            amount = "300 ml",
+            nextWateringDay = nextWateringDate,
+            previousWaterDates = previousWateredDates
+        )
+    )
+}
+
 fun plantThatNeedsWaterSoon(
     today: LocalDateTime,
     offsetFutureDays: Long = 0,

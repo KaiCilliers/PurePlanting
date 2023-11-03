@@ -5,9 +5,11 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isZero
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
+import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.PlantsKey
 import com.sunrisekcdeveloper.shared_test.PlantCacheFake
 import com.sunrisekcdeveloper.shared_test.plant
 import com.zhuinden.simplestack.Backstack
+import com.zhuinden.simplestack.History
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -25,11 +27,13 @@ import java.time.LocalTime
 class AddEditPlantViewModelTest {
 
     private lateinit var plantCacheFake: PlantCacheFake
+    private lateinit var backstack: Backstack
 
     @BeforeEach
     fun setup() {
         Dispatchers.setMain(StandardTestDispatcher())
         plantCacheFake = PlantCacheFake()
+        backstack = Backstack().apply {this.setup(History.of(PlantsKey)) }
     }
 
     @AfterEach
@@ -41,7 +45,7 @@ class AddEditPlantViewModelTest {
     @Test
     fun `without initial plant, all plant values are set to default values`() = runTest {
         // SETUP
-        val viewModel = AddEditPlantViewModel(plantCacheFake, null, Backstack())
+        val viewModel = AddEditPlantViewModel(plantCacheFake, null, backstack)
 
         // ASSERTIONS
         assertThat(viewModel.image.value).isEqualTo("")
@@ -58,7 +62,7 @@ class AddEditPlantViewModelTest {
     fun `with initial plant, all plant values are set to that plant's details`() = runTest {
         // SETUP
         val initialPlant = plant()
-        val viewModel = AddEditPlantViewModel(plantCacheFake, initialPlant, Backstack())
+        val viewModel = AddEditPlantViewModel(plantCacheFake, initialPlant, backstack)
 
         // ASSERTIONS
         assertThat(viewModel.image.value).isEqualTo(initialPlant.details.imageSrcUri)
@@ -74,7 +78,7 @@ class AddEditPlantViewModelTest {
     @Test
     fun `saving a plant without an initial plant passed, creates a new plant`() = runTest {
         // SETUP
-        val viewModel = AddEditPlantViewModel(plantCacheFake, null, Backstack())
+        val viewModel = AddEditPlantViewModel(plantCacheFake, null, backstack)
 
         // ACTION
         viewModel.image.value = "img"
@@ -97,7 +101,7 @@ class AddEditPlantViewModelTest {
     fun `saving a plant with an initial plant passed, updates existing plant`() = runTest {
         val initialPlant = plant()
         plantCacheFake.save(initialPlant)
-        val viewModel = AddEditPlantViewModel(plantCacheFake, initialPlant, Backstack())
+        val viewModel = AddEditPlantViewModel(plantCacheFake, initialPlant, backstack)
 
         // ACTION
         viewModel.image.value = "img"

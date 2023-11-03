@@ -6,6 +6,8 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.TemporalAdjusters
 
+fun today(clock: Clock = Clock.systemDefaultZone(),): LocalDateTime = LocalDateTime.now(clock)
+
 fun today(
     dayOfWeek: DayOfWeek,
     hour: Int = 0,

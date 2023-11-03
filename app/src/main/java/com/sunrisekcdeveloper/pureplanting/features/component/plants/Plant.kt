@@ -16,7 +16,7 @@ data class Plant(
 ): Parcelable {
 
     val hasBeenWatered: Boolean
-        get() = wateringInfo.previousWaterDates.isNotEmpty() && wateringInfo.previousWaterDates.last() > wateringInfo.nextWateringDay
+        get() = wateringInfo.previousWaterDates.isNotEmpty() && wateringInfo.previousWaterDates.last() >= wateringInfo.nextWateringDay.minusDays(1)
 
     fun nextWateringDate(now: LocalDateTime): Plant {
         return copy(
@@ -31,11 +31,11 @@ data class Plant(
     }
 
     fun water(): Plant {
+        val wateringHistory = wateringInfo.previousWaterDates.toMutableList()
+        wateringHistory.add(LocalDateTime.now())
         return copy(
             wateringInfo = wateringInfo.copy(
-                previousWaterDates = wateringInfo.previousWaterDates.toMutableList().apply {
-                    add(LocalDateTime.now())
-                }
+                previousWaterDates = wateringHistory
             )
         )
     }
@@ -51,8 +51,10 @@ data class Plant(
     }
 
     fun needsWaterSoon(now: LocalDateTime): Boolean {
-        return wateringInfo.nextWateringDay.dayOfWeek == now.dayOfWeek
-                || wateringInfo.nextWateringDay.dayOfWeek == now.dayOfWeek.plus(1)
+        return !hasBeenWatered && (
+                wateringInfo.nextWateringDay.dayOfMonth == now.dayOfMonth
+                        || wateringInfo.nextWateringDay.dayOfMonth == now.plusDays(1).dayOfMonth
+                )
     }
 
     fun forgotToWater(now: LocalDateTime): Boolean {

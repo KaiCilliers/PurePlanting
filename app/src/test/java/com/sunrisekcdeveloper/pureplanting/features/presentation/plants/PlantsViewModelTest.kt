@@ -113,15 +113,16 @@ class PlantsViewModelTest {
     @Test
     fun `forgot to water filter selected, expect only plants that was forgotten`() = runTest {
         // SETUP
-        val today = today(DayOfWeek.THURSDAY, clock = mutableClock)
+        val today = today()
         plantCacheFake.resetData(
             listOf(
-                plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY)),
-                plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY)),
-                plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)),
-                plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.TUESDAY)),
-                plant(waterDays = listOf(DayOfWeek.MONDAY)),
-            ).map { it.nextWateringDate(today) }
+                plant(nextWateringDate = today.plusDays(1)),
+                plant(nextWateringDate = today.plusDays(2)),
+                plant(nextWateringDate = today.plusDays(3)),
+                plant(nextWateringDate = today.plusDays(4)),
+                plant(nextWateringDate = today.plusDays(5)),
+                plant(nextWateringDate = today.plusDays(6)),
+            )
         )
 
         // ACTION & ASSERTIONS
@@ -129,7 +130,7 @@ class PlantsViewModelTest {
             awaitItem()
             awaitItem()
 
-            advanceTimeBy(2.days, mutableClock) // move to Saturday
+            advanceTimeBy(2.days, mutableClock) // clock used by ViewModel
             viewModel.setFilter(PlantListFilter.FORGOT_TO_WATER)
             assertThat(awaitItem().size).isEqualTo(2)
         }
@@ -161,12 +162,13 @@ class PlantsViewModelTest {
     @Test
     fun `remove plant, current list of plants is refreshed`() = runTest {
         // SETUP
+        val today = today()
         val allPlants = listOf(
-            plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY)).water(),
-            plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY)).water(),
-            plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)),
-            plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.TUESDAY)).water(),
-            plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.MONDAY)),
+            plant(nextWateringDate = today),
+            plant(nextWateringDate = today),
+            plant(nextWateringDate = today.plusDays(1)),
+            plant(nextWateringDate = today),
+            plant(nextWateringDate = today.plusDays(1)),
         )
         plantCacheFake.resetData(allPlants)
 
@@ -182,14 +184,13 @@ class PlantsViewModelTest {
     }
 
     @Test
-    fun `undo previous removed plant, removed plant is returned and can be found in current plant list`() = runTest {
+    fun `undo previously removed plant, removed plant is returned and can be found in current plant list`() = runTest {
         // SETUP
+        val today = today()
         val allPlants = listOf(
-            plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY)).water(),
-            plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY)).water(),
-            plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)),
-            plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.TUESDAY)).water(),
-            plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.MONDAY)),
+            plant(nextWateringDate = today),
+            plant(nextWateringDate = today.plusDays(1)),
+            plant(nextWateringDate = today),
         )
         val plantToRemove = allPlants.first()
         plantCacheFake.resetData(allPlants)
