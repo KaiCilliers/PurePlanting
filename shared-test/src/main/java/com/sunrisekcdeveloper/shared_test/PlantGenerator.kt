@@ -6,14 +6,14 @@ import com.sunrisekcdeveloper.pureplanting.features.component.plants.WateringInf
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
 import java.time.DayOfWeek
 import java.time.LocalDateTime
-import java.util.Stack
+import java.time.LocalTime
 import java.util.UUID
 
 fun plant(
     id: UUID = UUID.randomUUID(),
     waterDays: List<DayOfWeek> = listOf(DayOfWeek.MONDAY),
-    wateringHour: Int = 12,
-    previousWateringDate: Stack<LocalDateTime> = Stack()
+    wateringTime: LocalTime = LocalTime.now(),
+    previousWateringDate: List<LocalDateTime> = emptyList()
 ): Plant {
     return Plant(
         id = id,
@@ -24,12 +24,12 @@ fun plant(
         imageSrcUri = "",
         ),
         wateringInfo = WateringInfo(
-            atHour = wateringHour,
+            atHour = wateringTime.hour,
             days = waterDays,
             amount = "240 ml",
             nextWateringDay = LocalDateTime.now(),
             previousWaterDates = previousWateringDate,
-            atMin = 0
+            atMin = wateringTime.minute
         )
     )
 }
@@ -64,6 +64,6 @@ fun plantThatNeedsWaterSoon(
 ): Plant {
     return plant(
         waterDays = listOf(today.plusDays(1 + offsetFutureDays).dayOfWeek),
-        wateringHour = today.hour.plus(1)
+        wateringTime = today.plusHours(1).toLocalTime()
     ).nextWateringDate(today)
 }

@@ -5,76 +5,88 @@ import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
-import assertk.assertions.isGreaterThan
 import assertk.assertions.isTrue
+import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
+import com.sunrisekcdeveloper.shared_test.MutableClock
 import com.sunrisekcdeveloper.shared_test.plant
 import com.sunrisekcdeveloper.shared_test.today
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.time.Clock
 import java.time.DayOfWeek
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Stack
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.toJavaDuration
 
 
 class PlantTest {
+
+    private lateinit var mutableClock: MutableClock
+
+    @BeforeEach
+    fun setup() {
+        mutableClock = MutableClock(Clock.systemDefaultZone())
+    }
+
     @Test
-    fun `next watering date function returns plant model with the next date to water plant`() {
+    fun `next watering date returns the next weekday date to water the plant`() {
         // SETUP
-        val today = today(DayOfWeek.SATURDAY)
-        val plant = plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY))
+        val today = today()
+        val plant = plant(waterDays = listOf(DayOfWeek.MONDAY))
 
         // ACTION
         val newPlant = plant.nextWateringDate(today)
 
         // ASSERTIONS
         assertThat(newPlant.wateringInfo.nextWateringDay.dayOfWeek).isEqualTo(DayOfWeek.MONDAY)
-        assertThat(newPlant.wateringInfo.nextWateringDay).isGreaterThan(today)
+        assertThat(newPlant.wateringInfo.nextWateringDay.isAfter(today)).isTrue()
     }
 
     @Test
-    fun `next watering date function returns plant model with next watering date as today if water time has not been reached`() {
+    fun `next watering date is today if watering weekday is today and watering time has not been reached yet`() {
         // SETUP
-        val today = today(
-            dayOfWeek = DayOfWeek.SATURDAY,
-            hour = 16
-        )
+        val today = today()
+        val wateringTime = today.plusMinutes(1).toLocalTime()
         val plant = plant(
-            waterDays = listOf(DayOfWeek.SATURDAY),
-            wateringHour = 17
+            waterDays = listOf(today.dayOfWeek),
+            wateringTime = wateringTime
         )
 
         // ACTION
         val newPlant = plant.nextWateringDate(today)
 
         // ASSERTIONS
-        assertThat(newPlant.wateringInfo.nextWateringDay.dayOfWeek).isEqualTo(DayOfWeek.SATURDAY)
+        assertThat(newPlant.wateringInfo.nextWateringDay.dayOfWeek).isEqualTo(today.dayOfWeek)
         assertThat(newPlant.wateringInfo.nextWateringDay.dayOfMonth).isEqualTo(today.dayOfMonth)
-        assertThat(newPlant.wateringInfo.nextWateringDay.hour).isEqualTo(17)
+        assertThat(newPlant.wateringInfo.nextWateringDay.hour).isEqualTo(wateringTime.hour)
+        assertThat(newPlant.wateringInfo.nextWateringDay.minute).isEqualTo(wateringTime.minute)
+        assertThat(newPlant.wateringInfo.nextWateringDay.isAfter(today)).isTrue()
     }
 
     @Test
-    fun `next watering date function returns plant model with watering date after today if water time has been reached`() {
+    fun `next watering date is not today if watering weekday is today and watering time has been reached`() {
         // SETUP
-        val today = today(
-            dayOfWeek = DayOfWeek.SATURDAY,
-            hour = 17
-        )
+        val today = today()
+        val fourDaysAfterToday = today.plusDays(4)
+
+        val wateringTime = today.minusMinutes(1).toLocalTime()
         val plant = plant(
-            waterDays = listOf(DayOfWeek.SATURDAY, DayOfWeek.TUESDAY),
-            wateringHour = 17
+            waterDays = listOf(today.dayOfWeek, fourDaysAfterToday.dayOfWeek),
+            wateringTime = wateringTime
         )
 
         // ACTION
         val newPlant = plant.nextWateringDate(today)
 
         // ASSERTIONS
-        assertThat(newPlant.wateringInfo.nextWateringDay.dayOfWeek).isEqualTo(DayOfWeek.TUESDAY)
-        assertThat(newPlant.wateringInfo.nextWateringDay.hour).isEqualTo(plant.wateringInfo.atHour)
+        assertThat(newPlant.wateringInfo.nextWateringDay.dayOfWeek).isEqualTo(fourDaysAfterToday.dayOfWeek)
+        assertThat(newPlant.wateringInfo.nextWateringDay.hour).isEqualTo(wateringTime.hour)
+        assertThat(newPlant.wateringInfo.nextWateringDay.minute).isEqualTo(wateringTime.minute)
+        assertThat(newPlant.wateringInfo.nextWateringDay.isAfter(today)).isTrue()
     }
 
     @Test
-    fun `plant is watered, return new model with last watered dates list updated`() = runTest {
+    fun `watering a plant returns a new plant with its watered history updated with the current date and time`() = runTest {
         // SETUP
         val plant = plant()
 
@@ -84,33 +96,46 @@ class PlantTest {
 
         // ASSERTIONS
         assertThat(newPlant.wateringInfo.previousWaterDates.size).isEqualTo(1)
+        assertThat(newPlant.wateringInfo.previousWaterDates.first().dayOfMonth).isEqualTo(today().dayOfMonth)
+        assertThat(newPlant.wateringInfo.previousWaterDates.first().toLocalTime().hour).isEqualTo(today().toLocalTime().hour)
+        assertThat(newPlant.wateringInfo.previousWaterDates.first().toLocalTime().minute).isEqualTo(today().toLocalTime().minute)
     }
 
     @Test
-    fun `plant is un-watered, return model with the most recent watering date removed`() = runTest {
+    fun `undo watering a plant returns a new plant with the most recent watering date removed`() = runTest {
         // SETUP
-        val plant = plant()
+        val today = today()
+        val fiveDaysAfterToday = today.plusDays(5)
+        val plant = plant(
+            waterDays = listOf(today.dayOfWeek, fiveDaysAfterToday.dayOfWeek),
+            wateringTime = today.toLocalTime().plusMinutes(1)
+        )
 
         // ACTION
-        var newPlant = plant.water()
-        newPlant = newPlant.water()
-        assertThat(newPlant.wateringInfo.previousWaterDates.size).isEqualTo(2)
+        val wateredTwicePlant = plant.run {
+            val firstWater = water(mutableClock)
+            mutableClock.advanceTimeBy((5 * 24).hours.toJavaDuration())
+            firstWater.water(mutableClock)
+        }
+        val undoWateringPlant = wateredTwicePlant.undoPreviousWatering()
 
         // ASSERTIONS
-        assertThat(newPlant.undoPreviousWatering().wateringInfo.previousWaterDates.size).isEqualTo(1)
+        assertThat(wateredTwicePlant.wateringInfo.previousWaterDates.size).isEqualTo(2)
+        assertThat(wateredTwicePlant.wateringInfo.previousWaterDates.last().dayOfWeek).isEqualTo(fiveDaysAfterToday.dayOfWeek)
+        assertThat(undoWateringPlant.wateringInfo.previousWaterDates.size).isEqualTo(1)
+        assertThat(undoWateringPlant.wateringInfo.previousWaterDates.last().dayOfWeek).isEqualTo(today.dayOfWeek)
     }
 
     @Test
-    fun `plant is considered watered when the next watering date is the same day as most recent watering day`() = runTest {
+    fun `plant is watered when the next watering date is the same day as the latest date watered`() = runTest {
         // SETUP
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-        val today = LocalDateTime.parse("2023-06-09 12:30", formatter)
+        val today = today()
         val plant = plant(
             waterDays = listOf(today.dayOfWeek),
-            previousWateringDate = Stack<LocalDateTime>().apply {
-                push(LocalDateTime.parse("2023-06-03 12:30", formatter))
-                push(LocalDateTime.parse("2023-06-05 12:30", formatter))
-            }
+            previousWateringDate = listOf(
+                today.minusDays(6),
+                today.minusDays(4)
+            )
         )
 
         // ACTION
@@ -125,16 +150,13 @@ class PlantTest {
     @Test
     fun `plant needs water soon when next watering date is today`() = runTest {
         // SETUP
-        val today = today(
-            dayOfWeek = DayOfWeek.MONDAY,
-            hour = 0
-        )
-        val plants = listOf(
-            plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY), wateringHour = 12),
-            plant(waterDays = listOf(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY), wateringHour = 12),
-            plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY), wateringHour = 12),
-            plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.SATURDAY), wateringHour = 12),
-            plant(waterDays = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY), wateringHour = 12),
+        val today = today()
+        val plants = listOf<Plant>(
+            plant(nextWateringDate = today.plusMinutes(1)),
+            plant(nextWateringDate = today.plusDays(1)),
+            plant(nextWateringDate = today.plusDays(1)),
+            plant(nextWateringDate = today.plusDays(2)),
+            plant(nextWateringDate = today.plusDays(3)),
         )
 
         // ACTION
@@ -143,9 +165,8 @@ class PlantTest {
             .filter { it.needsWaterSoon(today) }
 
         // ASSERTIONS
+        assertThat(plantsThatNeedsToBeWateredSoon.size).isEqualTo(3)
         assertThat(plantsThatNeedsToBeWateredSoon.map { it.id }).contains(plants[0].id)
-        assertThat(plantsThatNeedsToBeWateredSoon.map { it.id }).contains(plants[2].id)
-        assertThat(plantsThatNeedsToBeWateredSoon.size).isEqualTo(4)
     }
 
     @Test
@@ -167,7 +188,7 @@ class PlantTest {
     }
 
     @Test
-    fun `plant has been forgotten when the next watering date is the previous day compared to today`() = runTest {
+    fun `plant has been forgotten when the next watering date was yesterday`() = runTest {
         // SETUP
         val today = today()
         val plant = plant(nextWateringDate = today.minusDays(1))

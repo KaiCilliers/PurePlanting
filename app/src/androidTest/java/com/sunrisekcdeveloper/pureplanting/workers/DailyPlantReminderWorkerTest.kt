@@ -48,7 +48,7 @@ class DailyPlantReminderWorkerTest {
     }
 
     @Test
-    fun no_plants_to_water_soon_then_no_new_notification_is_created() {
+    fun with_zero_plants_to_water_soon_then_no_new_notification_is_created() {
         // SETUP
         val worker = TestListenableWorkerBuilder<DailyPlantReminderWorker>(context)
             .setWorkerFactory(Factory(plantCacheFake, notificationCacheFake, systemNotification, mutableClock))

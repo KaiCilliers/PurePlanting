@@ -2,6 +2,7 @@ package com.sunrisekcdeveloper.pureplanting.features.component.plants
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.time.Clock
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -24,15 +25,16 @@ data class Plant(
                 nextWateringDay = nextWateringDate(
                     now,
                     wateringInfo.days,
-                    wateringInfo.atHour
+                    wateringInfo.atHour,
+                    wateringInfo.atMin
                 )
             )
         )
     }
 
-    fun water(): Plant {
+    fun water(clock: Clock = Clock.systemDefaultZone()): Plant {
         val wateringHistory = wateringInfo.previousWaterDates.toMutableList()
-        wateringHistory.add(LocalDateTime.now())
+        wateringHistory.add(LocalDateTime.now(clock))
         return copy(
             wateringInfo = wateringInfo.copy(
                 previousWaterDates = wateringHistory
@@ -110,22 +112,23 @@ data class Plant(
                     days = wateringDays,
                     amount = wateringAmount,
                     previousWaterDates = emptyList(),
-                    nextWateringDay = nextWateringDate(LocalDateTime.now(), wateringDays, wateringHour)
+                    nextWateringDay = nextWateringDate(LocalDateTime.now(), wateringDays, wateringHour, atMin)
                 )
             )
         }
 
         fun nextWateringDate(
             now: LocalDateTime,
-            wateringDays: List<DayOfWeek>,
-            wateringHour: Int,
+            days: List<DayOfWeek>,
+            hour: Int,
+            minute: Int,
         ): LocalDateTime {
-            val wateringDaysSorted = wateringDays.sorted()
-            val isTodayWateringDay = wateringDaysSorted.contains(now.dayOfWeek)
-            val isWaterHourExceeded = now.hour >= wateringHour
+            val wateringDaysSorted = days.sorted()
+            val todayIsWateringDay = wateringDaysSorted.contains(now.dayOfWeek)
+            val wateringTimeIsPast = now.toLocalTime().isAfter(LocalTime.of(hour, minute))
             return when {
-                isTodayWateringDay && !isWaterHourExceeded -> {
-                    now.with(LocalTime.of(wateringHour, 0))
+                todayIsWateringDay && !wateringTimeIsPast -> {
+                    now.with(LocalTime.of(hour, minute))
                 }
 
                 else -> {
@@ -134,7 +137,7 @@ data class Plant(
                     } else {
                         wateringDaysSorted.first()
                     }
-                    now.with(TemporalAdjusters.next(nextWaterDay)).with(LocalTime.of(wateringHour, 0))
+                    now.with(TemporalAdjusters.next(nextWaterDay)).with(LocalTime.of(hour, minute))
                 }
             }
         }

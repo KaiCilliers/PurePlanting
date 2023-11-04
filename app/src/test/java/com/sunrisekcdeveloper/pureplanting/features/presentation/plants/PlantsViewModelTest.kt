@@ -50,7 +50,7 @@ class PlantsViewModelTest {
     }
 
     @Test
-    fun `fresh launch, screen empty plants list state emitted`() = runTest {
+    fun `fresh launch, no plant available to emit`() = runTest {
         // SETUP
         val plantsFlow: StateFlow<List<Plant>> = viewModel.plants
 
@@ -63,7 +63,7 @@ class PlantsViewModelTest {
     }
 
     @Test
-    fun `add new plant, new plants list state emitted`() = runTest {
+    fun `add new plant, new emission with the newly added plant`() = runTest {
         // SETUP
         val plantsFlow = viewModel.plants
 
@@ -81,7 +81,7 @@ class PlantsViewModelTest {
     }
 
     @Test
-    fun `by default, expect only plants that need to get watered soon`() = runTest {
+    fun `default filter only shows plants that need to get watered soon`() = runTest {
         // SETUP
         val today = today(DayOfWeek.THURSDAY)
         var actualToday = LocalDateTime.now(mutableClock)
@@ -111,7 +111,7 @@ class PlantsViewModelTest {
     }
 
     @Test
-    fun `forgot to water filter selected, expect only plants that was forgotten`() = runTest {
+    fun `forgot to water filter selected, only show plants that was forgotten to water`() = runTest {
         // SETUP
         val today = today()
         plantCacheFake.resetData(
@@ -138,7 +138,7 @@ class PlantsViewModelTest {
     }
 
     @Test
-    fun `history filter selected, expect only plants that have a record of being watered`() = runTest {
+    fun `history filter selected, only show plants that have a record of being watered`() = runTest {
         // SETUP
         plantCacheFake.resetData(
             listOf(
@@ -160,7 +160,7 @@ class PlantsViewModelTest {
     }
 
     @Test
-    fun `remove plant, current list of plants is refreshed`() = runTest {
+    fun `remove plant, new emission of plants without plant that was removed`() = runTest {
         // SETUP
         val today = today()
         val allPlants = listOf(
@@ -184,7 +184,7 @@ class PlantsViewModelTest {
     }
 
     @Test
-    fun `undo previously removed plant, removed plant is returned and can be found in current plant list`() = runTest {
+    fun `undo previously removed plant, new emission of plants that contains the previously removed plant`() = runTest {
         // SETUP
         val today = today()
         val allPlants = listOf(

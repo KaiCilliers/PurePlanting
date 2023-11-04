@@ -98,7 +98,7 @@ class AddEditPlantViewModelTest {
     }
 
     @Test
-    fun `saving a plant with an initial plant passed, updates existing plant`() = runTest {
+    fun `saving a plant with an initial plant passed, updates the existing plant`() = runTest {
         val initialPlant = plant()
         plantCacheFake.save(initialPlant)
         val viewModel = AddEditPlantViewModel(plantCacheFake, initialPlant, backstack)
