@@ -3,11 +3,13 @@ package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
+import assertk.assertions.isTrue
 import assertk.assertions.isZero
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
 import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.PlantsKey
 import com.sunrisekcdeveloper.shared_test.PlantCacheFake
 import com.sunrisekcdeveloper.shared_test.plant
+import com.sunrisekcdeveloper.shared_test.today
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestack.History
 import kotlinx.coroutines.Dispatchers
@@ -129,6 +131,29 @@ class AddEditPlantViewModelTest {
         assertThat(updatedPlant.wateringInfo.atHour).isEqualTo(viewModel.wateringTime.value.hour)
         assertThat(updatedPlant.wateringInfo.atMin).isEqualTo(viewModel.wateringTime.value.minute)
         assertThat(updatedPlant.wateringInfo.amount).isEqualTo(viewModel.wateringAmount.value)
+    }
+
+    @Test
+    fun `editing an existing plant updates its next watering date when watering days have changed`() = runTest {
+        val today = today()
+        val initialPlant = plant(nextWateringDate = today)
+        plantCacheFake.save(initialPlant)
+        val viewModel = AddEditPlantViewModel(plantCacheFake, initialPlant, backstack)
+
+        // ACTION
+        viewModel.wateringDays.value =  listOf(today.plusDays(3).dayOfWeek)
+
+        // ASSERTIONS
+        assertThat(plantCacheFake.all().size).isEqualTo(1)
+
+        viewModel.savePlant()
+        advanceTimeBy(10)
+
+        val updatedPlant = plantCacheFake.find(initialPlant.id)
+        assertThat(plantCacheFake.all().size).isEqualTo(1)
+        assertThat(updatedPlant).isNotNull()
+        assertThat(updatedPlant!!.wateringInfo.days).isEqualTo(viewModel.wateringDays.value)
+        assertThat(updatedPlant.wateringInfo.nextWateringDay.isAfter(initialPlant.wateringInfo.nextWateringDay)).isTrue()
     }
 
 }

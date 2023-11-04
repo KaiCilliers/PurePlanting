@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 class AddEditPlantViewModel(
@@ -30,7 +31,8 @@ class AddEditPlantViewModel(
     val description = MutableStateFlow(plant?.details?.description ?: "")
     val size = MutableStateFlow(PlantSize.valueOf(plant?.details?.size ?: DEFAULT_PLANT_SIZE.name))
     val wateringDays = MutableStateFlow(plant?.wateringInfo?.days ?: listOf(DEFAULT_WATERING_DAY))
-    val wateringTime = MutableStateFlow(LocalTime.of(plant?.wateringInfo?.atHour ?: DEFAULT_WATERING_HOUR, plant?.wateringInfo?.atMin ?: DEFAULT_WATERING_MIN))
+    val wateringTime =
+        MutableStateFlow(LocalTime.of(plant?.wateringInfo?.atHour ?: DEFAULT_WATERING_HOUR, plant?.wateringInfo?.atMin ?: DEFAULT_WATERING_MIN))
     val wateringAmount = MutableStateFlow(plant?.wateringInfo?.amount ?: DEFAULT_WATERING_AMOUNT)
 
     fun savePlant() {
@@ -86,6 +88,7 @@ class AddEditPlantViewModel(
                 atMin = wateringTime.value.minute,
                 days = wateringDays.value,
                 amount = wateringAmount.value,
+                nextWateringDay = Plant.nextWateringDate(LocalDateTime.now(), wateringDays.value, wateringTime.value.hour, wateringTime.value.minute)
             )
         )
         plantCache.save(updatedPlant)

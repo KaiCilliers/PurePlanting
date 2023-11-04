@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.navigation.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.pureplanting.util.format
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -72,6 +73,10 @@ fun PlantDetailScreen(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Watered?:", modifier.padding(20.dp))
             LargeText(text = plant.value.hasBeenWatered.toString())
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Next date to water", modifier.padding(20.dp))
+            LargeText(text = plant.value.wateringInfo.nextWateringDay.format("dd-MM-yy hh:mm")!!)
         }
 
         Button(onClick = { onEditPlantTapped() }) {
