@@ -10,6 +10,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        manifestPlaceholders["appLabel"] = "PurePlanting"
         applicationId = "com.sunrisekcdeveloper.pureplanting"
         minSdk = 28
         targetSdk = 33
@@ -29,6 +30,12 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+
+        create("pureLogic") {
+            initWith(getByName("debug"))
+            manifestPlaceholders["appLabel"] = "PureLogic"
+            applicationIdSuffix = ".logic"
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -40,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
