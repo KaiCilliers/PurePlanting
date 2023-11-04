@@ -3,9 +3,13 @@ package com.sunrisekcdeveloper.pureplanting.app
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentActivity
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.PlantsKey
 import com.sunrisekcdeveloper.pureplanting.navigation.FragmentStateChanger
+import com.sunrisekcdeveloper.pureplanting.workers.DailyPlantReminderWorker
 import com.zhuinden.simplestack.BackHandlingModel
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestack.History
@@ -16,6 +20,9 @@ import com.zhuinden.simplestackextensions.fragments.DefaultFragmentStateChanger
 import com.zhuinden.simplestackextensions.lifecyclektx.observeAheadOfTimeWillHandleBackChanged
 import com.zhuinden.simplestackextensions.navigatorktx.androidContentFrame
 import com.zhuinden.simplestackextensions.services.DefaultServiceProvider
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.concurrent.TimeUnit
 
 class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
 
@@ -48,6 +55,42 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
 
         backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
         backstack.observeAheadOfTimeWillHandleBackChanged(this, backPressedCallback::isEnabled::set)
+
+        scheduleDailyPlantWateringReminder()
+    }
+
+    private fun scheduleDailyPlantWateringReminder() {
+        // alternative solution https://copyprogramming.com/howto/schedule-a-work-on-a-specific-time-with-workmanager
+        // another is to use Alarm manager for exact time execution
+        val tomorrow = LocalDateTime.now()
+            .withMinute(0)
+            .withHour(8)
+            .plusDays(1)
+
+        val request = PeriodicWorkRequestBuilder<DailyPlantReminderWorker>(
+            repeatInterval = 1,
+            repeatIntervalTimeUnit = TimeUnit.DAYS,
+        )
+            .setNextScheduleTimeOverride(tomorrow.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+            .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                "dailyWateringNotifications",
+                ExistingPeriodicWorkPolicy.KEEP,
+                request
+            )
+    }
+
+    private fun scheduleForgotToWaterReminder() {
+        /**
+         * I have two options for this worker
+         *
+         * 1. schedule a unique worker per plant to execute at a certain time
+         * Upon completion calculate the next watering time and schedule another unique worker
+         *
+         * 2. check periodically (every hour) to see if a plant was forgotten.
+         */
     }
 
     override fun onNavigationEvent(stateChange: StateChange) {

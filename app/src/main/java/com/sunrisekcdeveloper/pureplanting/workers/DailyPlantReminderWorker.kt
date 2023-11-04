@@ -24,8 +24,14 @@ class DailyPlantReminderWorker(
         return try {
             val plantsThatNeedsWatering = PlantCache.Smart(plantCache).allThatNeedsWateringSoon(LocalDateTime.now(clock))
 
+            // on tap open app on plants screen
             if (plantsThatNeedsWatering.isNotEmpty()) {
                 val notification = NotificationDomain.createWaterSoon(plantsThatNeedsWatering.size)
+                notificationsCache.save(notification)
+                systemNotification.send(notification)
+            } else {
+                // todo remove - used to ensure a daily notification is at least received
+                val notification = NotificationDomain.createWaterSoon(99)
                 notificationsCache.save(notification)
                 systemNotification.send(notification)
             }
@@ -44,7 +50,7 @@ class DailyPlantReminderWorker(
         private val systemNotification: SystemNotification,
         private val clock: Clock = Clock.systemDefaultZone(),
     ) : WorkerFactory() {
-        override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker? {
+        override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker {
             return DailyPlantReminderWorker(appContext, workerParameters, plantCache, notificationsCache, systemNotification, clock)
         }
     }
