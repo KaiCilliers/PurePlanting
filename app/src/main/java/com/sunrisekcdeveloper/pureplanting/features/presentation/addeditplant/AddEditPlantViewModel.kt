@@ -1,6 +1,5 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
 
-import androidx.compose.runtime.mutableStateListOf
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
@@ -24,8 +23,6 @@ class AddEditPlantViewModel(
 
     private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
 
-    val visiblePermissionDialogQueue = mutableStateListOf<String>()
-
     val image = MutableStateFlow(plant?.details?.imageSrcUri ?: "")
     val name = MutableStateFlow(plant?.details?.name ?: "")
     val description = MutableStateFlow(plant?.details?.description ?: "")
@@ -43,19 +40,6 @@ class AddEditPlantViewModel(
         }
     }
 
-    fun dismissDialog() {
-        visiblePermissionDialogQueue.removeFirst()
-    }
-
-    fun onPermissionResult(
-        permission: String,
-        isGranted: Boolean
-    ) {
-        if (!isGranted && !visiblePermissionDialogQueue.contains(permission)) {
-            visiblePermissionDialogQueue.add(permission)
-        }
-    }
-
     private fun createPlant() = viewModelScope.launch {
         val newPlant = Plant.createNewPlant(
             imageSrc = image.value,
@@ -70,7 +54,6 @@ class AddEditPlantViewModel(
         // validation can be placed here or enforced in the UI OR both
         plantCache.save(newPlant)
         // notification can be sent after sending
-        // navigation can be performed now
         backstack.jumpToRoot()
     }
 
@@ -93,7 +76,6 @@ class AddEditPlantViewModel(
         )
         plantCache.save(updatedPlant)
         // notification can be sent after sending
-        // navigation can be performed now
         backstack.jumpToRoot()
     }
 

@@ -2,9 +2,16 @@
 
 package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -54,6 +61,9 @@ import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.co
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PPTimePickerDialog
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
 import com.sunrisekcdeveloper.pureplanting.navigation.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.pureplanting.util.CameraPermissionTextProvider
+import com.sunrisekcdeveloper.pureplanting.util.PermissionDialog
+import com.sunrisekcdeveloper.pureplanting.util.ReadMediaImagesPermissionTextProvider
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
@@ -88,6 +98,11 @@ fun AddEditPlantScreen(
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
 
+    var showCameraPermissionRationale by remember { mutableStateOf(false) }
+    var hasAskedCameraPermissionBefore by remember { mutableStateOf(false) }
+    var showGalleryPermissionRationale by remember { mutableStateOf(false) }
+    var hasAskedGalleryPermissionBefore by remember { mutableStateOf(false) }
+
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccessful ->
         if (isSuccessful) {
             uri?.let {
@@ -103,6 +118,27 @@ fun AddEditPlantScreen(
         capturedImageUri = imgUri ?: return@rememberLauncherForActivityResult
         imgSrcUriUpdater(imgUri.toString())
     }
+
+    val cameraPermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            hasAskedCameraPermissionBefore = true
+            if (isGranted) {
+                uri = context.createTempFileUri()
+                cameraLauncher.launch(uri)
+            }
+        }
+    )
+
+    val galleryPermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            hasAskedGalleryPermissionBefore = true
+            if (isGranted) {
+                galleryImagePickerLauncher.launch("image/*")
+            }
+        }
+    )
 
     var showSizeDialog by remember { mutableStateOf(false) }
     var showDatesDialog by remember { mutableStateOf(false) }
@@ -176,6 +212,30 @@ fun AddEditPlantScreen(
         )
     }
 
+    if (showCameraPermissionRationale) {
+        PermissionDialog(
+            permissionTextProvider = CameraPermissionTextProvider(),
+            isPermanentlyDeclined = !context.shouldShowRationale(Manifest.permission.CAMERA) && hasAskedCameraPermissionBefore,
+            onDismiss = { showCameraPermissionRationale = false },
+            onOkClick = { cameraPermissionResultLauncher.launch(Manifest.permission.CAMERA) },
+            onGoToAppSettingsClick = { context.openAppSettings() })
+    }
+
+    if (showGalleryPermissionRationale) {
+        PermissionDialog(
+            permissionTextProvider = ReadMediaImagesPermissionTextProvider(),
+            isPermanentlyDeclined = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                !context.shouldShowRationale(Manifest.permission.READ_MEDIA_IMAGES) && hasAskedGalleryPermissionBefore
+            } else false,
+            onDismiss = { showGalleryPermissionRationale = false },
+            onOkClick = {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    galleryPermissionResultLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+                }
+            },
+            onGoToAppSettingsClick = { context.openAppSettings() })
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -188,14 +248,28 @@ fun AddEditPlantScreen(
                 modifier = Modifier
                     .size(42.dp)
                     .clickable {
-                        uri = context.createTempFileUri()
-                        cameraLauncher.launch(uri)
+                        if (context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                            uri = context.createTempFileUri()
+                            cameraLauncher.launch(uri)
+                        } else {
+                            showCameraPermissionRationale = true
+                        }
                     })
             Spacer(modifier = Modifier.width(100.dp))
             Icon(imageVector = Icons.Filled.Image, contentDescription = "",
                 modifier = Modifier
                     .size(42.dp)
-                    .clickable { galleryImagePickerLauncher.launch("image/*") }
+                    .clickable {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            if (context.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+                                galleryImagePickerLauncher.launch("image/*")
+                            } else {
+                                showGalleryPermissionRationale = true
+                            }
+                        } else {
+                            galleryImagePickerLauncher.launch("image/*")
+                        }
+                    }
             )
         }
 
@@ -292,4 +366,24 @@ private fun AddEditPlantScreen_Preview() {
             onAddPlantTap = {},
         )
     }
+}
+
+fun Context.shouldShowRationale(permission: String): Boolean {
+    return findActivity().shouldShowRequestPermissionRationale(permission)
+}
+
+private fun Context.findActivity(): Activity {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
+    }
+    throw IllegalStateException("Permissions should be called in the context of an Activity")
+}
+
+private fun Context.openAppSettings() {
+    Intent(
+        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+        Uri.fromParts("package", this.findActivity().packageName, null)
+    ).also(::startActivity)
 }

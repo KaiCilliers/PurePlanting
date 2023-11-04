@@ -41,6 +41,7 @@ fun PermissionDialog(
                         } else {
                             onOkClick()
                         }
+                        onDismiss()
                     }
                     .padding(16.dp)
             )
