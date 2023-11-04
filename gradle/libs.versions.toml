@@ -4,7 +4,7 @@ androidx-compose-foundation = "1.4.3"
 androidx-compose-material = "1.4.3"
 andriodx-activity-compose = "1.7.1"
 androidx-core-splashscreen = "1.0.1"
-androidx-workManager = "2.8.1"
+androidx-workManager = "2.9.0-rc01"
 
 simple-stack-core = "2.8.0"
 simple-stack-extensions = "2.3.3"
