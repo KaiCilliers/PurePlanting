@@ -22,7 +22,7 @@ import org.junit.Test
 import java.time.Clock
 import java.time.LocalDateTime
 
-class DailyPlantReminderWorkerTest {
+class PlantWaterReminderWorkerTest {
 
     private lateinit var context: Context
     private lateinit var plantCacheFake: PlantCacheFake
