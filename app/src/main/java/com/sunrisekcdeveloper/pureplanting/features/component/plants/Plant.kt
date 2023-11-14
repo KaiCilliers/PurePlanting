@@ -1,146 +1,94 @@
 package com.sunrisekcdeveloper.pureplanting.features.component.plants
 
 import android.os.Parcelable
+import com.sunrisekcdeveloper.pureplanting.util.getDayOfWeeksBetween
+import com.sunrisekcdeveloper.pureplanting.util.getDaysBetween
 import kotlinx.parcelize.Parcelize
 import java.time.Clock
-import java.time.DayOfWeek
 import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.temporal.TemporalAdjusters
 import java.util.UUID
 
 @Parcelize
 data class Plant(
-    val id: UUID = UUID.randomUUID(),
+    val id: String = UUID.randomUUID().toString(),
     val details: PlantDetails,
     val wateringInfo: WateringInfo,
-): Parcelable {
+    val userLastModifiedDate: LocalDateTime = LocalDateTime.now()
+) : Parcelable {
 
-    val hasBeenWatered: Boolean
-        get() = wateringInfo.previousWaterDates.isNotEmpty() && wateringInfo.previousWaterDates.last() >= wateringInfo.nextWateringDay.minusDays(1)
+    val dateLastWatered: LocalDateTime?
+        get() = wateringInfo.datesWatered.lastOrNull()
 
-    fun nextWateringDate(now: LocalDateTime): Plant {
-        return copy(
-            wateringInfo = wateringInfo.copy(
-                nextWateringDay = nextWateringDate(
-                    now,
-                    wateringInfo.days,
-                    wateringInfo.atHour,
-                    wateringInfo.atMin
-                )
-            )
-        )
+    fun isWatered(today: LocalDateTime): Boolean {
+        val dateShouldHaveReceivedWater = previousWaterDate(today)
+        return dateLastWatered?.isBefore(dateShouldHaveReceivedWater) == false
+    }
+
+    fun needsWater(today: LocalDateTime): Boolean {
+        val validWeekday = wateringInfo.days.contains(today.dayOfWeek)
+        val wateredRecently = dateLastWatered?.getDaysBetween(today) == 0L
+        val modifiedTimeIsAfterWateringTime = userLastModifiedDate.toLocalTime().isAfter(wateringInfo.time)
+        return validWeekday && !wateredRecently && !modifiedTimeIsAfterWateringTime
+    }
+
+    fun forgotToWater(today: LocalDateTime): Boolean {
+        val daysBetween = userLastModifiedDate.getDaysBetween(today)
+        val latestWaterDate = dateLastWatered
+
+        return if (daysBetween >= 7) {
+            if (latestWaterDate == null) {
+                true
+            } else {
+                val dateShouldHaveReceivedWater = previousWaterDate(today)
+                latestWaterDate.toLocalDate().isBefore(dateShouldHaveReceivedWater.toLocalDate())
+            }
+        } else {
+            val validWeekdays = userLastModifiedDate.getDayOfWeeksBetween(today)
+            val dateShouldHaveReceivedWater = previousWaterDate(today)
+
+            if(validWeekdays.contains(dateShouldHaveReceivedWater.dayOfWeek)) {
+                if (latestWaterDate == null) {
+                    true
+                } else {
+                    latestWaterDate.toLocalDate().isBefore(dateShouldHaveReceivedWater.toLocalDate())
+                }
+            } else false
+        }
+    }
+
+    private fun previousWaterDate(today: LocalDateTime): LocalDateTime {
+        return if (wateringInfo.days.contains(today.dayOfWeek)) {
+            today
+        } else if (wateringInfo.days.contains(today.minusDays(1).dayOfWeek)) {
+            today.minusDays(1)
+        } else if (wateringInfo.days.contains(today.minusDays(2).dayOfWeek)) {
+            today.minusDays(2)
+        } else if (wateringInfo.days.contains(today.minusDays(3).dayOfWeek)) {
+            today.minusDays(3)
+        } else if (wateringInfo.days.contains(today.minusDays(4).dayOfWeek)) {
+            today.minusDays(4)
+        } else if (wateringInfo.days.contains(today.minusDays(5).dayOfWeek)) {
+            today.minusDays(5)
+        } else if (wateringInfo.days.contains(today.minusDays(6).dayOfWeek)) {
+            today.minusDays(6)
+        } else {
+            today
+        }
     }
 
     fun water(clock: Clock = Clock.systemDefaultZone()): Plant {
-        val wateringHistory = wateringInfo.previousWaterDates.toMutableList()
-        wateringHistory.add(LocalDateTime.now(clock))
+        val history = wateringInfo.datesWatered.toMutableList()
+        history.add(LocalDateTime.now(clock))
         return copy(
-            wateringInfo = wateringInfo.copy(
-                previousWaterDates = wateringHistory
-            )
+            wateringInfo = wateringInfo.copy(datesWatered = history)
         )
     }
 
-    fun undoPreviousWatering(): Plant {
-        return copy(
-            wateringInfo = wateringInfo.copy(
-                previousWaterDates = wateringInfo.previousWaterDates.toMutableList().apply {
-                    removeLast()
-                }
-            )
-        )
+    fun undoLastWatering(): Plant {
+        val history = wateringInfo.datesWatered.toMutableList()
+        history.removeLast()
+        return copy(wateringInfo = wateringInfo.copy(
+            datesWatered = history.toList()
+        ))
     }
-
-    fun needsWaterSoon(now: LocalDateTime): Boolean {
-        return !hasBeenWatered && (
-                wateringInfo.nextWateringDay.dayOfMonth == now.dayOfMonth
-                        || wateringInfo.nextWateringDay.dayOfMonth == now.plusDays(1).dayOfMonth
-                )
-    }
-
-    fun forgotToWater(now: LocalDateTime): Boolean {
-        return wateringInfo.nextWateringDay.isBefore(now)
-    }
-
-    companion object {
-        fun createNewPlant(
-            imageSrc: String,
-            name: String,
-            description: String,
-            size: String,
-            wateringDays: List<DayOfWeek>,
-            wateringHour: Int,
-            atMin: Int = 0,
-            wateringAmount: String,
-        ): Plant {
-            return createNewPlantWithId(
-                id = UUID.randomUUID(),
-                imageSrc = imageSrc,
-                name = name,
-                description = description,
-                size = size,
-                wateringDays = wateringDays,
-                atMin = atMin,
-                wateringHour = wateringHour,
-                wateringAmount = wateringAmount,
-            )
-        }
-
-        fun createNewPlantWithId(
-            id: UUID,
-            imageSrc: String,
-            name: String,
-            description: String,
-            size: String,
-            wateringDays: List<DayOfWeek>,
-            wateringHour: Int,
-            atMin: Int = 0,
-            wateringAmount: String,
-        ): Plant {
-            return Plant(
-                id = id,
-                details = PlantDetails(
-                    name = name,
-                    size = size,
-                    description = description,
-                    imageSrcUri = imageSrc,
-                ),
-                wateringInfo = WateringInfo(
-                    atHour = wateringHour,
-                    atMin = atMin,
-                    days = wateringDays,
-                    amount = wateringAmount,
-                    previousWaterDates = emptyList(),
-                    nextWateringDay = nextWateringDate(LocalDateTime.now(), wateringDays, wateringHour, atMin)
-                )
-            )
-        }
-
-        fun nextWateringDate(
-            now: LocalDateTime,
-            days: List<DayOfWeek>,
-            hour: Int,
-            minute: Int,
-        ): LocalDateTime {
-            val wateringDaysSorted = days.sorted()
-            val todayIsWateringDay = wateringDaysSorted.contains(now.dayOfWeek)
-            val wateringTimeIsPast = now.toLocalTime().isAfter(LocalTime.of(hour, minute))
-            return when {
-                todayIsWateringDay && !wateringTimeIsPast -> {
-                    now.with(LocalTime.of(hour, minute))
-                }
-
-                else -> {
-                    val nextWaterDay = if (wateringDaysSorted.any { it > now.dayOfWeek }) {
-                        wateringDaysSorted.first { it > now.dayOfWeek }
-                    } else {
-                        wateringDaysSorted.first()
-                    }
-                    now.with(TemporalAdjusters.next(nextWaterDay)).with(LocalTime.of(hour, minute))
-                }
-            }
-        }
-    }
-
 }
