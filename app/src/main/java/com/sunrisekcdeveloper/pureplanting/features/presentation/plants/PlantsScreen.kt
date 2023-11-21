@@ -30,6 +30,7 @@ import com.sunrisekcdeveloper.pureplanting.BuildConfig
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.navigation.ThemeSurfaceWrapper
 import java.time.DayOfWeek
+import java.time.LocalTime
 
 @Composable
 fun PlantsScreen(
@@ -105,28 +106,28 @@ fun PlantsScreen(
 @Composable
 private fun PlantsScreen_Preview() {
     ThemeSurfaceWrapper {
-//        var selectedFilter by remember { mutableStateOf(PlantListFilter.UPCOMING) }
-//
-//        val plants = (1..40).map {
-//            Plant.createNewPlant(
-//                imageSrc = "cursus",
-//                name = "Plant #$it",
-//                description = "convallis",
-//                size = "dico",
-//                wateringDays = listOf(DayOfWeek.MONDAY),
-//                wateringHour = 1,
-//                wateringAmount = "aliquam"
-//            )
-//        }
-//
-//        PlantsScreen(
-//            plantsFilterOption = listOf(PlantListFilter.UPCOMING, PlantListFilter.FORGOT_TO_WATER, PlantListFilter.HISTORY),
-//            selectedFilter = mutableStateOf(selectedFilter),
-//            onFilterSelected = { selectedFilter = it },
-//            plants = mutableStateOf(plants),
-//            onPlantTapped = {},
-//            onAddIconTapped = {},
-//            onNotificationIconTapped = {},
-//        )
+        var selectedFilter by remember { mutableStateOf(PlantListFilter.UPCOMING) }
+
+        val plants = (1..40).map {
+            Plant.createNewPlant(
+                imageSrc = "cursus",
+                name = "Plant #$it",
+                description = "convallis",
+                size = "dico",
+                wateringDays = listOf(DayOfWeek.MONDAY),
+                wateringTime = LocalTime.now(),
+                wateringAmount = "250ml"
+            )
+        }
+
+        PlantsScreen(
+            plantsFilterOption = listOf(PlantListFilter.UPCOMING, PlantListFilter.FORGOT_TO_WATER, PlantListFilter.HISTORY),
+            selectedFilter = mutableStateOf(selectedFilter),
+            onFilterSelected = { selectedFilter = it },
+            plants = mutableStateOf(plants),
+            onPlantTapped = {},
+            onAddIconTapped = {},
+            onNotificationIconTapped = {},
+        )
     }
 }

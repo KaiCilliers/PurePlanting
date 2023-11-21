@@ -3,12 +3,12 @@ package com.sunrisekcdeveloper.pureplanting.features.presentation.notifications
 import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import com.sunrisekcdeveloper.shared_test.MutableClock
 import com.sunrisekcdeveloper.shared_test.NotificationsCacheFake
 import com.sunrisekcdeveloper.shared_test.forgotToWaterNotification
 import com.sunrisekcdeveloper.shared_test.now
+import com.sunrisekcdeveloper.shared_test.today
 import com.sunrisekcdeveloper.shared_test.unreadNotification
 import com.sunrisekcdeveloper.shared_test.waterSoonNotification
 import kotlinx.coroutines.Dispatchers
@@ -53,7 +53,7 @@ class NotificationListViewModelTest {
 
         // ASSERTIONS
         filterFlow.test {
-            assertThat(awaitItem()).isInstanceOf<NotificationFilter.All>()
+            assertThat(awaitItem()).isEqualTo(NotificationFilter.ALL)
         }
     }
 
@@ -70,7 +70,7 @@ class NotificationListViewModelTest {
         notificationCacheFake.save(forgotToWaterNotification())
 
         // ACTION
-        viewModel.setFilter(NotificationFilter.All)
+        viewModel.setFilter(NotificationFilter.ALL)
 
         // ASSERTIONS
         notificationsFlow.test {
@@ -94,7 +94,7 @@ class NotificationListViewModelTest {
         notificationCacheFake.save(forgotToWaterNotification())
 
         // ACTION
-        viewModel.setFilter(NotificationFilter.ForgotToWater)
+        viewModel.setFilter(NotificationFilter.FORGOT_TO_WATER)
 
         // ASSERTIONS
         notificationsFlow.test {
@@ -117,7 +117,7 @@ class NotificationListViewModelTest {
         notificationCacheFake.save(forgotToWaterNotification())
 
         // ACTION
-        viewModel.setFilter(NotificationFilter.NeedsWater)
+        viewModel.setFilter(NotificationFilter.NEEDS_WATER)
 
         // ASSERTIONS
         notificationsFlow.test {
@@ -200,7 +200,7 @@ class NotificationListViewModelTest {
         notificationCacheFake.save(forgotToWaterNotification())
 
         // ACTION
-        viewModel.setFilter(NotificationFilter.All)
+        viewModel.setFilter(NotificationFilter.ALL)
 
         // ASSERTIONS
         notificationsFlow.test {
@@ -209,11 +209,73 @@ class NotificationListViewModelTest {
             val emission = awaitItem()
             assertThat(emission.size).isEqualTo(5)
 
-            viewModel.setFilter(NotificationFilter.ForgotToWater)
+            viewModel.setFilter(NotificationFilter.FORGOT_TO_WATER)
 
             val emission2 = awaitItem()
             assertThat(emission2.size).isEqualTo(4)
             assertThat(emission2.all { it.seen }).isTrue()
+        }
+    }
+
+    @Test
+    fun `notifications are grouped by their day created`() = runTest {
+        // SETUP
+        val notificationsFlow = viewModel.notificationsGroupedByDay
+        val today = today()
+        val yesterday = today.minusDays(1)
+        val twoDaysAgo = today.minusDays(2)
+        val currentYear = today.year
+        val currentDayOfYear = today.dayOfYear
+
+        notificationCacheFake.save(waterSoonNotification(created = yesterday))
+        notificationCacheFake.save(forgotToWaterNotification(created = today))
+        notificationCacheFake.save(forgotToWaterNotification(created = yesterday))
+        notificationCacheFake.save(waterSoonNotification(created = twoDaysAgo))
+        notificationCacheFake.save(forgotToWaterNotification(created = twoDaysAgo))
+
+        // ASSERTIONS
+        notificationsFlow.test {
+            awaitItem()
+
+            val emission = awaitItem()
+            assertThat(emission.size).isEqualTo(3)
+            assertThat(emission[(currentDayOfYear to currentYear)]!!.size).isEqualTo(1)
+            assertThat(emission[(currentDayOfYear - 1 to currentYear)]!!.size).isEqualTo(2)
+            assertThat(emission[(currentDayOfYear - 2 to currentYear)]!!.size).isEqualTo(2)
+        }
+    }
+
+    @Test
+    fun `notifications are grouped by their day created with the latest date placed first`() = runTest {
+        // SETUP
+        val notificationsFlow = viewModel.notificationsGroupedByDay
+        val today = today()
+        val yesterday = today.minusDays(1)
+        val oneYearAgo = today.minusYears(1)
+        val currentYear = today.year
+        val currentDayOfYear = today.dayOfYear
+
+        notificationCacheFake.save(waterSoonNotification(created = yesterday))
+        notificationCacheFake.save(forgotToWaterNotification(created = today))
+        notificationCacheFake.save(forgotToWaterNotification(created = yesterday))
+        notificationCacheFake.save(waterSoonNotification(created = oneYearAgo))
+        notificationCacheFake.save(forgotToWaterNotification(created = oneYearAgo))
+
+        // ASSERTIONS
+        notificationsFlow.test {
+            awaitItem()
+
+            val emission = awaitItem()
+            val keys = emission.keys
+            assertThat(emission.size).isEqualTo(3)
+
+            assertThat(keys.elementAt(0)).isEqualTo(currentDayOfYear to currentYear)
+            assertThat(keys.elementAt(1)).isEqualTo(currentDayOfYear - 1 to currentYear)
+            assertThat(keys.elementAt(2)).isEqualTo(currentDayOfYear to currentYear - 1)
+
+            assertThat(emission[keys.elementAt(0)]!!.size).isEqualTo(1) // today
+            assertThat(emission[keys.elementAt(1)]!!.size).isEqualTo(2) // yesterday
+            assertThat(emission[keys.elementAt(2)]!!.size).isEqualTo(2) // year ago
         }
     }
 }

@@ -102,6 +102,3 @@ class PlantsViewModel(
     }
 }
 
-enum class PlantListFilter {
-    UPCOMING, FORGOT_TO_WATER, HISTORY
-}

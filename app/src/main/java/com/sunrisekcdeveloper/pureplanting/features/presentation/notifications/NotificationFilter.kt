@@ -1,7 +1,5 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.notifications
 
-sealed class NotificationFilter {
-    data object All : NotificationFilter()
-    data object NeedsWater : NotificationFilter()
-    data object ForgotToWater : NotificationFilter()
+enum class NotificationFilter {
+    ALL, FORGOT_TO_WATER, NEEDS_WATER
 }

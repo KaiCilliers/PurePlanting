@@ -55,8 +55,6 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
 
         backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
         backstack.observeAheadOfTimeWillHandleBackChanged(this, backPressedCallback::isEnabled::set)
-
-        scheduleDailyPlantWateringReminder()
     }
 
     private fun scheduleDailyPlantWateringReminder() {

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.update
 import java.util.UUID
 
 class InMemoryPlantCache : PlantCache {
+    // todo increased efficiency bt rather using a map via .associateBy
     private val plants = MutableStateFlow<List<Plant>>(emptyList())
 
     override fun save(plant: Plant) {
