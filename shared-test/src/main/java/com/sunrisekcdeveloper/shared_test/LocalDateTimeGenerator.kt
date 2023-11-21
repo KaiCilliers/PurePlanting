@@ -8,6 +8,8 @@ import java.time.temporal.TemporalAdjusters
 
 fun today(clock: Clock = Clock.systemDefaultZone(),): LocalDateTime = LocalDateTime.now(clock)
 
+fun earlyMorning(clock: Clock = Clock.systemDefaultZone(),): LocalDateTime = LocalDateTime.now(clock).withHour(8).withMinute(0)
+
 fun today(
     dayOfWeek: DayOfWeek,
     hour: Int = 0,

@@ -12,7 +12,9 @@ import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterWorker
 import com.zhuinden.simplestack.GlobalServices
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.rebind
-import java.lang.Exception
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import java.time.Clock
 
 class PurePlantingApplication : Application(), Configuration.Provider {
@@ -22,7 +24,7 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     // Create global dependencies
     private val inMemoryPlantCache = InMemoryPlantCache()
     private val inMemoryNotificationsCache = InMemoryNotificationCache()
-    private val systemNotification = SystemNotification(applicationContext)
+    private val systemNotification by lazy { SystemNotification(applicationContext) }
     private val defaultClock = Clock.systemDefaultZone()
 
     override fun onCreate() {
@@ -32,6 +34,8 @@ class PurePlantingApplication : Application(), Configuration.Provider {
             // add dependencies here
             .add(inMemoryPlantCache)
             .rebind<PlantCache>(inMemoryPlantCache)
+            .add(inMemoryNotificationsCache)
+            .rebind<NotificationsCache>(inMemoryNotificationsCache)
             .build()
     }
 
@@ -59,25 +63,31 @@ class PurePlantingApplication : Application(), Configuration.Provider {
 // todo relocate
 class InMemoryNotificationCache : NotificationsCache {
 
-    private val notifications: MutableList<NotificationDomain> = mutableListOf()
+    private val notifications = MutableStateFlow<List<NotificationDomain>>(emptyList())
 
-    fun resetData(notifications: List<NotificationDomain> = emptyList()) {
-        this.notifications.clear()
-        this.notifications.addAll(notifications)
-    }
-
-    override fun save(notification: NotificationDomain) {
-        notifications.add(notification)
-    }
-
-    override fun all(): List<NotificationDomain> {
-        return notifications
-    }
-
-    override fun markAsSeen(id: String) {
-        val existingItemIndex = notifications.indexOfFirst { item -> item.id == id }
-        if (existingItemIndex >= 0) {
-            notifications[existingItemIndex] = notifications[existingItemIndex].copy(seen = true)
+    override suspend fun save(notification: NotificationDomain) {
+        notifications.update {
+            it.toMutableList().apply {
+                val existingIndex = this.map { it.id }.indexOf(notification.id)
+                if (existingIndex >= 0) this[existingIndex] = notification
+                else add(notification)
+            }
         }
     }
+
+    override suspend fun all(): List<NotificationDomain> {
+        return notifications.value
+    }
+
+    override suspend fun markAsSeen(id: String) {
+        notifications.update {
+            it.toMutableList().apply {
+                val existingItem = this.first { it.id == id }
+                val existingIndex = this.map { it.id }.indexOf(id)
+                if (existingIndex >= 0) this[existingIndex] = existingItem.copy(seen = true)
+            }
+        }
+    }
+
+    override fun observe(): Flow<List<NotificationDomain>> = notifications
 }

@@ -18,7 +18,7 @@ class InMemoryPlantCache : PlantCache {
         }
     }
 
-    override fun remove(plantId: UUID) {
+    override fun remove(plantId: String) {
         plants.update {
             it.toMutableList().apply {
                 removeIf { it.id == plantId }
@@ -26,7 +26,7 @@ class InMemoryPlantCache : PlantCache {
         }
     }
 
-    override fun find(plantId: UUID): Plant? {
+    override fun find(plantId: String): Plant? {
         return plants.value.find { it.id == plantId }
     }
 

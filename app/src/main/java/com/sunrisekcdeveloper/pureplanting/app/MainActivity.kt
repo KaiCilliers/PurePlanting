@@ -62,6 +62,7 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
     private fun scheduleDailyPlantWateringReminder() {
         // alternative solution https://copyprogramming.com/howto/schedule-a-work-on-a-specific-time-with-workmanager
         // another is to use Alarm manager for exact time execution
+        // todo make periodic work request every 15min
         val tomorrow = LocalDateTime.now()
             .withMinute(0)
             .withHour(8)
@@ -91,6 +92,7 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
          *
          * 2. check periodically (every hour) to see if a plant was forgotten.
          */
+        // todo daily executeion at 00:01
     }
 
     override fun onNavigationEvent(stateChange: StateChange) {

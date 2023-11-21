@@ -28,8 +28,7 @@ class AddEditPlantViewModel(
     val description = MutableStateFlow(plant?.details?.description ?: "")
     val size = MutableStateFlow(PlantSize.valueOf(plant?.details?.size ?: DEFAULT_PLANT_SIZE.name))
     val wateringDays = MutableStateFlow(plant?.wateringInfo?.days ?: listOf(DEFAULT_WATERING_DAY))
-    val wateringTime =
-        MutableStateFlow(LocalTime.of(plant?.wateringInfo?.atHour ?: DEFAULT_WATERING_HOUR, plant?.wateringInfo?.atMin ?: DEFAULT_WATERING_MIN))
+    val wateringTime = MutableStateFlow(plant?.wateringInfo?.time ?: DEFAULT_WATERING_TIME)
     val wateringAmount = MutableStateFlow(plant?.wateringInfo?.amount ?: DEFAULT_WATERING_AMOUNT)
 
     fun savePlant() {
@@ -47,8 +46,7 @@ class AddEditPlantViewModel(
             description = description.value,
             size = size.value.name,
             wateringDays = wateringDays.value,
-            wateringHour = wateringTime.value.hour,
-            atMin = wateringTime.value.minute,
+            wateringTime = wateringTime.value,
             wateringAmount = wateringAmount.value // TODO: make use of typealias to define unique types OR use value classes
         )
         // validation can be placed here or enforced in the UI OR both
@@ -67,12 +65,12 @@ class AddEditPlantViewModel(
                 imageSrcUri = image.value,
             ),
             wateringInfo = plant.wateringInfo.copy(
-                atHour = wateringTime.value.hour,
-                atMin = wateringTime.value.minute,
                 days = wateringDays.value,
                 amount = wateringAmount.value,
-                nextWateringDay = Plant.nextWateringDate(LocalDateTime.now(), wateringDays.value, wateringTime.value.hour, wateringTime.value.minute)
-            )
+                time = wateringTime.value,
+                datesWatered = plant.wateringInfo.datesWatered
+            ),
+            userLastModifiedDate = LocalDateTime.now()
         )
         plantCache.save(updatedPlant)
         // notification can be sent after sending
@@ -80,8 +78,7 @@ class AddEditPlantViewModel(
     }
 
     companion object {
-        const val DEFAULT_WATERING_HOUR = 8
-        const val DEFAULT_WATERING_MIN = 0
+        val DEFAULT_WATERING_TIME: LocalTime = LocalTime.of(8,0)
         const val DEFAULT_WATERING_AMOUNT = "250"
         val DEFAULT_PLANT_SIZE = PlantSize.Medium
         val DEFAULT_WATERING_DAY = DayOfWeek.MONDAY

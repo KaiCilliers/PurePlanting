@@ -5,7 +5,9 @@ import com.sunrisekcdeveloper.pureplanting.util.getDayOfWeeksBetween
 import com.sunrisekcdeveloper.pureplanting.util.getDaysBetween
 import kotlinx.parcelize.Parcelize
 import java.time.Clock
+import java.time.DayOfWeek
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.util.UUID
 
 @Parcelize
@@ -17,7 +19,7 @@ data class Plant(
 ) : Parcelable {
 
     val dateLastWatered: LocalDateTime?
-        get() = wateringInfo.datesWatered.lastOrNull()
+        get() = wateringInfo.datesWatered.maxOrNull()
 
     fun isWatered(today: LocalDateTime): Boolean {
         val dateShouldHaveReceivedWater = previousWaterDate(today)
@@ -25,17 +27,18 @@ data class Plant(
     }
 
     fun needsWater(today: LocalDateTime): Boolean {
-        val validWeekday = wateringInfo.days.contains(today.dayOfWeek)
+        val dateShouldHaveReceivedWater = previousWaterDate(today)
+        val needsWaterToday = dateShouldHaveReceivedWater.getDaysBetween(today) == 0L
         val wateredRecently = dateLastWatered?.getDaysBetween(today) == 0L
         val modifiedTimeIsAfterWateringTime = userLastModifiedDate.toLocalTime().isAfter(wateringInfo.time)
-        return validWeekday && !wateredRecently && !modifiedTimeIsAfterWateringTime
+        return needsWaterToday && !wateredRecently && !modifiedTimeIsAfterWateringTime
     }
 
     fun forgotToWater(today: LocalDateTime): Boolean {
         val daysBetween = userLastModifiedDate.getDaysBetween(today)
         val latestWaterDate = dateLastWatered
 
-        return if (daysBetween >= 7) {
+        return !needsWater(today) && if (daysBetween >= 7) {
             if (latestWaterDate == null) {
                 true
             } else {
@@ -90,5 +93,55 @@ data class Plant(
         return copy(wateringInfo = wateringInfo.copy(
             datesWatered = history.toList()
         ))
+    }
+
+    companion object {
+        fun createNewPlant(
+            imageSrc: String,
+            name: String,
+            description: String,
+            size: String,
+            wateringDays: List<DayOfWeek>,
+            wateringTime: LocalTime,
+            wateringAmount: String,
+        ): Plant {
+            return createNewPlantWithId(
+                id = UUID.randomUUID().toString(),
+                imageSrc = imageSrc,
+                name = name,
+                description = description,
+                size = size,
+                wateringDays = wateringDays,
+                wateringTime = wateringTime,
+                wateringAmount = wateringAmount,
+            )
+        }
+
+        fun createNewPlantWithId(
+            id: String,
+            imageSrc: String,
+            name: String,
+            description: String,
+            size: String,
+            wateringDays: List<DayOfWeek>,
+            wateringTime: LocalTime,
+            wateringAmount: String,
+        ): Plant {
+            return Plant(
+                id = id,
+                details = PlantDetails(
+                    name = name,
+                    size = size,
+                    description = description,
+                    imageSrcUri = imageSrc,
+                ),
+                wateringInfo = WateringInfo(
+                    time = wateringTime,
+                    days = wateringDays,
+                    amount = wateringAmount,
+                    datesWatered = emptyList()
+                )
+            )
+        }
     }
 }

@@ -1,11 +1,11 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.plants
 
+import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationsCache
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.AddEditPlantKey
 import com.sunrisekcdeveloper.pureplanting.features.presentation.notifications.NotificationsKey
 import com.sunrisekcdeveloper.pureplanting.features.presentation.plantdetail.PlantDetailKey
-import com.zhuinden.flowcombinetuplekt.combineTuple
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.statebundle.StateBundle
@@ -14,46 +14,68 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import java.time.Clock
 import java.time.LocalDateTime
-import java.util.UUID
 
 class PlantsViewModel(
     private val plantCache: PlantCache,
+    notificationsCache: NotificationsCache,
     private val clock: Clock = Clock.systemDefaultZone(),
     private val backstack: Backstack,
 ) : Bundleable {
     private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
     private var lastRemovedPlant: Plant? = null
 
-    private val allPlants: StateFlow<List<Plant>> = plantCache
-        .observe()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), emptyList())
     val activeFilter = MutableStateFlow(PlantListFilter.UPCOMING)
 
-    val plants: StateFlow<List<Plant>> = combineTuple(allPlants, activeFilter).map { (plants, filter) ->
-        plants.filter { plant ->
+    val hasUnreadNotifications = notificationsCache
+        .observe()
+        .onEach { println("all notifications are: ${it.map { it.seen }}") }
+        .map { allNotifications -> allNotifications.any { !it.seen } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), false)
+
+    val plants: StateFlow<List<Plant>> = combine(plantCache.observe(), activeFilter) { plants, filter ->
+        println("plants size is ${plants.size}")
+        println("filter is ${filter}")
+        val res = plants.filter { plant ->
             when (filter) {
-                PlantListFilter.UPCOMING -> plant.needsWaterSoon(LocalDateTime.now(clock))
+                PlantListFilter.UPCOMING -> plant.needsWater(LocalDateTime.now(clock))
                 PlantListFilter.FORGOT_TO_WATER -> plant.forgotToWater(LocalDateTime.now(clock))
-                PlantListFilter.HISTORY -> plant.wateringInfo.previousWaterDates.isNotEmpty()
+                PlantListFilter.HISTORY -> plant.dateLastWatered != null
             }
         }
+       val sorted =  when (filter) {
+            PlantListFilter.UPCOMING -> res.sortedBy { it.wateringInfo.time }
+            PlantListFilter.FORGOT_TO_WATER -> res.sortedBy { it.wateringInfo.time }
+            PlantListFilter.HISTORY -> res.sortedByDescending { it.dateLastWatered ?: LocalDateTime.now() }
+        }
+        println("new emission size is ${sorted.map { it.dateLastWatered }}")
+        sorted
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), emptyList())
+
+    fun waterPlant(plant: Plant) {
+        plantCache.save(plant.water())
+    }
+
+    fun undoWaterPlant(plant: Plant) {
+        plantCache.save(plant.undoLastWatering())
+    }
 
     fun setFilter(filter: PlantListFilter) {
         activeFilter.update { filter }
     }
 
-    fun removePlant(plantId: UUID) {
-        lastRemovedPlant = plantCache.find(plantId)
-        plantCache.remove(plantId)
+    fun removePlant(plant: Plant) {
+        lastRemovedPlant = plant
+        plantCache.remove(plant.id)
     }
 
-    fun undoRemove(plantId: UUID) {
+    fun undoRemove(plantId: String) {
         plantCache.save(lastRemovedPlant!!)
     }
 

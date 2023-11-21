@@ -11,7 +11,6 @@ import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
 import java.time.Clock
 import java.time.LocalDateTime
-import java.util.UUID
 
 class ForgotToWaterWorker(
     ctx: Context,
@@ -23,13 +22,18 @@ class ForgotToWaterWorker(
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         return try {
-            val plantId = inputData.getString(INPUT_PARAM_PLANT_ID)
-            val plant = plantCache.find(UUID.fromString(plantId))
-            val forgotToWater = plant?.forgotToWater(LocalDateTime.now(clock)) ?: false
+
+            if (runAttemptCount > 4) {
+                return Result.failure()
+            }
+
+            val plantsForgotten = plantCache
+                .all()
+                .filter { it.forgotToWater(LocalDateTime.now(clock)) }
 
             // on notification tap, open app on specific plant detail screen
-            if (forgotToWater && plant != null) {
-                val notification = NotificationDomain.createForgotToWater(plant)
+            if (plantsForgotten.isNotEmpty()) {
+                val notification = NotificationDomain.createForgotToWater(plantsForgotten)
                 notificationsCache.save(notification)
                 systemNotification.send(notification)
             }
@@ -38,7 +42,7 @@ class ForgotToWaterWorker(
         } catch (e: Exception) {
             println("Failed to successfully execute ${this::class.simpleName}")
             e.printStackTrace()
-            Result.failure()
+            Result.retry()
         }
     }
 
@@ -51,9 +55,5 @@ class ForgotToWaterWorker(
         override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker {
             return ForgotToWaterWorker(appContext, workerParameters, plantCache, notificationsCache, systemNotification, clock)
         }
-    }
-
-    companion object {
-        const val INPUT_PARAM_PLANT_ID = "forgot_to_water_plant_id"
     }
 }

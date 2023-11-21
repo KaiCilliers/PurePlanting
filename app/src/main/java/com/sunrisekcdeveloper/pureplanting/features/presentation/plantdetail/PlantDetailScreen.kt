@@ -62,32 +62,32 @@ fun PlantDetailScreen(
             }
             )
         }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Time", modifier.padding(20.dp))
-            LargeText(text = LocalTime.of(plant.value.wateringInfo.atHour, plant.value.wateringInfo.atMin).format(timeFormatter))
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Watered amount:", modifier.padding(20.dp))
-            LargeText(text = plant.value.wateringInfo.amount)
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Watered?:", modifier.padding(20.dp))
-            LargeText(text = plant.value.hasBeenWatered.toString())
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Next date to water", modifier.padding(20.dp))
-            LargeText(text = plant.value.wateringInfo.nextWateringDay.format("dd-MM-yy hh:mm")!!)
-        }
-
-        Button(onClick = { onEditPlantTapped() }) {
-            Text(text = "Edit Plant")
-        }
-
-        if (!plant.value.hasBeenWatered) {
-            Button(onClick = { onWateredButtonTapped() }) {
-                Text(text = "Mark as watered")
-            }
-        }
+//        Row(verticalAlignment = Alignment.CenterVertically) {
+//            Text(text = "Time", modifier.padding(20.dp))
+//            LargeText(text = LocalTime.of(plant.value.wateringInfo.atHour, plant.value.wateringInfo.atMin).format(timeFormatter))
+//        }
+//        Row(verticalAlignment = Alignment.CenterVertically) {
+//            Text(text = "Watered amount:", modifier.padding(20.dp))
+//            LargeText(text = plant.value.wateringInfo.amount)
+//        }
+//        Row(verticalAlignment = Alignment.CenterVertically) {
+//            Text(text = "Watered?:", modifier.padding(20.dp))
+//            LargeText(text = plant.value.hasBeenWatered.toString())
+//        }
+//        Row(verticalAlignment = Alignment.CenterVertically) {
+//            Text(text = "Next date to water", modifier.padding(20.dp))
+//            LargeText(text = plant.value.wateringInfo.nextWateringDay.format("dd-MM-yy hh:mm")!!)
+//        }
+//
+//        Button(onClick = { onEditPlantTapped() }) {
+//            Text(text = "Edit Plant")
+//        }
+//
+//        if (!plant.value.hasBeenWatered) {
+//            Button(onClick = { onWateredButtonTapped() }) {
+//                Text(text = "Mark as watered")
+//            }
+//        }
     }
 }
 
@@ -96,20 +96,20 @@ fun PlantDetailScreen(
 @Composable
 private fun PlantDetailScreen_Preview() {
     ThemeSurfaceWrapper {
-        val plant = Plant.createNewPlant(
-            imageSrc = "melius",
-            name = "Leo Velasquez",
-            description = "velit",
-            size = "Medium",
-            wateringDays = listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY),
-            wateringHour = 12,
-            wateringAmount = "240 ml"
-        )
-
-        PlantDetailScreen(
-            plant = mutableStateOf(plant),
-            onWateredButtonTapped = {},
-            onEditPlantTapped = {}
-        )
+//        val plant = Plant.createNewPlant(
+//            imageSrc = "melius",
+//            name = "Leo Velasquez",
+//            description = "velit",
+//            size = "Medium",
+//            wateringDays = listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY),
+//            wateringHour = 12,
+//            wateringAmount = "240 ml"
+//        )
+//
+//        PlantDetailScreen(
+//            plant = mutableStateOf(plant),
+//            onWateredButtonTapped = {},
+//            onEditPlantTapped = {}
+//        )
     }
 }

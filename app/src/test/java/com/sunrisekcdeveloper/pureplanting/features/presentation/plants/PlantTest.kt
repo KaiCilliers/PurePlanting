@@ -132,12 +132,13 @@ class PlantTest {
     }
     
     @Test
-    fun `forgot to water when plant is a week old and has no watering history`() {
+    fun `forgot to water when plant is a older than a week and has no watering history`() {
         // SETUP
         val today = today()
+        val yesterday = today.minusDays(1)
         val weekOldPlant = plant(
-            waterDays = listOf(today.dayOfWeek),
-            modifiedAt = today.minusDays(7)
+            waterDays = listOf(yesterday.dayOfWeek),
+            modifiedAt = today.minusDays(30)
         )
         
         // ACTION
@@ -145,6 +146,24 @@ class PlantTest {
         
         // ASSERTIONS
         assertThat(forgotToWater).isTrue()
+    }
+
+    @Test
+    fun `not forgotten when plant is upcoming`() {
+        // SETUP
+        val today = today()
+        val weekOldPlant = plant(
+            waterDays = listOf(today.dayOfWeek),
+            modifiedAt = today.minusDays(7)
+        )
+
+        // ACTION
+        val forgotToWater = weekOldPlant.forgotToWater(today)
+        val needsWater = weekOldPlant.needsWater(today)
+
+        // ASSERTIONS
+        assertThat(needsWater).isTrue()
+        assertThat(forgotToWater).isFalse()
     }
     
     @Test
@@ -203,9 +222,10 @@ class PlantTest {
     fun `not forgotten after plant has been updated`() {
         // SETUP
         val today = today()
+        val yesterday = today.minusDays(1)
         val forgotToWaterPlant = plant(
-            waterDays = listOf(today.dayOfWeek),
-            modifiedAt = today.minusDays(7)
+            waterDays = listOf(yesterday.dayOfWeek),
+            modifiedAt = yesterday.minusDays(1)
         )
 
         // ACTION
@@ -224,10 +244,11 @@ class PlantTest {
     fun `not forgotten when plant's weekdays is modified on a weekday after the weekday it needs water`() {
         // SETUP
         val today = today()
+        val yesterday = today.minusDays(1)
         val fourDaysAgo = today.minusDays(4)
         val plant = plant(
-            waterDays = listOf(today.dayOfWeek),
-            modifiedAt = today.minusDays(7)
+            waterDays = listOf(yesterday.dayOfWeek),
+            modifiedAt = yesterday.minusDays(7)
         )
 
         // ACTION

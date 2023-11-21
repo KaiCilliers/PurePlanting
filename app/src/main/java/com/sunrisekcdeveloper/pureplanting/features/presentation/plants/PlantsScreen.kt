@@ -105,28 +105,28 @@ fun PlantsScreen(
 @Composable
 private fun PlantsScreen_Preview() {
     ThemeSurfaceWrapper {
-        var selectedFilter by remember { mutableStateOf(PlantListFilter.UPCOMING) }
-
-        val plants = (1..40).map {
-            Plant.createNewPlant(
-                imageSrc = "cursus",
-                name = "Plant #$it",
-                description = "convallis",
-                size = "dico",
-                wateringDays = listOf(DayOfWeek.MONDAY),
-                wateringHour = 1,
-                wateringAmount = "aliquam"
-            )
-        }
-
-        PlantsScreen(
-            plantsFilterOption = listOf(PlantListFilter.UPCOMING, PlantListFilter.FORGOT_TO_WATER, PlantListFilter.HISTORY),
-            selectedFilter = mutableStateOf(selectedFilter),
-            onFilterSelected = { selectedFilter = it },
-            plants = mutableStateOf(plants),
-            onPlantTapped = {},
-            onAddIconTapped = {},
-            onNotificationIconTapped = {},
-        )
+//        var selectedFilter by remember { mutableStateOf(PlantListFilter.UPCOMING) }
+//
+//        val plants = (1..40).map {
+//            Plant.createNewPlant(
+//                imageSrc = "cursus",
+//                name = "Plant #$it",
+//                description = "convallis",
+//                size = "dico",
+//                wateringDays = listOf(DayOfWeek.MONDAY),
+//                wateringHour = 1,
+//                wateringAmount = "aliquam"
+//            )
+//        }
+//
+//        PlantsScreen(
+//            plantsFilterOption = listOf(PlantListFilter.UPCOMING, PlantListFilter.FORGOT_TO_WATER, PlantListFilter.HISTORY),
+//            selectedFilter = mutableStateOf(selectedFilter),
+//            onFilterSelected = { selectedFilter = it },
+//            plants = mutableStateOf(plants),
+//            onPlantTapped = {},
+//            onAddIconTapped = {},
+//            onNotificationIconTapped = {},
+//        )
     }
 }

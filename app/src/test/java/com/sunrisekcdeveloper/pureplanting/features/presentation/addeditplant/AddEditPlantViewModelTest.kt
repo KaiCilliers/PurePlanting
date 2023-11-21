@@ -2,14 +2,13 @@ package com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotNull
-import assertk.assertions.isTrue
 import assertk.assertions.isZero
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.components.PlantSize
 import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.PlantsKey
 import com.sunrisekcdeveloper.shared_test.PlantCacheFake
 import com.sunrisekcdeveloper.shared_test.plant
-import com.sunrisekcdeveloper.shared_test.today
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestack.History
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +34,7 @@ class AddEditPlantViewModelTest {
     fun setup() {
         Dispatchers.setMain(StandardTestDispatcher())
         plantCacheFake = PlantCacheFake()
-        backstack = Backstack().apply {this.setup(History.of(PlantsKey)) }
+        backstack = Backstack().apply { this.setup(History.of(PlantsKey)) }
     }
 
     @AfterEach
@@ -45,9 +44,13 @@ class AddEditPlantViewModelTest {
     }
 
     @Test
-    fun `without initial plant, all plant values are set to default values`() = runTest {
+    fun `adding a new plant sets all input fields to their default values`() = runTest {
         // SETUP
-        val viewModel = AddEditPlantViewModel(plantCacheFake, null, backstack)
+        val viewModel = AddEditPlantViewModel(
+            plantCache = plantCacheFake,
+            plant = null,
+            backstack = backstack
+        )
 
         // ASSERTIONS
         assertThat(viewModel.image.value).isEqualTo("")
@@ -55,13 +58,13 @@ class AddEditPlantViewModelTest {
         assertThat(viewModel.description.value).isEqualTo("")
         assertThat(viewModel.size.value).isEqualTo(AddEditPlantViewModel.DEFAULT_PLANT_SIZE)
         assertThat(viewModel.wateringDays.value).isEqualTo(listOf(AddEditPlantViewModel.DEFAULT_WATERING_DAY))
-        assertThat(viewModel.wateringTime.value.hour).isEqualTo(AddEditPlantViewModel.DEFAULT_WATERING_HOUR)
-        assertThat(viewModel.wateringTime.value.minute).isEqualTo(AddEditPlantViewModel.DEFAULT_WATERING_MIN)
+        assertThat(viewModel.wateringTime.value.hour).isEqualTo(AddEditPlantViewModel.DEFAULT_WATERING_TIME.hour)
+        assertThat(viewModel.wateringTime.value.minute).isEqualTo(AddEditPlantViewModel.DEFAULT_WATERING_TIME.minute)
         assertThat(viewModel.wateringAmount.value).isEqualTo(AddEditPlantViewModel.DEFAULT_WATERING_AMOUNT)
     }
 
     @Test
-    fun `with initial plant, all plant values are set to that plant's details`() = runTest {
+    fun `editing and existing plant sets input fields to plant's values`() = runTest {
         // SETUP
         val initialPlant = plant()
         val viewModel = AddEditPlantViewModel(plantCacheFake, initialPlant, backstack)
@@ -72,13 +75,13 @@ class AddEditPlantViewModelTest {
         assertThat(viewModel.description.value).isEqualTo(initialPlant.details.description)
         assertThat(viewModel.size.value.name).isEqualTo(initialPlant.details.size)
         assertThat(viewModel.wateringDays.value).isEqualTo(initialPlant.wateringInfo.days)
-        assertThat(viewModel.wateringTime.value.hour).isEqualTo(initialPlant.wateringInfo.atHour)
-        assertThat(viewModel.wateringTime.value.minute).isEqualTo(initialPlant.wateringInfo.atMin)
+        assertThat(viewModel.wateringTime.value.hour).isEqualTo(initialPlant.wateringInfo.time.hour)
+        assertThat(viewModel.wateringTime.value.minute).isEqualTo(initialPlant.wateringInfo.time.minute)
         assertThat(viewModel.wateringAmount.value).isEqualTo(initialPlant.wateringInfo.amount)
     }
 
     @Test
-    fun `saving a plant without an initial plant passed, creates a new plant`() = runTest {
+    fun `save changes without an initial plant creates a new plant`() = runTest {
         // SETUP
         val viewModel = AddEditPlantViewModel(plantCacheFake, null, backstack)
 
@@ -87,7 +90,7 @@ class AddEditPlantViewModelTest {
         viewModel.name.value = "test 1"
         viewModel.description.value = "test 1 desc"
         viewModel.size.value = PlantSize.Medium
-        viewModel.wateringDays.value =  listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+        viewModel.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
         viewModel.wateringTime.value = LocalTime.of(14, 0)
         viewModel.wateringAmount.value = "400ml"
 
@@ -100,7 +103,8 @@ class AddEditPlantViewModelTest {
     }
 
     @Test
-    fun `saving a plant with an initial plant passed, updates the existing plant`() = runTest {
+    fun `save changes with an initial plant updates existing plants with input field values`() = runTest {
+        // SETUP
         val initialPlant = plant()
         plantCacheFake.save(initialPlant)
         val viewModel = AddEditPlantViewModel(plantCacheFake, initialPlant, backstack)
@@ -110,7 +114,7 @@ class AddEditPlantViewModelTest {
         viewModel.name.value = "test 1"
         viewModel.description.value = "test 1 desc"
         viewModel.size.value = PlantSize.Medium
-        viewModel.wateringDays.value =  listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+        viewModel.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
         viewModel.wateringTime.value = LocalTime.of(14, 0)
         viewModel.wateringAmount.value = "400ml"
 
@@ -128,20 +132,26 @@ class AddEditPlantViewModelTest {
         assertThat(updatedPlant.details.description).isEqualTo(viewModel.description.value)
         assertThat(updatedPlant.details.size).isEqualTo(viewModel.size.value.name)
         assertThat(updatedPlant.wateringInfo.days).isEqualTo(viewModel.wateringDays.value)
-        assertThat(updatedPlant.wateringInfo.atHour).isEqualTo(viewModel.wateringTime.value.hour)
-        assertThat(updatedPlant.wateringInfo.atMin).isEqualTo(viewModel.wateringTime.value.minute)
+        assertThat(updatedPlant.wateringInfo.time.hour).isEqualTo(viewModel.wateringTime.value.hour)
+        assertThat(updatedPlant.wateringInfo.time.minute).isEqualTo(viewModel.wateringTime.value.minute)
         assertThat(updatedPlant.wateringInfo.amount).isEqualTo(viewModel.wateringAmount.value)
     }
 
     @Test
-    fun `editing an existing plant updates its next watering date when watering days have changed`() = runTest {
-        val today = today()
-        val initialPlant = plant(nextWateringDate = today)
+    fun `save changes with an initial plant updates existing plants last modified date value`() = runTest {
+        // SETUP
+        val initialPlant = plant()
         plantCacheFake.save(initialPlant)
         val viewModel = AddEditPlantViewModel(plantCacheFake, initialPlant, backstack)
 
         // ACTION
-        viewModel.wateringDays.value =  listOf(today.plusDays(3).dayOfWeek)
+        viewModel.image.value = "img"
+        viewModel.name.value = "test 1"
+        viewModel.description.value = "test 1 desc"
+        viewModel.size.value = PlantSize.Medium
+        viewModel.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+        viewModel.wateringTime.value = LocalTime.of(14, 0)
+        viewModel.wateringAmount.value = "400ml"
 
         // ASSERTIONS
         assertThat(plantCacheFake.all().size).isEqualTo(1)
@@ -152,8 +162,7 @@ class AddEditPlantViewModelTest {
         val updatedPlant = plantCacheFake.find(initialPlant.id)
         assertThat(plantCacheFake.all().size).isEqualTo(1)
         assertThat(updatedPlant).isNotNull()
-        assertThat(updatedPlant!!.wateringInfo.days).isEqualTo(viewModel.wateringDays.value)
-        assertThat(updatedPlant.wateringInfo.nextWateringDay.isAfter(initialPlant.wateringInfo.nextWateringDay)).isTrue()
+        assertThat(updatedPlant!!.userLastModifiedDate).isGreaterThan(initialPlant.userLastModifiedDate)
     }
 
 }

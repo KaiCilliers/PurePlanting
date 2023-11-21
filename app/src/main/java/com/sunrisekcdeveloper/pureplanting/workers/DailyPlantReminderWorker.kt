@@ -22,16 +22,13 @@ class DailyPlantReminderWorker(
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         return try {
-            val plantsThatNeedsWatering = PlantCache.Smart(plantCache).allThatNeedsWateringSoon(LocalDateTime.now(clock))
+            val plantsThatNeedsWatering = PlantCache
+                .Smart(plantCache)
+                .allThatNeedsWateringBefore(LocalDateTime.now(clock).plusMinutes(PERIODIC_INTERVAL_MINUTES))
 
             // on tap open app on plants screen
             if (plantsThatNeedsWatering.isNotEmpty()) {
-                val notification = NotificationDomain.createWaterSoon(plantsThatNeedsWatering.size)
-                notificationsCache.save(notification)
-                systemNotification.send(notification)
-            } else {
-                // todo remove - used to ensure a daily notification is at least received
-                val notification = NotificationDomain.createWaterSoon(99)
+                val notification = NotificationDomain.createWaterSoon(plantsThatNeedsWatering)
                 notificationsCache.save(notification)
                 systemNotification.send(notification)
             }
@@ -57,6 +54,6 @@ class DailyPlantReminderWorker(
 
     companion object {
         const val TAG = "DailyPlantReminderWorkerTag"
-
+        const val PERIODIC_INTERVAL_MINUTES = 15L
     }
 }

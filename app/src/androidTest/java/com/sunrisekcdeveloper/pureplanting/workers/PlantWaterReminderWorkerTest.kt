@@ -9,49 +9,51 @@ import com.sunrisekcdeveloper.pureplanting.features.component.notifications.Plan
 import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
 import com.sunrisekcdeveloper.pureplanting.workers.DailyPlantReminderWorker.Factory
 import com.sunrisekcdeveloper.shared_test.MutableClock
-import com.sunrisekcdeveloper.shared_test.NotificationCacheFake
+import com.sunrisekcdeveloper.shared_test.NotificationsCacheFake
 import com.sunrisekcdeveloper.shared_test.PlantCacheFake
-import com.sunrisekcdeveloper.shared_test.plantThatNeedsWaterSoon
+import com.sunrisekcdeveloper.shared_test.now
+import com.sunrisekcdeveloper.shared_test.plantNeedsWaterNow
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.Matchers
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.time.Clock
-import java.time.LocalDateTime
 
 class PlantWaterReminderWorkerTest {
 
     private lateinit var context: Context
     private lateinit var plantCacheFake: PlantCacheFake
-    private lateinit var notificationCacheFake: NotificationCacheFake
+    private lateinit var notificationsCacheFake: NotificationsCacheFake
     private lateinit var systemNotification: SystemNotification
     private lateinit var mutableClock: MutableClock
+    private lateinit var plantReminderWorkerFactory: Factory
 
     @Before
     fun setup() {
         plantCacheFake = PlantCacheFake()
-        notificationCacheFake = NotificationCacheFake()
+        notificationsCacheFake = NotificationsCacheFake()
         mutableClock = MutableClock(Clock.systemDefaultZone())
         context = ApplicationProvider.getApplicationContext()
         systemNotification = SystemNotification(context)
+        plantReminderWorkerFactory = Factory(plantCacheFake, notificationsCacheFake, systemNotification, mutableClock)
     }
 
     @After
     fun teardown() {
         plantCacheFake.throwException = false
-        notificationCacheFake.throwException = false
+        notificationsCacheFake.throwException = false
         plantCacheFake.resetData()
-        notificationCacheFake.resetData()
+        notificationsCacheFake.resetData()
     }
 
+    // TODO Continue here
     @Test
-    fun with_zero_plants_to_water_soon_then_no_new_notification_is_created() {
+    fun with_no_plants_existing_then_no_new_notification_is_created() {
         // SETUP
         val worker = TestListenableWorkerBuilder<DailyPlantReminderWorker>(context)
-            .setWorkerFactory(Factory(plantCacheFake, notificationCacheFake, systemNotification, mutableClock))
+            .setWorkerFactory(plantReminderWorkerFactory)
             .build()
 
         // ACTION & ASSERTIONS
@@ -59,31 +61,61 @@ class PlantWaterReminderWorkerTest {
             val result = worker.doWork()
 
             assertThat(result, `is`(ListenableWorker.Result.success()))
-            assertThat(notificationCacheFake.all().size, `is`(0))
+            assertThat(notificationsCacheFake.all().size, `is`(0))
         }
     }
 
     @Test
-    fun there_are_plants_that_need_to_be_watered_soon_then_a_single_new_notification_is_created() {
+    fun create_notification_for_all_plants_that_that_need_water_up_to_15min_in_the_future_when_there_are_multiple_that_need_water() {
         // SETUP
         val worker = TestListenableWorkerBuilder<DailyPlantReminderWorker>(context)
-            .setWorkerFactory(Factory(plantCacheFake, notificationCacheFake, systemNotification, mutableClock))
+            .setWorkerFactory(plantReminderWorkerFactory)
             .build()
 
-        plantCacheFake.save(plantThatNeedsWaterSoon(LocalDateTime.now(mutableClock)))
-        // with offset, it does not need to be watered soon
-        plantCacheFake.save(plantThatNeedsWaterSoon(LocalDateTime.now(mutableClock), offsetFutureDays = 2))
-        plantCacheFake.save(plantThatNeedsWaterSoon(LocalDateTime.now(mutableClock)))
+        // ACTION
+        plantCacheFake.save(plantNeedsWaterNow())
+        plantCacheFake.save(plantNeedsWaterNow(now().plusMinutes(10)).water())
+        plantCacheFake.save(plantNeedsWaterNow(now().plusMinutes(30)))
+        plantCacheFake.save(plantNeedsWaterNow(now().plusMinutes(20)))
+        plantCacheFake.save(plantNeedsWaterNow(now().minusHours(1)))
 
-        // ACTION & ASSERTIONS
+        // ASSERTIONS
         runBlocking {
             val result = worker.doWork()
+            val notifications = notificationsCacheFake.all()
 
             assertThat(result, `is`(ListenableWorker.Result.success()))
-            assertThat(notificationCacheFake.all().size, `is`(1))
-            assertThat(notificationCacheFake.all().first().type, `is`(instanceOf(PlantNotificationType.DailyWaterReminder::class.java)))
-            assertThat(notificationCacheFake.all().first().seen, `is`(false))
-            assertThat(notificationCacheFake.all().first().created, `is`(Matchers.lessThan(LocalDateTime.now())))
+            assertThat(notifications.size, `is`(1))
+            assertThat(notifications.first().seen, `is`(false))
+            assertThat(notifications.first().type, instanceOf(PlantNotificationType.NeedsWater::class.java))
+            assertThat(notifications.first().type.targetPlants.size, `is`(2))
+        }
+    }
+
+    @Test
+    fun only_create_notification_for_plants_that_have_not_yet_been_watered_today() {
+        // SETUP
+        val worker = TestListenableWorkerBuilder<DailyPlantReminderWorker>(context)
+            .setWorkerFactory(plantReminderWorkerFactory)
+            .build()
+
+        // ACTION
+        plantCacheFake.save(plantNeedsWaterNow())
+        plantCacheFake.save(plantNeedsWaterNow(now().plusMinutes(10)))
+        plantCacheFake.save(plantNeedsWaterNow(now().plusMinutes(30)))
+        plantCacheFake.save(plantNeedsWaterNow(now().plusMinutes(20)))
+        plantCacheFake.save(plantNeedsWaterNow(now().minusHours(1)))
+
+        // ASSERTIONS
+        runBlocking {
+            val result = worker.doWork()
+            val notifications = notificationsCacheFake.all()
+
+            assertThat(result, `is`(ListenableWorker.Result.success()))
+            assertThat(notifications.size, `is`(1))
+            assertThat(notifications.first().seen, `is`(false))
+            assertThat(notifications.first().type, instanceOf(PlantNotificationType.NeedsWater::class.java))
+            assertThat(notifications.first().type.targetPlants.size, `is`(3))
         }
     }
 
@@ -92,7 +124,7 @@ class PlantWaterReminderWorkerTest {
         // SETUP
         plantCacheFake.throwException = true
         val worker = TestListenableWorkerBuilder<DailyPlantReminderWorker>(context)
-            .setWorkerFactory(Factory(plantCacheFake, notificationCacheFake, systemNotification, mutableClock))
+            .setWorkerFactory(Factory(plantCacheFake, notificationsCacheFake, systemNotification, mutableClock))
             .build()
 
         // ACTION & ASSERTIONS
@@ -101,7 +133,7 @@ class PlantWaterReminderWorkerTest {
 
             plantCacheFake.throwException = false
             assertThat(result, `is`(ListenableWorker.Result.failure()))
-            assertThat(notificationCacheFake.all().size, `is`(0))
+            assertThat(notificationsCacheFake.all().size, `is`(0))
         }
     }
 }

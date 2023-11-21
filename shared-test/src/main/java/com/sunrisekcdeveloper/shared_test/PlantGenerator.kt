@@ -12,58 +12,47 @@ import java.util.UUID
 fun plant(
     id: UUID = UUID.randomUUID(),
     waterDays: List<DayOfWeek> = listOf(DayOfWeek.MONDAY),
-    wateringTime: LocalTime = LocalTime.now(),
-    previousWateringDate: List<LocalDateTime> = emptyList()
+    atTime: LocalTime = LocalTime.now(),
+    modifiedAt: LocalDateTime = LocalDateTime.now(),
 ): Plant {
     return Plant(
-        id = id,
+        id = id.toString(),
         details = PlantDetails(
-        name = "Mitchel Cortez",
-        size = PlantSize.Medium.name,
-        description = "fermentum",
-        imageSrcUri = "",
+            name = "Mitchel Cortez",
+            size = PlantSize.Medium.name,
+            description = "fermentum",
+            imageSrcUri = "",
         ),
         wateringInfo = WateringInfo(
-            atHour = wateringTime.hour,
+            time = atTime,
             days = waterDays,
-            amount = "240 ml",
-            nextWateringDay = LocalDateTime.now(),
-            previousWaterDates = previousWateringDate,
-            atMin = wateringTime.minute
-        )
-    )
-}
-
-fun plant(
-    name: String = "Test Plant",
-    nextWateringDate: LocalDateTime,
-    previousWateredDates: List<LocalDateTime> = emptyList(),
-): Plant {
-    return Plant(
-        id = UUID.randomUUID(),
-        details = PlantDetails(
-            name = name,
-            size = "Small",
-            description = "Desc",
-            imageSrcUri = "imgs src"
+            amount = "240ml",
+            datesWatered = listOf()
         ),
-        wateringInfo = WateringInfo(
-            atHour = nextWateringDate.hour,
-            atMin = nextWateringDate.minute,
-            days = listOf(nextWateringDate.dayOfWeek),
-            amount = "300 ml",
-            nextWateringDay = nextWateringDate,
-            previousWaterDates = previousWateredDates
-        )
+        userLastModifiedDate = modifiedAt
     )
 }
 
-fun plantThatNeedsWaterSoon(
-    today: LocalDateTime,
-    offsetFutureDays: Long = 0,
-): Plant {
+fun plantForgotten(date: LocalDateTime = LocalDateTime.now()): Plant {
     return plant(
-        waterDays = listOf(today.plusDays(1 + offsetFutureDays).dayOfWeek),
-        wateringTime = today.plusHours(1).toLocalTime()
-    ).nextWateringDate(today)
+        waterDays = listOf(date.minusDays(1).dayOfWeek),
+        atTime = LocalTime.of(date.hour, date.minute, 0),
+        modifiedAt = date.minusDays(2),
+    )
+}
+
+fun plantNeedsWater(date: LocalDateTime, modifiedAt: LocalDateTime = LocalDateTime.now()): Plant {
+    return plant(
+        waterDays = listOf(date.dayOfWeek),
+        atTime = LocalTime.of(date.hour, date.minute, 0),
+        modifiedAt = modifiedAt
+    )
+}
+
+fun plantNeedsWaterNow(date: LocalDateTime = LocalDateTime.now()): Plant {
+    return plant(
+        waterDays = listOf(date.dayOfWeek),
+        atTime = date.toLocalTime(),
+        modifiedAt = date.minusHours(1),
+    )
 }

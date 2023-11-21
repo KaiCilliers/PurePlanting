@@ -11,16 +11,17 @@ data class NotificationDomain(
     val type: PlantNotificationType,
 ) {
     companion object {
-        fun createWaterSoon(plantsToWaterCount: Int): NotificationDomain {
-            return create(PlantNotificationType.DailyWaterReminder(
-                notificationContent = "Hey, you have $plantsToWaterCount plants to water today"
+        fun createWaterSoon(targetPlants: List<Plant>): NotificationDomain {
+            return create(PlantNotificationType.NeedsWater(
+                targetPlants = targetPlants.map { it.id },
+                notificationContent = "Hey, you have ${targetPlants.size} plants to water today"
             ))
         }
 
-        fun createForgotToWater(targetPlant: Plant): NotificationDomain {
+        fun createForgotToWater(targetPlants: List<Plant>): NotificationDomain {
             return create(PlantNotificationType.ForgotToWater(
-                targetPlant = targetPlant,
-                notificationContent = "Hey, you forgot to water your ${targetPlant.details.name}"
+                targetPlants = targetPlants.map { it.id },
+                notificationContent = "Hey, you forgot to water your"
             ))
         }
 

@@ -23,7 +23,7 @@ class PlantCacheFake : PlantCache {
         }
     }
 
-    override fun remove(plantId: UUID) {
+    override fun remove(plantId: String) {
         if (throwException) throw Exception("Forced test failure")
         plants.update {
             it.toMutableList().apply {
@@ -32,7 +32,7 @@ class PlantCacheFake : PlantCache {
         }
     }
 
-    override fun find(plantId: UUID): Plant? {
+    override fun find(plantId: String): Plant? {
         if (throwException) throw Exception("Forced test failure")
         return plants.value.find { it.id == plantId }
     }

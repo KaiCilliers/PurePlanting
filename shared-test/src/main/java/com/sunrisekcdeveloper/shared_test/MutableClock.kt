@@ -13,6 +13,14 @@ class MutableClock(private val origin: Clock): Clock(){
         offset = offset.plus(duration)
     }
 
+    fun reverseTimeBy(duration: Duration) {
+        offset = offset.minus(duration)
+    }
+
+    fun reset() {
+        offset = Duration.ZERO
+    }
+
     override fun getZone(): ZoneId {
         return origin.zone
     }

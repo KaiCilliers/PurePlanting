@@ -2,19 +2,24 @@ package com.sunrisekcdeveloper.pureplanting.features.presentation.plants
 
 import app.cash.turbine.test
 import assertk.assertThat
-import assertk.assertions.contains
+import assertk.assertions.containsExactly
+import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.shared_test.MutableClock
+import com.sunrisekcdeveloper.shared_test.NotificationsCacheFake
 import com.sunrisekcdeveloper.shared_test.PlantCacheFake
-import com.sunrisekcdeveloper.shared_test.advanceTimeBy
+import com.sunrisekcdeveloper.shared_test.now
 import com.sunrisekcdeveloper.shared_test.plant
+import com.sunrisekcdeveloper.shared_test.plantForgotten
+import com.sunrisekcdeveloper.shared_test.plantNeedsWater
+import com.sunrisekcdeveloper.shared_test.plantNeedsWaterNow
 import com.sunrisekcdeveloper.shared_test.today
+import com.sunrisekcdeveloper.shared_test.unreadNotification
 import com.zhuinden.simplestack.Backstack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -23,9 +28,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.Clock
-import java.time.DayOfWeek
-import java.time.LocalDateTime
-import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.toJavaDuration
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -34,13 +37,15 @@ class PlantsViewModelTest {
     private lateinit var plantCacheFake: PlantCacheFake
     private lateinit var viewModel: PlantsViewModel
     private lateinit var mutableClock: MutableClock
+    private lateinit var notificationsCacheFake: NotificationsCacheFake
 
     @BeforeEach
     fun setup() {
         Dispatchers.setMain(StandardTestDispatcher())
         mutableClock = MutableClock(Clock.systemDefaultZone())
         plantCacheFake = PlantCacheFake()
-        viewModel = PlantsViewModel(plantCacheFake, mutableClock, Backstack())
+        notificationsCacheFake = NotificationsCacheFake()
+        viewModel = PlantsViewModel(plantCacheFake, notificationsCacheFake, mutableClock, Backstack())
     }
 
     @AfterEach
@@ -50,165 +55,406 @@ class PlantsViewModelTest {
     }
 
     @Test
-    fun `fresh launch, no plant available to emit`() = runTest {
+    fun `upon init, upcoming filter is selected`() = runTest {
         // SETUP
-        val plantsFlow: StateFlow<List<Plant>> = viewModel.plants
+        val filterFlow = viewModel.activeFilter
 
         // ACTION & ASSERTIONS
-        plantsFlow.test {
-            val emission1 = awaitItem()
-            assertThat(emission1.isEmpty()).isTrue()
-        }
+        filterFlow.test {
+            val emission = awaitItem()
 
+            assertThat(emission).isEqualTo(PlantListFilter.UPCOMING)
+        }
     }
 
     @Test
-    fun `add new plant, new emission with the newly added plant`() = runTest {
+    fun `upcoming filter selected, display only plants that need water`() = runTest {
         // SETUP
         val plantsFlow = viewModel.plants
-
-        // ACTION & ASSERTIONS
-        plantsFlow.test {
-            awaitItem() // initial emission
-
-            val plantToAdd = plant()
-            plantCacheFake.save(plantToAdd)
-
-            val emission2 = awaitItem()
-            assertThat(emission2.size).isEqualTo(1)
-            assertThat(emission2.first().id).isEqualTo(plantToAdd.id)
-        }
-    }
-
-    @Test
-    fun `default filter only shows plants that need to get watered soon`() = runTest {
-        // SETUP
-        val today = today(DayOfWeek.THURSDAY)
-        var actualToday = LocalDateTime.now(mutableClock)
-
-        while(actualToday.dayOfWeek != today.dayOfWeek) {
-            mutableClock.advanceTimeBy(1.days.toJavaDuration())
-            actualToday = LocalDateTime.now(mutableClock)
-        }
-
-        plantCacheFake.resetData(
-            listOf(
-                plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY)),
-                plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY)),
-                plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)),
-                plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY))
-            ).map { it.nextWateringDate(today) }
-        )
-        val plantsFlow = viewModel.plants
-
-        // ACTION & ASSERTIONS
-        plantsFlow.test {
-            awaitItem() // initial emission
-
-            val emission2 = awaitItem()
-            assertThat(emission2.size).isEqualTo(2)
-        }
-    }
-
-    @Test
-    fun `forgot to water filter selected, only show plants that was forgotten to water`() = runTest {
-        // SETUP
         val today = today()
-        plantCacheFake.resetData(
-            listOf(
-                plant(nextWateringDate = today.plusDays(1)),
-                plant(nextWateringDate = today.plusDays(2)),
-                plant(nextWateringDate = today.plusDays(3)),
-                plant(nextWateringDate = today.plusDays(4)),
-                plant(nextWateringDate = today.plusDays(5)),
-                plant(nextWateringDate = today.plusDays(6)),
-            )
-        )
 
-        // ACTION & ASSERTIONS
-        viewModel.plants.test {
-            awaitItem()
-            awaitItem()
+        plantCacheFake.save(plantNeedsWaterNow(today))
+        plantCacheFake.save(plantNeedsWaterNow(today))
+        plantCacheFake.save(plantNeedsWater(today.minusDays(3)))
 
-            advanceTimeBy(2.days, mutableClock) // clock used by ViewModel
-            viewModel.setFilter(PlantListFilter.FORGOT_TO_WATER)
-            assertThat(awaitItem().size).isEqualTo(2)
+        // ACTION
+        viewModel.setFilter(PlantListFilter.UPCOMING)
+
+        // ASSERTIONS
+        plantsFlow.test {
+            awaitItem()
+            val emission = awaitItem()
+
+            assertThat(emission).hasSize(2)
         }
-
     }
 
     @Test
-    fun `history filter selected, only show plants that have a record of being watered`() = runTest {
+    fun `forgot to water filter selected, display only plants that have been forgotten to be watered`() = runTest {
         // SETUP
-        plantCacheFake.resetData(
-            listOf(
-                plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY)).water(),
-                plant(waterDays = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY)).water(),
-                plant(waterDays = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)),
-                plant(waterDays = listOf(DayOfWeek.THURSDAY, DayOfWeek.TUESDAY)).water(),
-                plant(waterDays = listOf(DayOfWeek.FRIDAY, DayOfWeek.MONDAY)),
-            )
-        )
+        val plantsFlow = viewModel.plants
+        val today = today()
+
+        plantCacheFake.save(plantForgotten())
+        plantCacheFake.save(plantForgotten())
+        plantCacheFake.save(plantNeedsWaterNow(today))
+        plantCacheFake.save(plantForgotten())
+
+        // ACTION
+        viewModel.setFilter(PlantListFilter.FORGOT_TO_WATER)
+
+        // ASSERTIONS
+        plantsFlow.test {
+            awaitItem()
+            val emission = awaitItem()
+
+            assertThat(emission).hasSize(3)
+        }
+    }
+
+    @Test
+    fun `history filter selected, display only plants that have a record of being watered`() = runTest {
+        // SETUP
+        val plantsFlow = viewModel.plants
+
+        plantCacheFake.save(plant())
+        plantCacheFake.save(plant().water())
+        plantCacheFake.save(plant().water().water())
+        plantCacheFake.save(plant())
+        plantCacheFake.save(plant().water())
 
         // ACTION & ASSERTIONS
-        viewModel.plants.test {
+        plantsFlow.test {
+            awaitItem()
+            viewModel.setFilter(PlantListFilter.HISTORY)
+
+            val emission = awaitItem()
+
+            assertThat(emission).hasSize(3)
+        }
+    }
+
+    @Test
+    fun `water a plant in upcoming list removes it from the list`() = runTest {
+        // SETUP
+        val plantsFlow = viewModel.plants
+        val plantToWater = plantNeedsWaterNow()
+
+        plantCacheFake.save(plantNeedsWaterNow())
+        plantCacheFake.save(plant().water())
+        plantCacheFake.save(plant().water().water())
+        plantCacheFake.save(plantToWater)
+        plantCacheFake.save(plant().water())
+        plantCacheFake.save(plantForgotten())
+
+        // ACTION & ASSERTIONS
+        plantsFlow.test {
+            awaitItem()
+
+            viewModel.setFilter(PlantListFilter.UPCOMING)
+            assertThat(awaitItem()).hasSize(2)
+
+            viewModel.waterPlant(plantToWater)
+            assertThat(awaitItem()).hasSize(1)
+        }
+    }
+
+    @Test
+    fun `undo watering of a plant with single record in history removes item from history list`() = runTest {
+        // SETUP
+        val plantsFlow = viewModel.plants
+        val plantToUndoWatering = plant().water()
+
+        plantCacheFake.save(plantNeedsWaterNow())
+        plantCacheFake.save(plant().water())
+        plantCacheFake.save(plant().water().water())
+        plantCacheFake.save(plantNeedsWaterNow())
+        plantCacheFake.save(plantToUndoWatering)
+        plantCacheFake.save(plantForgotten())
+
+        // ACTION & ASSERTIONS
+        plantsFlow.test {
             awaitItem()
 
             viewModel.setFilter(PlantListFilter.HISTORY)
-            assertThat(awaitItem().size).isEqualTo(3)
+            assertThat(awaitItem()).hasSize(3)
+
+            viewModel.undoWaterPlant(plantToUndoWatering)
+            assertThat(awaitItem()).hasSize(2)
         }
     }
 
     @Test
-    fun `remove plant, new emission of plants without plant that was removed`() = runTest {
+    fun `undo watering of a plant with more than one record in history list does not remove it from the list`() = runTest {
         // SETUP
-        val today = today()
-        val allPlants = listOf(
-            plant(nextWateringDate = today),
-            plant(nextWateringDate = today),
-            plant(nextWateringDate = today.plusDays(1)),
-            plant(nextWateringDate = today),
-            plant(nextWateringDate = today.plusDays(1)),
-        )
-        plantCacheFake.resetData(allPlants)
 
         // ACTION & ASSERTIONS
-        viewModel.plants.test {
+
+    }
+
+    @Test
+    fun `water a plant in forgot to water list removes it from the list`() = runTest {
+        // SETUP
+        val plantsFlow = viewModel.plants
+        val plantToUndoWatering = plant().water().water()
+
+        plantCacheFake.save(plantNeedsWaterNow())
+        plantCacheFake.save(plant().water())
+        plantCacheFake.save(plant().water().water())
+        plantCacheFake.save(plantNeedsWaterNow())
+        plantCacheFake.save(plantToUndoWatering)
+        plantCacheFake.save(plantForgotten())
+
+        // ACTION & ASSERTIONS
+        plantsFlow.test {
             awaitItem()
 
-            viewModel.removePlant(allPlants.first().id)
+            viewModel.setFilter(PlantListFilter.HISTORY)
+            assertThat(awaitItem()).hasSize(3)
 
-            val emission = awaitItem()
-            assertThat(emission.size).isEqualTo(allPlants.size - 1)
+            viewModel.undoWaterPlant(plantToUndoWatering)
+            assertThat(awaitItem()).hasSize(3)
+        }
+    }
+
+    // note test a delete on each filter    , i,e, 3 deletes and 3 assserts
+    @Test
+    fun `delete a plant removes it from the current list`() = runTest {
+        // SETUP
+        val plantsFlow = viewModel.plants
+        val upcomingPlant = plantNeedsWaterNow()
+        val forgottenPlant = plantForgotten()
+        val wateredPlant = plant().water().water()
+
+        plantCacheFake.save(upcomingPlant)
+        plantCacheFake.save(wateredPlant)
+        plantCacheFake.save(forgottenPlant)
+        plantCacheFake.save(plant().water().water())
+        plantCacheFake.save(plantForgotten())
+
+        // ACTION & ASSERTIONS
+        plantsFlow.test {
+            awaitItem()
+
+            assertThat(awaitItem()).hasSize(1)
+            viewModel.removePlant(upcomingPlant)
+            assertThat(awaitItem()).hasSize(0)
+
+            viewModel.setFilter(PlantListFilter.FORGOT_TO_WATER)
+            assertThat(awaitItem()).hasSize(2)
+            viewModel.removePlant(forgottenPlant)
+            assertThat(awaitItem()).hasSize(1)
+
+            viewModel.setFilter(PlantListFilter.HISTORY)
+            assertThat(awaitItem()).hasSize(2)
+            viewModel.removePlant(wateredPlant)
+            assertThat(awaitItem()).hasSize(1)
+        }
+    }
+
+    // note test a delete on each filter    , i,e, 3 deletes and 3 assserts
+    @Test
+    fun `undo deleting a plant returns it to the list it was deleted from`() = runTest {
+        // SETUP
+        val plantsFlow = viewModel.plants
+        val upcomingPlant = plantNeedsWaterNow()
+        val forgottenPlant = plantForgotten()
+        val wateredPlant = plant().water().water()
+
+        plantCacheFake.save(upcomingPlant)
+        plantCacheFake.save(wateredPlant)
+        plantCacheFake.save(forgottenPlant)
+        plantCacheFake.save(plant().water().water())
+        plantCacheFake.save(plantForgotten())
+
+        // ACTION & ASSERTIONS
+        plantsFlow.test {
+            awaitItem()
+
+            assertThat(awaitItem()).hasSize(1)
+            viewModel.removePlant(upcomingPlant)
+            assertThat(awaitItem()).hasSize(0)
+            viewModel.undoRemove(upcomingPlant.id)
+            assertThat(awaitItem()).hasSize(1)
+
+            viewModel.setFilter(PlantListFilter.FORGOT_TO_WATER)
+            assertThat(awaitItem()).hasSize(2)
+            viewModel.removePlant(forgottenPlant)
+            assertThat(awaitItem()).hasSize(1)
+            viewModel.undoRemove(forgottenPlant.id)
+            assertThat(awaitItem()).hasSize(2)
+
+            viewModel.setFilter(PlantListFilter.HISTORY)
+            assertThat(awaitItem()).hasSize(2)
+            viewModel.removePlant(wateredPlant)
+            assertThat(awaitItem()).hasSize(1)
+            viewModel.undoRemove(wateredPlant.id)
+            assertThat(awaitItem()).hasSize(2)
         }
     }
 
     @Test
-    fun `undo previously removed plant, new emission of plants that contains the previously removed plant`() = runTest {
+    fun `upcoming plants are sorted in ascending order by the time it needs water`() = runTest {
         // SETUP
+        val plantsFlow = viewModel.plants
         val today = today()
-        val allPlants = listOf(
-            plant(nextWateringDate = today),
-            plant(nextWateringDate = today.plusDays(1)),
-            plant(nextWateringDate = today),
-        )
-        val plantToRemove = allPlants.first()
-        plantCacheFake.resetData(allPlants)
+        val plantMorning = plantNeedsWaterNow(today.withHour(8))
+        val plantAfternoon = plantNeedsWaterNow(today.withHour(12))
+        val plantEvening = plantNeedsWaterNow(today.withHour(17))
+
+        plantCacheFake.save(plantAfternoon)
+        plantCacheFake.save(plantEvening)
+        plantCacheFake.save(plantMorning)
 
         // ACTION & ASSERTIONS
-        viewModel.plants.test {
+        plantsFlow.test {
             awaitItem()
 
-            viewModel.removePlant(plantToRemove.id)
+            assertThat(awaitItem()).containsExactly(plantMorning, plantAfternoon, plantEvening)
+        }
+    }
+
+    @Test
+    fun `forgot to water plants are sorted in ascending order by the date it needs water`() = runTest {
+        // SETUP
+        val plantsFlow = viewModel.plants
+        val today = today()
+        val plantMorning = plantForgotten(today.withHour(8))
+        val plantAfternoon = plantForgotten(today.withHour(12))
+        val plantEvening = plantForgotten(today.withHour(17))
+
+        plantCacheFake.save(plantAfternoon)
+        plantCacheFake.save(plantMorning)
+        plantCacheFake.save(plantEvening)
+
+        // ACTION & ASSERTIONS
+        plantsFlow.test {
+            awaitItem()
+
+            viewModel.setFilter(PlantListFilter.FORGOT_TO_WATER)
+            assertThat(awaitItem()).containsExactly(plantMorning, plantAfternoon, plantEvening)
+        }
+    }
+
+    @Test
+    fun `history plants are sorted in descending order by the latest date it was watered`() = runTest {
+        // SETUP
+        val plantsFlow = viewModel.plants
+        val wateredThird = plant()
+        val wateredSecond = plant()
+        val wateredFirst = plant()
+
+        mutableClock.reverseTimeBy(1.hours.toJavaDuration())
+        plantCacheFake.save(wateredThird.water(mutableClock))
+
+        mutableClock.reverseTimeBy(1.hours.toJavaDuration())
+        plantCacheFake.save(wateredSecond.water(mutableClock))
+
+        mutableClock.reverseTimeBy(1.hours.toJavaDuration())
+        plantCacheFake.save(wateredFirst.water(mutableClock))
+
+        // ACTION & ASSERTIONS
+        plantsFlow.test {
+            awaitItem()
+
+            viewModel.setFilter(PlantListFilter.HISTORY)
+            val emission = awaitItem()
+
+            assertThat(emission).hasSize(3)
+            assertThat(emission.first().dateLastWatered?.hour).isEqualTo(now().minusHours(1).hour)
+            assertThat(emission[1].dateLastWatered?.hour).isEqualTo(now().minusHours(2).hour)
+            assertThat(emission[2].dateLastWatered?.hour).isEqualTo(now().minusHours(3).hour)
+        }
+    }
+
+
+    @Test
+    fun `undo watering of a plant with multiple watering records updates the order of the items in history list`() = runTest {
+        // SETUP
+        val plantsFlow = viewModel.plants
+        var plantToUndo = plant()
+
+        // now is 4pm
+        // water at 2pm
+        mutableClock.reverseTimeBy(2.hours.toJavaDuration())
+        plantCacheFake.save(plant().water(mutableClock))
+
+        // water at 1pm
+        mutableClock.reverseTimeBy(1.hours.toJavaDuration())
+        plantToUndo = plantToUndo.water(mutableClock)
+        plantCacheFake.save(plantToUndo)
+
+        // water at 11am
+        mutableClock.reverseTimeBy(2.hours.toJavaDuration())
+        plantCacheFake.save(plant().water(mutableClock))
+
+        // water at 3pm
+        mutableClock.reset()
+        mutableClock.reverseTimeBy(1.hours.toJavaDuration())
+        plantToUndo = plantToUndo.water(mutableClock)
+        plantCacheFake.save(plantToUndo)
+
+        // ACTION & ASSERTIONS
+        plantsFlow.test {
+            awaitItem()
+
+            viewModel.setFilter(PlantListFilter.HISTORY)
 
             val emission = awaitItem()
-            assertThat(emission.size).isEqualTo(allPlants.size - 1)
+            assertThat(emission).hasSize(3)
+            assertThat(emission.first().dateLastWatered?.hour).isEqualTo(now().minusHours(1).hour) // 3pm
+            assertThat(emission[1].dateLastWatered?.hour).isEqualTo(now().minusHours(2).hour) // 2pm
+            assertThat(emission[2].dateLastWatered?.hour).isEqualTo(now().minusHours(5).hour) // 11am
 
-            viewModel.undoRemove(plantToRemove.id)
+            viewModel.undoWaterPlant(plantToUndo)
+
             val emission2 = awaitItem()
-            assertThat(emission2.size).isEqualTo(allPlants.size)
-            assertThat(emission2).contains(plantToRemove)
+            assertThat(emission2.first().dateLastWatered?.hour).isEqualTo(now().minusHours(2).hour) // 2pm
+            assertThat(emission2[1].dateLastWatered?.hour).isEqualTo(now().minusHours(3).hour) // 1pm
+            assertThat(emission2[2].dateLastWatered?.hour).isEqualTo(now().minusHours(5).hour) // 11am
         }
     }
 
+    @Test
+    fun `has unread notifications is true when notifications exist that have not been read`() = runTest {
+        // SETUP
+        val unreadNotificationsFlow = viewModel.hasUnreadNotifications
+
+        notificationsCacheFake.save(unreadNotification())
+        notificationsCacheFake.save(unreadNotification())
+        notificationsCacheFake.save(unreadNotification())
+
+        // ACTION & ASSERTIONS
+        unreadNotificationsFlow.test {
+            awaitItem()
+
+            val emission = awaitItem()
+            assertThat(emission).isTrue()
+        }
+    }
+
+    @Test
+    fun `has unread notifications is false after notifications have been read`() = runTest {
+        // SETUP
+        val unreadNotificationsFlow = viewModel.hasUnreadNotifications
+        val notificationOne = unreadNotification()
+        val notificationTwo = unreadNotification()
+
+        notificationsCacheFake.save(notificationOne)
+        notificationsCacheFake.save(notificationTwo)
+
+        // ACTION & ASSERTIONS
+        unreadNotificationsFlow.test {
+            awaitItem()
+
+            val emission = awaitItem()
+            assertThat(emission).isTrue()
+
+            notificationsCacheFake.save(notificationOne.copy(seen = true))
+            notificationsCacheFake.save(notificationTwo.copy(seen = true))
+
+            val emission3 = awaitItem()
+            assertThat(emission3).isFalse()
+        }
+    }
 }
