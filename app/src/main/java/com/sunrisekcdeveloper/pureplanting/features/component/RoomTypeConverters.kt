@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.features.component.plants
+package com.sunrisekcdeveloper.pureplanting.features.component
 
 import androidx.room.TypeConverter
 import java.time.DayOfWeek
@@ -36,5 +36,17 @@ class RoomTypeConverters {
     @TypeConverter
     fun daysOfWeekToString(daysOfWeek: List<DayOfWeek>?): String? {
         return daysOfWeek?.joinToString()
+    }
+
+    @TypeConverter
+    fun stringToListOfStrings(value: String?): List<String>? {
+        return value
+            ?.split(",")
+            ?.toList()
+    }
+
+    @TypeConverter
+    fun listOfStringsToList(list: List<String>?): String? {
+        return list?.joinToString()
     }
 }
