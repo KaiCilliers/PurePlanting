@@ -5,7 +5,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
 import com.sunrisekcdeveloper.shared_test.MutableClock
-import com.sunrisekcdeveloper.shared_test.NotificationsCacheFake
+import com.sunrisekcdeveloper.shared_test.NotificationCacheFake
 import com.sunrisekcdeveloper.shared_test.forgotToWaterNotification
 import com.sunrisekcdeveloper.shared_test.now
 import com.sunrisekcdeveloper.shared_test.today
@@ -29,13 +29,13 @@ import kotlin.time.toJavaDuration
 class NotificationListViewModelTest {
 
     private lateinit var viewModel: NotificationListViewModel
-    private lateinit var notificationCacheFake: NotificationsCacheFake
+    private lateinit var notificationCacheFake: NotificationCacheFake
     private lateinit var mutableClock: MutableClock
 
     @BeforeEach
     fun setup() {
         Dispatchers.setMain(StandardTestDispatcher())
-        notificationCacheFake = NotificationsCacheFake()
+        notificationCacheFake = NotificationCacheFake()
         mutableClock = MutableClock(Clock.systemDefaultZone())
         viewModel = NotificationListViewModel(notificationCacheFake)
     }

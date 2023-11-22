@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
-class InMemoryNotificationCache : NotificationsCache {
+class InMemoryNotificationCache : NotificationCache {
 
     private val notifications = MutableStateFlow<List<NotificationDomain>>(emptyList())
 

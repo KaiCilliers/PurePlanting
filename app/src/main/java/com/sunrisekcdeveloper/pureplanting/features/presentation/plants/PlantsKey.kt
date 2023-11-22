@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.plants
 
 import androidx.fragment.app.Fragment
-import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationsCache
+import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationCache
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import com.sunrisekcdeveloper.pureplanting.navigation.FragmentKey
 import com.zhuinden.simplestack.ServiceBinder
@@ -13,7 +13,7 @@ import kotlinx.parcelize.Parcelize
 data object PlantsKey : FragmentKey() {
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
-            add(PlantsViewModel(lookup<PlantCache>(), lookup<NotificationsCache>(), backstack = backstack))
+            add(PlantsViewModel(lookup<PlantCache>(), lookup<NotificationCache>(), backstack = backstack))
         }
     }
 

@@ -6,7 +6,7 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationDomain
-import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationsCache
+import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationCache
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
 import java.time.Clock
@@ -16,7 +16,7 @@ class ForgotToWaterWorker(
     ctx: Context,
     params: WorkerParameters,
     private val plantCache: PlantCache,
-    private val notificationsCache: NotificationsCache,
+    private val notificationCache: NotificationCache,
     private val systemNotification: SystemNotification,
     private val clock: Clock = Clock.systemDefaultZone(),
 ) : CoroutineWorker(ctx, params) {
@@ -34,7 +34,7 @@ class ForgotToWaterWorker(
             // on notification tap, open app on specific plant detail screen
             if (plantsForgotten.isNotEmpty()) {
                 val notification = NotificationDomain.createForgotToWater(plantsForgotten)
-                notificationsCache.save(notification)
+                notificationCache.save(notification)
                 systemNotification.send(notification)
             }
 
@@ -48,12 +48,12 @@ class ForgotToWaterWorker(
 
     class Factory(
         private val plantCache: PlantCache,
-        private val notificationsCache: NotificationsCache,
+        private val notificationCache: NotificationCache,
         private val systemNotification: SystemNotification,
         private val clock: Clock = Clock.systemDefaultZone(),
     ) : WorkerFactory() {
         override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker {
-            return ForgotToWaterWorker(appContext, workerParameters, plantCache, notificationsCache, systemNotification, clock)
+            return ForgotToWaterWorker(appContext, workerParameters, plantCache, notificationCache, systemNotification, clock)
         }
     }
 }

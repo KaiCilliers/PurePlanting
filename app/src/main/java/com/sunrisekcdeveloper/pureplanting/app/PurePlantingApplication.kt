@@ -3,7 +3,7 @@ package com.sunrisekcdeveloper.pureplanting.app
 import android.app.Application
 import androidx.work.Configuration
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.InMemoryNotificationCache
-import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationsCache
+import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationCache
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.InMemoryPlantCache
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
@@ -31,7 +31,7 @@ class PurePlantingApplication : Application(), Configuration.Provider {
             .add(inMemoryPlantCache)
             .rebind<PlantCache>(inMemoryPlantCache)
             .add(inMemoryNotificationsCache)
-            .rebind<NotificationsCache>(inMemoryNotificationsCache)
+            .rebind<NotificationCache>(inMemoryNotificationsCache)
             .build()
     }
 
@@ -40,7 +40,7 @@ class PurePlantingApplication : Application(), Configuration.Provider {
             .setWorkerFactory(
                 DailyPlantReminderWorker.Factory(
                     plantCache = inMemoryPlantCache,
-                    notificationsCache = inMemoryNotificationsCache,
+                    notificationCache = inMemoryNotificationsCache,
                     systemNotification = systemNotification,
                     clock = defaultClock,
                 )
@@ -48,7 +48,7 @@ class PurePlantingApplication : Application(), Configuration.Provider {
             .setWorkerFactory(
                 ForgotToWaterWorker.Factory(
                     plantCache = inMemoryPlantCache,
-                    notificationsCache = inMemoryNotificationsCache,
+                    notificationCache = inMemoryNotificationsCache,
                     systemNotification = systemNotification,
                     clock = defaultClock,
                 )

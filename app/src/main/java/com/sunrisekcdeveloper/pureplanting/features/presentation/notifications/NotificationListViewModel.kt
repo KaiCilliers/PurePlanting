@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.notifications
 
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationDomain
-import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationsCache
+import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationCache
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.PlantNotificationType
 import com.zhuinden.flowcombinetuplekt.combineTuple
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 typealias NotificationsGroupedByDay = Map<Pair<Int, Int>, List<NotificationDomain>>
 
 class NotificationListViewModel(
-    private val notificationsCache: NotificationsCache
+    private val notificationCache: NotificationCache
 ) {
 
     private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
@@ -26,7 +26,7 @@ class NotificationListViewModel(
     private val _activeFilter = MutableStateFlow(NotificationFilter.ALL)
     val activeFilter: StateFlow<NotificationFilter> = _activeFilter
 
-    val notifications: StateFlow<List<NotificationDomain>> = combine(notificationsCache.observe(), _activeFilter) { notifications, filter ->
+    val notifications: StateFlow<List<NotificationDomain>> = combine(notificationCache.observe(), _activeFilter) { notifications, filter ->
         when (filter) {
             NotificationFilter.ALL -> notifications
             NotificationFilter.FORGOT_TO_WATER -> notifications
@@ -50,7 +50,7 @@ class NotificationListViewModel(
 
     fun setFilter(type: NotificationFilter) = viewModelScope.launch {
         notifications.value.forEach {
-            notificationsCache.markAsSeen(it.id)
+            notificationCache.markAsSeen(it.id)
         }
         _activeFilter.update { type }
     }

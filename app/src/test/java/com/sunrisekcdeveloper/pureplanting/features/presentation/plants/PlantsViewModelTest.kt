@@ -8,7 +8,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.sunrisekcdeveloper.shared_test.MutableClock
-import com.sunrisekcdeveloper.shared_test.NotificationsCacheFake
+import com.sunrisekcdeveloper.shared_test.NotificationCacheFake
 import com.sunrisekcdeveloper.shared_test.PlantCacheFake
 import com.sunrisekcdeveloper.shared_test.now
 import com.sunrisekcdeveloper.shared_test.plant
@@ -37,14 +37,14 @@ class PlantsViewModelTest {
     private lateinit var plantCacheFake: PlantCacheFake
     private lateinit var viewModel: PlantsViewModel
     private lateinit var mutableClock: MutableClock
-    private lateinit var notificationsCacheFake: NotificationsCacheFake
+    private lateinit var notificationsCacheFake: NotificationCacheFake
 
     @BeforeEach
     fun setup() {
         Dispatchers.setMain(StandardTestDispatcher())
         mutableClock = MutableClock(Clock.systemDefaultZone())
         plantCacheFake = PlantCacheFake()
-        notificationsCacheFake = NotificationsCacheFake()
+        notificationsCacheFake = NotificationCacheFake()
         viewModel = PlantsViewModel(plantCacheFake, notificationsCacheFake, mutableClock, Backstack())
     }
 

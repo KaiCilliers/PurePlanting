@@ -1,6 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.plants
 
-import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationsCache
+import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationCache
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import com.sunrisekcdeveloper.pureplanting.features.presentation.addeditplant.AddEditPlantKey
@@ -25,7 +25,7 @@ import java.time.LocalDateTime
 
 class PlantsViewModel(
     private val plantCache: PlantCache,
-    notificationsCache: NotificationsCache,
+    notificationCache: NotificationCache,
     private val clock: Clock = Clock.systemDefaultZone(),
     private val backstack: Backstack,
 ) : Bundleable {
@@ -34,7 +34,7 @@ class PlantsViewModel(
 
     val activeFilter = MutableStateFlow(PlantListFilter.UPCOMING)
 
-    val hasUnreadNotifications = notificationsCache
+    val hasUnreadNotifications = notificationCache
         .observe()
         .onEach { println("all notifications are: ${it.map { it.seen }}") }
         .map { allNotifications -> allNotifications.any { !it.seen } }

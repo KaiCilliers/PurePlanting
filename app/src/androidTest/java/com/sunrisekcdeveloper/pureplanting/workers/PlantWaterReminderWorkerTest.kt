@@ -9,7 +9,7 @@ import com.sunrisekcdeveloper.pureplanting.features.component.notifications.Plan
 import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
 import com.sunrisekcdeveloper.pureplanting.workers.DailyPlantReminderWorker.Factory
 import com.sunrisekcdeveloper.shared_test.MutableClock
-import com.sunrisekcdeveloper.shared_test.NotificationsCacheFake
+import com.sunrisekcdeveloper.shared_test.NotificationCacheFake
 import com.sunrisekcdeveloper.shared_test.PlantCacheFake
 import com.sunrisekcdeveloper.shared_test.now
 import com.sunrisekcdeveloper.shared_test.plantNeedsWaterNow
@@ -26,7 +26,7 @@ class PlantWaterReminderWorkerTest {
 
     private lateinit var context: Context
     private lateinit var plantCacheFake: PlantCacheFake
-    private lateinit var notificationsCacheFake: NotificationsCacheFake
+    private lateinit var notificationsCacheFake: NotificationCacheFake
     private lateinit var systemNotification: SystemNotification
     private lateinit var mutableClock: MutableClock
     private lateinit var plantReminderWorkerFactory: Factory
@@ -34,7 +34,7 @@ class PlantWaterReminderWorkerTest {
     @Before
     fun setup() {
         plantCacheFake = PlantCacheFake()
-        notificationsCacheFake = NotificationsCacheFake()
+        notificationsCacheFake = NotificationCacheFake()
         mutableClock = MutableClock(Clock.systemDefaultZone())
         context = ApplicationProvider.getApplicationContext()
         systemNotification = SystemNotification(context)

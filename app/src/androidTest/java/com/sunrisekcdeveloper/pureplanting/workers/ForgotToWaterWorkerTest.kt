@@ -8,7 +8,7 @@ import androidx.work.testing.TestListenableWorkerBuilder
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.PlantNotificationType
 import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
 import com.sunrisekcdeveloper.shared_test.MutableClock
-import com.sunrisekcdeveloper.shared_test.NotificationsCacheFake
+import com.sunrisekcdeveloper.shared_test.NotificationCacheFake
 import com.sunrisekcdeveloper.shared_test.PlantCacheFake
 import com.sunrisekcdeveloper.shared_test.now
 import com.sunrisekcdeveloper.shared_test.plantForgotten
@@ -25,7 +25,7 @@ class ForgotToWaterWorkerTest {
 
     private lateinit var context: Context
     private lateinit var plantCacheFake: PlantCacheFake
-    private lateinit var notificationsCacheFake: NotificationsCacheFake
+    private lateinit var notificationsCacheFake: NotificationCacheFake
     private lateinit var systemNotification: SystemNotification
     private lateinit var mutableClock: MutableClock
     private lateinit var workerFactory: ForgotToWaterWorker.Factory
@@ -33,7 +33,7 @@ class ForgotToWaterWorkerTest {
     @Before
     fun setup() {
         plantCacheFake = PlantCacheFake()
-        notificationsCacheFake = NotificationsCacheFake()
+        notificationsCacheFake = NotificationCacheFake()
         mutableClock = MutableClock(Clock.systemDefaultZone())
         context = ApplicationProvider.getApplicationContext()
         systemNotification = SystemNotification(context)

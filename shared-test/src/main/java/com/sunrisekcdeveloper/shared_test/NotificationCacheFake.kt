@@ -1,13 +1,13 @@
 package com.sunrisekcdeveloper.shared_test
 
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationDomain
-import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationsCache
+import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationCache
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.lang.Exception
 
-class NotificationsCacheFake : NotificationsCache {
+class NotificationCacheFake : NotificationCache {
 
     private val notifications = MutableStateFlow<List<NotificationDomain>>(emptyList())
     var throwException: Boolean = false
