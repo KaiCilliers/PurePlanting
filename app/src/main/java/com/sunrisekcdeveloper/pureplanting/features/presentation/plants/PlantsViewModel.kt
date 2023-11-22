@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.Clock
 import java.time.LocalDateTime
 
@@ -58,24 +59,24 @@ class PlantsViewModel(
         sorted
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), emptyList())
 
-    fun waterPlant(plant: Plant) {
+    fun waterPlant(plant: Plant) = viewModelScope.launch {
         plantCache.save(plant.water())
     }
 
-    fun undoWaterPlant(plant: Plant) {
+    fun undoWaterPlant(plant: Plant) = viewModelScope.launch {
         plantCache.save(plant.undoLastWatering())
     }
 
-    fun setFilter(filter: PlantListFilter) {
+    fun setFilter(filter: PlantListFilter) = viewModelScope.launch {
         activeFilter.update { filter }
     }
 
-    fun removePlant(plant: Plant) {
+    fun removePlant(plant: Plant) = viewModelScope.launch {
         lastRemovedPlant = plant
         plantCache.remove(plant.id)
     }
 
-    fun undoRemove(plantId: String) {
+    fun undoRemove(plantId: String) = viewModelScope.launch {
         plantCache.save(lastRemovedPlant!!)
     }
 

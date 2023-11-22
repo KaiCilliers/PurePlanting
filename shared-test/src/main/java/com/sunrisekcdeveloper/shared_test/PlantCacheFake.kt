@@ -5,14 +5,13 @@ import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.UUID
 
 class PlantCacheFake : PlantCache {
 
     private val plants = MutableStateFlow<List<Plant>>(emptyList())
     var throwException: Boolean = false
 
-    override fun save(plant: Plant) {
+    override suspend fun save(plant: Plant) {
         if (throwException) throw Exception("Forced test failure")
         plants.update {
             it.toMutableList().apply {
@@ -23,7 +22,7 @@ class PlantCacheFake : PlantCache {
         }
     }
 
-    override fun remove(plantId: String) {
+    override suspend fun remove(plantId: String) {
         if (throwException) throw Exception("Forced test failure")
         plants.update {
             it.toMutableList().apply {
@@ -32,7 +31,7 @@ class PlantCacheFake : PlantCache {
         }
     }
 
-    override fun find(plantId: String): Plant? {
+    override suspend fun find(plantId: String): Plant? {
         if (throwException) throw Exception("Forced test failure")
         return plants.value.find { it.id == plantId }
     }
@@ -47,7 +46,7 @@ class PlantCacheFake : PlantCache {
         this.plants.value = plants
     }
 
-    override fun all(): List<Plant> {
+    override suspend fun all(): List<Plant> {
         if (throwException) throw Exception("Forced test failure")
         return plants.value
     }

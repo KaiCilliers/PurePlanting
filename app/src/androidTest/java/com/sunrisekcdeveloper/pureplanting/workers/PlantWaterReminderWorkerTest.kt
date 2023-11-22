@@ -14,6 +14,7 @@ import com.sunrisekcdeveloper.shared_test.PlantCacheFake
 import com.sunrisekcdeveloper.shared_test.now
 import com.sunrisekcdeveloper.shared_test.plantNeedsWaterNow
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.After
@@ -50,7 +51,7 @@ class PlantWaterReminderWorkerTest {
 
     // TODO Continue here
     @Test
-    fun with_no_plants_existing_then_no_new_notification_is_created() {
+    fun with_no_plants_existing_then_no_new_notification_is_created() = runTest {
         // SETUP
         val worker = TestListenableWorkerBuilder<DailyPlantReminderWorker>(context)
             .setWorkerFactory(plantReminderWorkerFactory)
@@ -66,7 +67,7 @@ class PlantWaterReminderWorkerTest {
     }
 
     @Test
-    fun create_notification_for_all_plants_that_that_need_water_up_to_15min_in_the_future_when_there_are_multiple_that_need_water() {
+    fun create_notification_for_all_plants_that_that_need_water_up_to_15min_in_the_future_when_there_are_multiple_that_need_water() = runTest {
         // SETUP
         val worker = TestListenableWorkerBuilder<DailyPlantReminderWorker>(context)
             .setWorkerFactory(plantReminderWorkerFactory)
@@ -93,7 +94,7 @@ class PlantWaterReminderWorkerTest {
     }
 
     @Test
-    fun only_create_notification_for_plants_that_have_not_yet_been_watered_today() {
+    fun only_create_notification_for_plants_that_have_not_yet_been_watered_today() = runTest {
         // SETUP
         val worker = TestListenableWorkerBuilder<DailyPlantReminderWorker>(context)
             .setWorkerFactory(plantReminderWorkerFactory)
@@ -120,7 +121,7 @@ class PlantWaterReminderWorkerTest {
     }
 
     @Test
-    fun exception_encountered_returns_failure() {
+    fun exception_encountered_returns_failure() = runTest {
         // SETUP
         plantCacheFake.throwException = true
         val worker = TestListenableWorkerBuilder<DailyPlantReminderWorker>(context)

@@ -3,13 +3,12 @@ package com.sunrisekcdeveloper.pureplanting.features.component.plants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.UUID
 
 class InMemoryPlantCache : PlantCache {
     // todo increased efficiency bt rather using a map via .associateBy
     private val plants = MutableStateFlow<List<Plant>>(emptyList())
 
-    override fun save(plant: Plant) {
+    override suspend fun save(plant: Plant) {
         plants.update {
             it.toMutableList().apply {
                 val existingIndex = this.map { it.id }.indexOf(plant.id)
@@ -19,7 +18,7 @@ class InMemoryPlantCache : PlantCache {
         }
     }
 
-    override fun remove(plantId: String) {
+    override suspend fun remove(plantId: String) {
         plants.update {
             it.toMutableList().apply {
                 removeIf { it.id == plantId }
@@ -27,7 +26,7 @@ class InMemoryPlantCache : PlantCache {
         }
     }
 
-    override fun find(plantId: String): Plant? {
+    override suspend fun find(plantId: String): Plant? {
         return plants.value.find { it.id == plantId }
     }
 
@@ -35,7 +34,7 @@ class InMemoryPlantCache : PlantCache {
         return plants
     }
 
-    override fun all(): List<Plant> {
+    override suspend fun all(): List<Plant> {
         return plants.value
     }
 }
