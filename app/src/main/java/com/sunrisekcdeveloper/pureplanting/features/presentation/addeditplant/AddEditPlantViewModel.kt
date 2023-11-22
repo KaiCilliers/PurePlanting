@@ -78,7 +78,7 @@ class AddEditPlantViewModel(
     }
 
     companion object {
-        val DEFAULT_WATERING_TIME: LocalTime = LocalTime.of(8,0)
+        val DEFAULT_WATERING_TIME: LocalTime = LocalTime.of(8, 0)
         const val DEFAULT_WATERING_AMOUNT = "250"
         val DEFAULT_PLANT_SIZE = PlantSize.Medium
         val DEFAULT_WATERING_DAY = DayOfWeek.MONDAY
@@ -87,13 +87,29 @@ class AddEditPlantViewModel(
     override fun toBundle(): StateBundle = StateBundle().apply {
         putString("name", name.value)
         putString("description", description.value)
-        // todo add other properties
+        putString("size", size.value.toString())
+        putString("wateringDays", wateringDays.value.joinToString())
+        putString("wateringTime", wateringTime.toString())
+        putString("wateringAmount", wateringAmount.toString())
+        putString("imgSrcUri", image.value)
     }
 
     override fun fromBundle(bundle: StateBundle?) {
         bundle?.run {
             name.update { getString("name", "") }
             description.update { getString("description", "") }
+            size.update { PlantSize.valueOf(getString("size", DEFAULT_PLANT_SIZE.toString())) }
+            wateringAmount.update { getString("wateringAmount", DEFAULT_WATERING_AMOUNT) }
+            image.update { getString("imgSrcUri", "") }
+            getString("wateringDays")?.let { savedDays ->
+                savedDays
+                    .split(",")
+                    .map { DayOfWeek.valueOf(it) }
+                    .also { savedDaysOfWeek -> wateringDays.update { savedDaysOfWeek } }
+            }
+            getString("wateringTime")?.let { savedTime ->
+                wateringTime.update { LocalTime.parse(savedTime) }
+            }
         }
     }
 }

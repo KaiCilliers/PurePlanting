@@ -1,9 +1,11 @@
 package com.sunrisekcdeveloper.pureplanting.features.presentation.notifications
 
-import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationDomain
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationCache
+import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationDomain
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.PlantNotificationType
 import com.zhuinden.flowcombinetuplekt.combineTuple
+import com.zhuinden.simplestack.Bundleable
+import com.zhuinden.statebundle.StateBundle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +21,7 @@ typealias NotificationsGroupedByDay = Map<Pair<Int, Int>, List<NotificationDomai
 
 class NotificationListViewModel(
     private val notificationCache: NotificationCache
-) {
+): Bundleable {
 
     private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
 
@@ -53,5 +55,15 @@ class NotificationListViewModel(
             notificationCache.markAsSeen(it.id)
         }
         _activeFilter.update { type }
+    }
+
+    override fun toBundle(): StateBundle = StateBundle().apply {
+        putString("activeNotificationFilter", activeFilter.value.toString())
+    }
+
+    override fun fromBundle(bundle: StateBundle?) {
+        bundle?.run {
+            _activeFilter.update { NotificationFilter.valueOf(getString("activeNotificationFilter", NotificationFilter.ALL.toString())) }
+        }
     }
 }
