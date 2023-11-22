@@ -30,12 +30,12 @@ class RoomTypeConverters {
     fun fromStringToDayOfWeeks(value: String?): List<DayOfWeek>? {
         return value?.split(",")
             ?.toList()
-            ?.map { DayOfWeek.valueOf(it) }
+            ?.map { DayOfWeek.valueOf(it.trimStart()) }
     }
 
     @TypeConverter
     fun daysOfWeekToString(daysOfWeek: List<DayOfWeek>?): String? {
-        return daysOfWeek?.joinToString()
+        return daysOfWeek?.joinToString(",") { it.toString() }
     }
 
     @TypeConverter
@@ -47,6 +47,11 @@ class RoomTypeConverters {
 
     @TypeConverter
     fun listOfStringsToList(list: List<String>?): String? {
-        return list?.joinToString()
+        return list?.joinToString(",")
     }
+}
+
+suspend fun main() {
+    val s = DayOfWeek.MONDAY.toString()
+    println(DayOfWeek.valueOf(s))
 }

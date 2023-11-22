@@ -5,6 +5,7 @@ import com.sunrisekcdeveloper.pureplanting.features.component.PurePlantingDataba
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+// todo rename
 class LocalDatabasePlantCache(
     private val db: PurePlantingDatabase
 ) : PlantCache {

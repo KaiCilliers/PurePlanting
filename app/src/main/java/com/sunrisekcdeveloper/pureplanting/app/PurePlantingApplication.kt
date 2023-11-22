@@ -2,9 +2,10 @@ package com.sunrisekcdeveloper.pureplanting.app
 
 import android.app.Application
 import androidx.work.Configuration
-import com.sunrisekcdeveloper.pureplanting.features.component.notifications.InMemoryNotificationCache
+import com.sunrisekcdeveloper.pureplanting.features.component.PurePlantingDatabase
+import com.sunrisekcdeveloper.pureplanting.features.component.notifications.LocalDatabaseNotificationCache
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationCache
-import com.sunrisekcdeveloper.pureplanting.features.component.plants.InMemoryPlantCache
+import com.sunrisekcdeveloper.pureplanting.features.component.plants.LocalDatabasePlantCache
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
 import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
 import com.sunrisekcdeveloper.pureplanting.workers.DailyPlantReminderWorker
@@ -19,19 +20,20 @@ class PurePlantingApplication : Application(), Configuration.Provider {
         private set
 
     // Create global dependencies
-    private val inMemoryPlantCache = InMemoryPlantCache()
-    private val inMemoryNotificationsCache = InMemoryNotificationCache()
     private val systemNotification by lazy { SystemNotification(applicationContext) }
     private val defaultClock = Clock.systemDefaultZone()
+    private val db by lazy { PurePlantingDatabase.getDatabase(this) }
+    private val plantCache by lazy { LocalDatabasePlantCache(db) }
+    private val notificationCache by lazy { LocalDatabaseNotificationCache(db) }
 
     override fun onCreate() {
         super.onCreate()
 
         globalServices = GlobalServices.builder()
-            .add(inMemoryPlantCache)
-            .rebind<PlantCache>(inMemoryPlantCache)
-            .add(inMemoryNotificationsCache)
-            .rebind<NotificationCache>(inMemoryNotificationsCache)
+            .add(plantCache)
+            .rebind<PlantCache>(plantCache)
+            .add(notificationCache)
+            .rebind<NotificationCache>(notificationCache)
             .build()
     }
 
@@ -39,16 +41,17 @@ class PurePlantingApplication : Application(), Configuration.Provider {
         get() = Configuration.Builder()
             .setWorkerFactory(
                 DailyPlantReminderWorker.Factory(
-                    plantCache = inMemoryPlantCache,
-                    notificationCache = inMemoryNotificationsCache,
+                    plantCache = plantCache,
+                    notificationCache = notificationCache,
                     systemNotification = systemNotification,
+                    db,
                     clock = defaultClock,
                 )
             )
             .setWorkerFactory(
                 ForgotToWaterWorker.Factory(
-                    plantCache = inMemoryPlantCache,
-                    notificationCache = inMemoryNotificationsCache,
+                    plantCache = plantCache,
+                    notificationCache = notificationCache,
                     systemNotification = systemNotification,
                     clock = defaultClock,
                 )
