@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("de.mannodermaus.android-junit5")
     id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -38,11 +39,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
         languageVersion = "1.9" // data objects
     }
     buildFeatures {
@@ -50,7 +51,8 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        // Kotlin version to compose compiler map --> https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
     packaging {
         resources {
@@ -86,6 +88,13 @@ dependencies {
 
     // version mapping https://developer.android.com/jetpack/compose/bom/bom-mapping
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
+
+    val room_version = "2.6.0"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
 
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
