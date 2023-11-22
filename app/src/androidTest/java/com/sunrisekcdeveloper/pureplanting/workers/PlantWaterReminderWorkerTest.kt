@@ -49,7 +49,6 @@ class PlantWaterReminderWorkerTest {
         notificationsCacheFake.resetData()
     }
 
-    // TODO Continue here
     @Test
     fun with_no_plants_existing_then_no_new_notification_is_created() = runTest {
         // SETUP
