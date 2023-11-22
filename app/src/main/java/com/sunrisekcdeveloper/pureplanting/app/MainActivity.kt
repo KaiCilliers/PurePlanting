@@ -55,9 +55,11 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
 
         backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
         backstack.observeAheadOfTimeWillHandleBackChanged(this, backPressedCallback::isEnabled::set)
+
+        schedulePlantWateringWorker()
     }
 
-    private fun scheduleDailyPlantWateringReminder() {
+    private fun schedulePlantWateringWorker() {
         // alternative solution https://copyprogramming.com/howto/schedule-a-work-on-a-specific-time-with-workmanager
         // another is to use Alarm manager for exact time execution
         // todo make periodic work request every 15min
@@ -67,10 +69,9 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
             .plusDays(1)
 
         val request = PeriodicWorkRequestBuilder<DailyPlantReminderWorker>(
-            repeatInterval = 1,
-            repeatIntervalTimeUnit = TimeUnit.DAYS,
+            repeatInterval = 15,
+            repeatIntervalTimeUnit = TimeUnit.MINUTES,
         )
-            .setNextScheduleTimeOverride(tomorrow.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
             .build()
 
         WorkManager.getInstance(this)

@@ -96,6 +96,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
 
 
+    implementation("androidx.compose.runtime:runtime-livedata")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")

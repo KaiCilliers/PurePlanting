@@ -26,11 +26,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.work.WorkInfo
 import com.sunrisekcdeveloper.pureplanting.BuildConfig
 import com.sunrisekcdeveloper.pureplanting.features.component.plants.Plant
 import com.sunrisekcdeveloper.pureplanting.navigation.ThemeSurfaceWrapper
 import java.time.DayOfWeek
+import java.time.Instant
 import java.time.LocalTime
+import java.time.ZoneId
 
 @Composable
 fun PlantsScreen(
@@ -41,6 +44,7 @@ fun PlantsScreen(
     onPlantTapped: (Plant) -> Unit,
     onNotificationIconTapped: () -> Unit,
     onAddIconTapped: () -> Unit,
+    waterWorkerState: State<List<WorkInfo>?>? = null,
     modifier: Modifier = Modifier
 ) {
     Column {
@@ -85,6 +89,13 @@ fun PlantsScreen(
                         onAddIconTapped()
                     }
             )
+        }
+
+        waterWorkerState?.value?.let { workInfos ->
+            workInfos.forEach {
+                Text(text = "Water Soon Worker is now ${it.state} and is scheduled to run earliest at ${Instant.ofEpochMilli(it.nextScheduleTimeMillis).atZone(
+                    ZoneId.systemDefault()).toLocalTime()}")
+            }
         }
 
         LazyColumn {
