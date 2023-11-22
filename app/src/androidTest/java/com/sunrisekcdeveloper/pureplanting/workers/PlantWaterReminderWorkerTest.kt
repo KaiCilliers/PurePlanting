@@ -1,10 +1,12 @@
 package com.sunrisekcdeveloper.pureplanting.workers
 
 import android.content.Context
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
+import com.sunrisekcdeveloper.pureplanting.features.component.PurePlantingDatabase
 import com.sunrisekcdeveloper.pureplanting.features.component.notifications.PlantNotificationType
 import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
 import com.sunrisekcdeveloper.pureplanting.workers.DailyPlantReminderWorker.Factory
@@ -30,15 +32,17 @@ class PlantWaterReminderWorkerTest {
     private lateinit var systemNotification: SystemNotification
     private lateinit var mutableClock: MutableClock
     private lateinit var plantReminderWorkerFactory: Factory
+    private lateinit var db: PurePlantingDatabase
 
     @Before
     fun setup() {
+        context = ApplicationProvider.getApplicationContext()
+        db = Room.inMemoryDatabaseBuilder(context, PurePlantingDatabase::class.java).build()
         plantCacheFake = PlantCacheFake()
         notificationsCacheFake = NotificationCacheFake()
         mutableClock = MutableClock(Clock.systemDefaultZone())
-        context = ApplicationProvider.getApplicationContext()
         systemNotification = SystemNotification(context)
-        plantReminderWorkerFactory = Factory(plantCacheFake, notificationsCacheFake, systemNotification, mutableClock)
+        plantReminderWorkerFactory = Factory(plantCacheFake, notificationsCacheFake, systemNotification, db, mutableClock)
     }
 
     @After
@@ -124,7 +128,7 @@ class PlantWaterReminderWorkerTest {
         // SETUP
         plantCacheFake.throwException = true
         val worker = TestListenableWorkerBuilder<DailyPlantReminderWorker>(context)
-            .setWorkerFactory(Factory(plantCacheFake, notificationsCacheFake, systemNotification, mutableClock))
+            .setWorkerFactory(Factory(plantCacheFake, notificationsCacheFake, systemNotification, db, mutableClock))
             .build()
 
         // ACTION & ASSERTIONS
