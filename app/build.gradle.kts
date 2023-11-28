@@ -69,45 +69,39 @@ dependencies {
     testImplementation(project(":shared-test"))
     androidTestImplementation(project(":shared-test"))
 
-    implementation(libs.bundles.simplestack)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.lifecycle.runtimeKtx)
+    implementation(libs.androidx.activity.compose)
 
+    // version mapping https://developer.android.com/jetpack/compose/bom/bom-mapping
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.livedata)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test.manifest)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
+    implementation(libs.bundles.simplestack)
+    implementation(libs.androidx.work.runtimeKtx)
+    implementation(libs.util.coil)
+    implementation(libs.util.flow.combineTuple)
+
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.junit4.ext)
+    androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.work.testing)
+
     testImplementation(libs.test.assertk)
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.test.coroutines)
     testImplementation(libs.test.turbine)
+    testImplementation(libs.junit4)
     testRuntimeOnly(libs.junit.jupiter.engine)
-    implementation(libs.androidx.work.runtimeKtx)
-
-    implementation("io.coil-kt:coil-compose:2.2.2")
-
-// TODO: clear up dependencies
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.0")
-
-    // version mapping https://developer.android.com/jetpack/compose/bom/bom-mapping
-    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
-
-    val room_version = "2.6.0"
-
-    implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
-
-
-    implementation("androidx.compose.runtime:runtime-livedata")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended")
-    implementation("com.github.Zhuinden:flow-combinetuple-kt:1.2.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
