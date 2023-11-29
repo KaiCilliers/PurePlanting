@@ -32,11 +32,11 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
 
-        create("pureLogic") {
-            initWith(getByName("debug"))
-            manifestPlaceholders["appLabel"] = "PureLogic"
-            applicationIdSuffix = ".logic"
-        }
+//        create("pureLogic") {
+//            initWith(getByName("debug"))
+//            manifestPlaceholders["appLabel"] = "PureLogic"
+//            applicationIdSuffix = ".logic"
+//        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -66,8 +66,20 @@ kotlin.sourceSets.all() {
 }
 
 dependencies {
-    testImplementation(project(":shared-test"))
-    androidTestImplementation(project(":shared-test"))
+    implementation(project(":shared:android"))
+    implementation(project(":shared:domain"))
+    implementation(project(":feature:plantList"))
+    implementation(project(":feature:addEditPlant"))
+    implementation(project(":feature:plantDetail"))
+    implementation(project(":feature:notificationList"))
+    implementation(project(":data:plant"))
+    implementation(project(":data:notification"))
+    implementation(project(":feature:reminders"))
+    implementation(project(":domain:plant"))
+    implementation(project(":domain:notification"))
+
+    testImplementation(project(":shared:test"))
+    androidTestImplementation(project(":shared:test"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.lifecycle.runtimeKtx)

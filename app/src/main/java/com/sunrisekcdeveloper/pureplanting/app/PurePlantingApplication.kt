@@ -2,14 +2,13 @@ package com.sunrisekcdeveloper.pureplanting.app
 
 import android.app.Application
 import androidx.work.Configuration
-import com.sunrisekcdeveloper.pureplanting.features.component.PurePlantingDatabase
-import com.sunrisekcdeveloper.pureplanting.features.component.notifications.LocalDatabaseNotificationCache
-import com.sunrisekcdeveloper.pureplanting.features.component.notifications.NotificationCache
-import com.sunrisekcdeveloper.pureplanting.features.component.plants.LocalDatabasePlantCache
-import com.sunrisekcdeveloper.pureplanting.features.component.plants.PlantCache
-import com.sunrisekcdeveloper.pureplanting.util.SystemNotification
-import com.sunrisekcdeveloper.pureplanting.workers.DailyPlantReminderWorker
-import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterWorker
+import com.sunrisekcdeveloper.notification.LocalDatabaseNotificationCache
+import com.sunrisekcdeveloper.notification.NotificationCache
+import com.sunrisekcdeveloper.plant.LocalDatabasePlantCache
+import com.sunrisekcdeveloper.plant.PlantCache
+import com.sunrisekcdeveloper.reminders.SystemNotification
+import com.sunrisekcdeveloper.reminders.DailyPlantReminderWorker
+import com.sunrisekcdeveloper.reminders.ForgotToWaterWorker
 import com.zhuinden.simplestack.GlobalServices
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.rebind
@@ -23,8 +22,8 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     private val systemNotification by lazy { SystemNotification(applicationContext) }
     private val defaultClock = Clock.systemDefaultZone()
     private val db by lazy { PurePlantingDatabase.getDatabase(this) }
-    private val plantCache by lazy { LocalDatabasePlantCache(db) }
-    private val notificationCache by lazy { LocalDatabaseNotificationCache(db) }
+    private val plantCache by lazy { LocalDatabasePlantCache(db.plantDao()) }
+    private val notificationCache by lazy { LocalDatabaseNotificationCache(db.notificationDao()) }
 
     override fun onCreate() {
         super.onCreate()
@@ -44,7 +43,7 @@ class PurePlantingApplication : Application(), Configuration.Provider {
                     plantCache = plantCache,
                     notificationCache = notificationCache,
                     systemNotification = systemNotification,
-                    db,
+                    db.notificationDao2(),
                     clock = defaultClock,
                 )
             )

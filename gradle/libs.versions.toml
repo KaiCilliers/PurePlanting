@@ -31,6 +31,7 @@ junit4-ext = "1.1.5"
 assertk = "0.27.0"
 turbine = "1.0.0"
 coroutines-test = "1.7.3"
+org-jetbrains-kotlin-jvm = "1.9.20"
 
 [libraries]
 # CORE
@@ -50,7 +51,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-material-icons = { module = "androidx.compose.material:material-icons-extended" }
-compose-livedata = { module = "anroidx.compose.runtime:runtime-livedata" }
+compose-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
 
 # WORKMANAGER
 androidx-work-runtimeKtx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-workManager" }
@@ -68,6 +69,10 @@ simple-stack-compose = { module = "com.github.Zhuinden:simple-stack-compose-inte
 # UTIL
 util-coil = { module = "io.coil-kt:coil-compose", version.ref = "util-coil" }
 util-flow-combineTuple = { module = "com.github.Zhuinden:flow-combinetuple-kt", version.ref = "util-flow-combineTuple" }
+
+# KOTLIN
+kotlin-stdLib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version = "1.9.20" }
+kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.7.3" }
 
 # TESTING
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }

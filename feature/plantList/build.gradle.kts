@@ -1,10 +1,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("de.mannodermaus.android-junit5")
 }
 
 android {
-    namespace = "com.sunrisekcdeveloper.mylibrary"
+    namespace = "com.sunrisekcdeveloper.feature.plantList"
     compileSdk = 33
 
     defaultConfig {
@@ -35,8 +36,18 @@ android {
     }
 }
 
+kotlin.sourceSets.all() {
+    languageSettings.enableLanguageFeature("DataObjects")
+}
+
+// todo continue cant run tests
 dependencies {
+    implementation(project(":domain:plant"))
+    implementation(project(":domain:notification"))
+    api(project(":shared:android"))
+
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.livedata)
     implementation(libs.compose.ui)
@@ -48,8 +59,11 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.junit4.ext)
-    androidTestImplementation(libs.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.work.testing)
+    testImplementation(project(":shared:test"))
+    testImplementation(libs.test.assertk)
+    testImplementation(libs.bundles.junit5)
+    testImplementation(libs.test.coroutines)
+    testImplementation(libs.test.turbine)
+    testImplementation(libs.junit4)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }

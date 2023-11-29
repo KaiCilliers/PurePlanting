@@ -6,10 +6,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.sunrisekcdeveloper.navigation.FragmentStateChanger
 import com.sunrisekcdeveloper.pureplanting.R
-import com.sunrisekcdeveloper.pureplanting.features.presentation.plants.PlantsKey
-import com.sunrisekcdeveloper.pureplanting.navigation.FragmentStateChanger
-import com.sunrisekcdeveloper.pureplanting.workers.DailyPlantReminderWorker
+import com.sunrisekcdeveloper.pureplanting.features.PlantsKey
+import com.sunrisekcdeveloper.reminders.DailyPlantReminderWorker
 import com.zhuinden.simplestack.BackHandlingModel
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestack.History
@@ -21,7 +21,6 @@ import com.zhuinden.simplestackextensions.lifecyclektx.observeAheadOfTimeWillHan
 import com.zhuinden.simplestackextensions.navigatorktx.androidContentFrame
 import com.zhuinden.simplestackextensions.services.DefaultServiceProvider
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
 class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {

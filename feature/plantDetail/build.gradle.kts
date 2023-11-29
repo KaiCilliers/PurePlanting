@@ -1,10 +1,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
 }
 
 android {
-    namespace = "com.sunrisekcdeveloper.mylibrary"
+    namespace = "com.sunrisekcdeveloper.feature.plantDetail"
     compileSdk = 33
 
     defaultConfig {
@@ -35,7 +36,10 @@ android {
     }
 }
 
+
 dependencies {
+    implementation(project(":domain:plant"))
+    api(project(":shared:android"))
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.livedata)
