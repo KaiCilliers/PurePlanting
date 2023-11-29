@@ -6,5 +6,5 @@ import androidx.room.Insert
 @Dao
 interface WateringWorkerResultStatusDao {
     @Insert
-    fun insert(item: WateringWorkerResultStatusEntity)
+    suspend fun insert(item: WateringWorkerResultStatusEntity)
 }

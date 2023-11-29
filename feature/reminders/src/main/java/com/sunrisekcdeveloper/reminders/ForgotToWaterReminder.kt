@@ -11,7 +11,7 @@ import com.sunrisekcdeveloper.plant.PlantCache
 import java.time.Clock
 import java.time.LocalDateTime
 
-class ForgotToWaterWorker(
+class ForgotToWaterReminder(
     ctx: Context,
     params: WorkerParameters,
     private val plantCache: PlantCache,
@@ -52,7 +52,7 @@ class ForgotToWaterWorker(
         private val clock: Clock = Clock.systemDefaultZone(),
     ) : WorkerFactory() {
         override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker {
-            return ForgotToWaterWorker(appContext, workerParameters, plantCache, notificationCache, systemNotification, clock)
+            return ForgotToWaterReminder(appContext, workerParameters, plantCache, notificationCache, systemNotification, clock)
         }
     }
 }

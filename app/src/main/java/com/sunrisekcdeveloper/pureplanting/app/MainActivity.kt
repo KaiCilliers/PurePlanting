@@ -9,7 +9,7 @@ import androidx.work.WorkManager
 import com.sunrisekcdeveloper.navigation.FragmentStateChanger
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.features.PlantsKey
-import com.sunrisekcdeveloper.reminders.DailyPlantReminderWorker
+import com.sunrisekcdeveloper.reminders.WaterPlantReminder
 import com.zhuinden.simplestack.BackHandlingModel
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestack.History
@@ -20,7 +20,6 @@ import com.zhuinden.simplestackextensions.fragments.DefaultFragmentStateChanger
 import com.zhuinden.simplestackextensions.lifecyclektx.observeAheadOfTimeWillHandleBackChanged
 import com.zhuinden.simplestackextensions.navigatorktx.androidContentFrame
 import com.zhuinden.simplestackextensions.services.DefaultServiceProvider
-import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 
 class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
@@ -59,15 +58,7 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
     }
 
     private fun schedulePlantWateringWorker() {
-        // alternative solution https://copyprogramming.com/howto/schedule-a-work-on-a-specific-time-with-workmanager
-        // another is to use Alarm manager for exact time execution
-        // todo make periodic work request every 15min
-        val tomorrow = LocalDateTime.now()
-            .withMinute(0)
-            .withHour(8)
-            .plusDays(1)
-
-        val request = PeriodicWorkRequestBuilder<DailyPlantReminderWorker>(
+        val request = PeriodicWorkRequestBuilder<WaterPlantReminder>(
             repeatInterval = 15,
             repeatIntervalTimeUnit = TimeUnit.MINUTES,
         )
@@ -75,7 +66,7 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
 
         WorkManager.getInstance(this)
             .enqueueUniquePeriodicWork(
-                "dailyWateringNotifications",
+                WaterPlantReminder.TAG,
                 ExistingPeriodicWorkPolicy.KEEP,
                 request
             )
@@ -91,6 +82,8 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
          * 2. check periodically (every hour) to see if a plant was forgotten.
          */
         // todo daily executeion at 00:01
+        // alternative solution https://copyprogramming.com/howto/schedule-a-work-on-a-specific-time-with-workmanager
+        // another is to use Alarm manager for exact time execution
     }
 
     override fun onNavigationEvent(stateChange: StateChange) {

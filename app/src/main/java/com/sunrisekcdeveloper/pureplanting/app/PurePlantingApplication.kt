@@ -7,8 +7,8 @@ import com.sunrisekcdeveloper.notification.NotificationCache
 import com.sunrisekcdeveloper.plant.LocalDatabasePlantCache
 import com.sunrisekcdeveloper.plant.PlantCache
 import com.sunrisekcdeveloper.reminders.SystemNotification
-import com.sunrisekcdeveloper.reminders.DailyPlantReminderWorker
-import com.sunrisekcdeveloper.reminders.ForgotToWaterWorker
+import com.sunrisekcdeveloper.reminders.WaterPlantReminder
+import com.sunrisekcdeveloper.reminders.ForgotToWaterReminder
 import com.zhuinden.simplestack.GlobalServices
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.rebind
@@ -39,7 +39,7 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setWorkerFactory(
-                DailyPlantReminderWorker.Factory(
+                WaterPlantReminder.Factory(
                     plantCache = plantCache,
                     notificationCache = notificationCache,
                     systemNotification = systemNotification,
@@ -48,7 +48,7 @@ class PurePlantingApplication : Application(), Configuration.Provider {
                 )
             )
             .setWorkerFactory(
-                ForgotToWaterWorker.Factory(
+                ForgotToWaterReminder.Factory(
                     plantCache = plantCache,
                     notificationCache = notificationCache,
                     systemNotification = systemNotification,

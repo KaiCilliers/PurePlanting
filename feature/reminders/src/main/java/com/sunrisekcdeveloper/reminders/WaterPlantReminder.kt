@@ -11,8 +11,7 @@ import com.sunrisekcdeveloper.plant.PlantCache
 import java.time.Clock
 import java.time.LocalDateTime
 
-// todo rename remove daily
-class DailyPlantReminderWorker(
+class WaterPlantReminder(
     ctx: Context,
     params: WorkerParameters,
     private val plantCache: PlantCache,
@@ -71,12 +70,12 @@ class DailyPlantReminderWorker(
         private val clock: Clock = Clock.systemDefaultZone(),
     ) : WorkerFactory() {
         override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker {
-            return DailyPlantReminderWorker(appContext, workerParameters, plantCache, notificationCache, dao, systemNotification, clock)
+            return WaterPlantReminder(appContext, workerParameters, plantCache, notificationCache, dao, systemNotification, clock)
         }
     }
 
     companion object {
-        const val TAG = "DailyPlantReminderWorkerTag"
+        const val TAG = "WaterPlantReminderTag"
         const val PERIODIC_INTERVAL_MINUTES = 15L
     }
 }

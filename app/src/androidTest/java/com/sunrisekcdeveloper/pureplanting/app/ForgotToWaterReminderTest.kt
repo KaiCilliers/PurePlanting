@@ -6,7 +6,7 @@ import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 import com.sunrisekcdeveloper.notification.NotificationCacheFake
 import com.sunrisekcdeveloper.plant.PlantCacheFake
-import com.sunrisekcdeveloper.reminders.ForgotToWaterWorker
+import com.sunrisekcdeveloper.reminders.ForgotToWaterReminder
 import com.sunrisekcdeveloper.reminders.SystemNotification
 import com.sunrisekcdeveloper.shared_test.MutableClock
 import com.sunrisekcdeveloper.shared_test.now
@@ -21,14 +21,14 @@ import org.junit.Before
 import org.junit.Test
 import java.time.Clock
 
-class ForgotToWaterWorkerTest {
+class ForgotToWaterReminderTest {
 
     private lateinit var context: Context
     private lateinit var plantCacheFake: PlantCacheFake
     private lateinit var notificationsCacheFake: NotificationCacheFake
     private lateinit var systemNotification: SystemNotification
     private lateinit var mutableClock: MutableClock
-    private lateinit var workerFactory: ForgotToWaterWorker.Factory
+    private lateinit var workerFactory: ForgotToWaterReminder.Factory
 
     @Before
     fun setup() {
@@ -37,7 +37,7 @@ class ForgotToWaterWorkerTest {
         mutableClock = MutableClock(Clock.systemDefaultZone())
         context = ApplicationProvider.getApplicationContext()
         systemNotification = SystemNotification(context)
-        workerFactory = ForgotToWaterWorker.Factory(plantCacheFake, notificationsCacheFake, systemNotification, mutableClock)
+        workerFactory = ForgotToWaterReminder.Factory(plantCacheFake, notificationsCacheFake, systemNotification, mutableClock)
     }
 
     @After
@@ -51,7 +51,7 @@ class ForgotToWaterWorkerTest {
     @Test
     fun with_no_plants_existing_do_not_create_a_notification() {
         // SETUP
-        val worker = TestListenableWorkerBuilder<ForgotToWaterWorker>(context)
+        val worker = TestListenableWorkerBuilder<ForgotToWaterReminder>(context)
             .setWorkerFactory(workerFactory)
             .build()
 
@@ -70,7 +70,7 @@ class ForgotToWaterWorkerTest {
     @Test
     fun if_there_are_plants_that_needed_water_yesterday_and_they_were_not_watered_then_create_a_notification() = runBlocking {
         // SETUP
-        val worker = TestListenableWorkerBuilder<ForgotToWaterWorker>(context)
+        val worker = TestListenableWorkerBuilder<ForgotToWaterReminder>(context)
             .setWorkerFactory(workerFactory)
             .build()
 
@@ -95,7 +95,7 @@ class ForgotToWaterWorkerTest {
     @Test
     fun if_there_are_plants_but_none_were_forgotten_to_water_then_do_not_create_a_notification() = runBlocking {
         // SETUP
-        val worker = TestListenableWorkerBuilder<ForgotToWaterWorker>(context)
+        val worker = TestListenableWorkerBuilder<ForgotToWaterReminder>(context)
             .setWorkerFactory(workerFactory)
             .build()
 
@@ -118,7 +118,7 @@ class ForgotToWaterWorkerTest {
     fun exception_encountered_returns_retry() {
         // SETUP
         plantCacheFake.throwException = true
-        val worker = TestListenableWorkerBuilder<ForgotToWaterWorker>(context)
+        val worker = TestListenableWorkerBuilder<ForgotToWaterReminder>(context)
             .setWorkerFactory(workerFactory)
             .build()
 
