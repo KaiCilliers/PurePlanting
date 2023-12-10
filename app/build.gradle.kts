@@ -66,20 +66,17 @@ kotlin.sourceSets.all() {
 }
 
 dependencies {
-    implementation(project(":shared:android"))
-    implementation(project(":shared:domain"))
+    implementation(project(":library:design"))
+    implementation(project(":library:navigation"))
     implementation(project(":feature:plantList"))
-    implementation(project(":feature:addEditPlant"))
-    implementation(project(":feature:plantDetail"))
+    implementation(project(":feature:addEdit"))
+    implementation(project(":feature:detail"))
     implementation(project(":feature:notificationList"))
-    implementation(project(":data:plant"))
-    implementation(project(":data:notification"))
-    implementation(project(":feature:reminders"))
-    implementation(project(":domain:plant"))
-    implementation(project(":domain:notification"))
+    implementation(project(":component:plant"))
+    implementation(project(":component:notification"))
 
-    testImplementation(project(":shared:test"))
-    androidTestImplementation(project(":shared:test"))
+    testImplementation(project(":library:test"))
+    androidTestImplementation(project(":library:test"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.lifecycle.runtimeKtx)
@@ -93,6 +90,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons)
+    implementation(libs.material)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 
@@ -104,6 +102,7 @@ dependencies {
     implementation(libs.androidx.work.runtimeKtx)
     implementation(libs.util.coil)
     implementation(libs.util.flow.combineTuple)
+    implementation(libs.bundles.eventEmitter)
 
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.junit4.ext)

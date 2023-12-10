@@ -16,7 +16,6 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
@@ -40,11 +39,11 @@ kotlin.sourceSets.all() {
     languageSettings.enableLanguageFeature("DataObjects")
 }
 
-// todo continue cant run tests
 dependencies {
-    implementation(project(":domain:plant"))
-    implementation(project(":domain:notification"))
-    api(project(":shared:android"))
+    implementation(project(":component:plant"))
+    implementation(project(":component:notification"))
+    implementation(project(":library:design"))
+    implementation(project(":library:navigation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
@@ -59,7 +58,7 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 
-    testImplementation(project(":shared:test"))
+    testImplementation(project(":library:test"))
     testImplementation(libs.test.assertk)
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.test.coroutines)

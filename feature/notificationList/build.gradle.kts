@@ -16,7 +16,6 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
@@ -37,9 +36,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain:notification"))
-    implementation(project(":domain:plant"))
-    api(project(":shared:android"))
+    implementation(project(":component:notification"))
+    implementation(project(":component:plant"))
+    implementation(project(":library:design"))
+    implementation(project(":library:navigation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.compose.bom))
@@ -55,7 +55,7 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 
-    testImplementation(project(":shared:test"))
+    testImplementation(project(":library:test"))
     testImplementation(libs.test.assertk)
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.test.coroutines)

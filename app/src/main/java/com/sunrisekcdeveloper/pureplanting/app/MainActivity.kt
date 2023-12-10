@@ -8,8 +8,9 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.sunrisekcdeveloper.navigation.FragmentStateChanger
 import com.sunrisekcdeveloper.pureplanting.R
-import com.sunrisekcdeveloper.pureplanting.features.PlantsKey
-import com.sunrisekcdeveloper.reminders.WaterPlantReminder
+import com.sunrisekcdeveloper.pureplanting.app.workers.ForgotToWaterReminder
+import com.sunrisekcdeveloper.pureplanting.app.workers.WaterPlantReminder
+import com.sunrisekcdeveloper.pureplanting.features.MainKey
 import com.zhuinden.simplestack.BackHandlingModel
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestack.History
@@ -19,7 +20,9 @@ import com.zhuinden.simplestack.navigator.Navigator
 import com.zhuinden.simplestackextensions.fragments.DefaultFragmentStateChanger
 import com.zhuinden.simplestackextensions.lifecyclektx.observeAheadOfTimeWillHandleBackChanged
 import com.zhuinden.simplestackextensions.navigatorktx.androidContentFrame
-import com.zhuinden.simplestackextensions.services.DefaultServiceProvider
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
 class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
@@ -47,14 +50,15 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
         backstack = Navigator.configure()
             .setBackHandlingModel(BackHandlingModel.AHEAD_OF_TIME)
             .setStateChanger(SimpleStateChanger(this))
-            .setScopedServices(DefaultServiceProvider())
+            .setScopedServices(NavigationServiceProvider())
             .setGlobalServices(globalServices)
-            .install(this, androidContentFrame, History.of(PlantsKey))
+            .install(this, androidContentFrame, History.of(MainKey()))
 
         backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
         backstack.observeAheadOfTimeWillHandleBackChanged(this, backPressedCallback::isEnabled::set)
 
         schedulePlantWateringWorker()
+        scheduleForgotToWaterReminder()
     }
 
     private fun schedulePlantWateringWorker() {
@@ -73,17 +77,23 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
     }
 
     private fun scheduleForgotToWaterReminder() {
-        /**
-         * I have two options for this worker
-         *
-         * 1. schedule a unique worker per plant to execute at a certain time
-         * Upon completion calculate the next watering time and schedule another unique worker
-         *
-         * 2. check periodically (every hour) to see if a plant was forgotten.
-         */
-        // todo daily executeion at 00:01
-        // alternative solution https://copyprogramming.com/howto/schedule-a-work-on-a-specific-time-with-workmanager
-        // another is to use Alarm manager for exact time execution
+        val today = LocalDateTime.now()
+        val tomorrow = LocalDateTime.of(today.toLocalDate().plusDays(1), LocalTime.MIDNIGHT)
+        val millisToTomorrow = Duration.between(today, tomorrow.plusHours(2)).toMillis()
+
+        val request = PeriodicWorkRequestBuilder<ForgotToWaterReminder>(
+            repeatInterval = 24,
+            repeatIntervalTimeUnit = TimeUnit.HOURS
+        )
+            .setInitialDelay(millisToTomorrow, TimeUnit.MILLISECONDS)
+            .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                ForgotToWaterReminder.TAG,
+                ExistingPeriodicWorkPolicy.KEEP,
+                request
+            )
     }
 
     override fun onNavigationEvent(stateChange: StateChange) {

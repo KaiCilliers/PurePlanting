@@ -4,21 +4,14 @@ import android.Manifest
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import com.sunrisekcdeveloper.addEditPlant.AddEditPlantScreen
-import com.sunrisekcdeveloper.addEditPlant.AddEditPlantViewModel
-import com.sunrisekcdeveloper.addEditPlant.PlantSize
-import com.sunrisekcdeveloper.navigation.ComposeFragment
+import com.sunrisekcdeveloper.addEdit.DefaultAddEditComponent
+import com.sunrisekcdeveloper.addEdit.AddEditUi
+import com.sunrisekcdeveloper.android.navigation.ComposeFragment
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestackextensions.servicesktx.lookup
-import kotlinx.coroutines.flow.update
 
 class AddEditPlantFragment : ComposeFragment() {
 
@@ -35,36 +28,9 @@ class AddEditPlantFragment : ComposeFragment() {
     @Composable
     override fun FragmentComposable(backstack: Backstack) {
         ThemeSurfaceWrapper {
-            val viewModel = remember { backstack.lookup<AddEditPlantViewModel>() }
+            val component = remember { backstack.lookup<DefaultAddEditComponent>() }
 
-            val name by viewModel.name.collectAsState()
-            val description by viewModel.description.collectAsState()
-            val imgSrcUri by viewModel.image.collectAsState()
-            val size by viewModel.size.collectAsState()
-            val wateringDays by viewModel.wateringDays.collectAsState()
-            val wateringTime by viewModel.wateringTime.collectAsState()
-            val wateringAmount by viewModel.wateringAmount.collectAsState()
-
-            Box {
-                AddEditPlantScreen(
-                    name = name,
-                    nameUpdater = { newValue -> viewModel.name.update { newValue } },
-                    description = description,
-                    descriptionUpdater = { newValue -> viewModel.description.update { newValue } },
-                    size = size,
-                    sizeUpdater = { newValue -> viewModel.size.update { PlantSize.valueOf(newValue) } },
-                    imgSrcUri = imgSrcUri,
-                    imgSrcUriUpdater = { newValue -> viewModel.image.update { newValue } },
-                    daysToWater = wateringDays,
-                    daysToWaterUpdater = { newValue -> viewModel.wateringDays.update { newValue } },
-                    wateringTime = wateringTime,
-                    wateringTimeUpdater = { newValue -> viewModel.wateringTime.update { newValue } },
-                    amountOfWater = wateringAmount,
-                    amountOfWaterUpdater = { newValue -> viewModel.wateringAmount.update { newValue } },
-                    onAddPlantTap = { viewModel.savePlant() },
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
+            AddEditUi(component = component)
         }
     }
 }

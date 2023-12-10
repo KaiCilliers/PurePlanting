@@ -1,14 +1,17 @@
 package com.sunrisekcdeveloper.pureplanting.app
 
 import android.app.Application
+import android.util.Log
 import androidx.work.Configuration
-import com.sunrisekcdeveloper.notification.LocalDatabaseNotificationCache
-import com.sunrisekcdeveloper.notification.NotificationCache
-import com.sunrisekcdeveloper.plant.LocalDatabasePlantCache
-import com.sunrisekcdeveloper.plant.PlantCache
-import com.sunrisekcdeveloper.reminders.SystemNotification
-import com.sunrisekcdeveloper.reminders.WaterPlantReminder
-import com.sunrisekcdeveloper.reminders.ForgotToWaterReminder
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.notification.data.DefaultNotificationRepository
+import com.sunrisekcdeveloper.notification.domain.NotificationRepository
+import com.sunrisekcdeveloper.plant.data.DefaultPlantRepository
+import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.app.workers.CompositeWorkerFactory
+import com.sunrisekcdeveloper.pureplanting.app.workers.ForgotToWaterReminder
+import com.sunrisekcdeveloper.pureplanting.app.workers.SystemNotification
+import com.sunrisekcdeveloper.pureplanting.app.workers.WaterPlantReminder
 import com.zhuinden.simplestack.GlobalServices
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.rebind
@@ -22,39 +25,46 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     private val systemNotification by lazy { SystemNotification(applicationContext) }
     private val defaultClock = Clock.systemDefaultZone()
     private val db by lazy { PurePlantingDatabase.getDatabase(this) }
-    private val plantCache by lazy { LocalDatabasePlantCache(db.plantDao()) }
-    private val notificationCache by lazy { LocalDatabaseNotificationCache(db.notificationDao()) }
+    private val plantRepository by lazy { DefaultPlantRepository(db.plantDao()) }
+    private val notificationRepository by lazy { DefaultNotificationRepository(db.notificationDao()) }
+    // todo make use of snackbar emitter, material 3!
+    private val snackbarEmitter by lazy { SnackbarEmitter() }
+
+    private val waterFactory by lazy {
+        WaterPlantReminder.Factory(
+            plantRepository = plantRepository,
+            notificationRepository = notificationRepository,
+            systemNotification = systemNotification,
+            dao = db.waterWorkerDao(),
+            clock = defaultClock,
+        )
+    }
+    private val forgotFactory by lazy {
+        ForgotToWaterReminder.Factory(
+            plantRepository = plantRepository,
+            notificationRepository = notificationRepository,
+            systemNotification = systemNotification,
+            dao = db.forgotWaterWorkerDao(),
+            clock = defaultClock,
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()
 
         globalServices = GlobalServices.builder()
-            .add(plantCache)
-            .rebind<PlantCache>(plantCache)
-            .add(notificationCache)
-            .rebind<NotificationCache>(notificationCache)
+            .add(plantRepository)
+            .rebind<PlantRepository>(plantRepository)
+            .add(notificationRepository)
+            .rebind<NotificationRepository>(notificationRepository)
+            .add(snackbarEmitter)
             .build()
     }
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
-            .setWorkerFactory(
-                WaterPlantReminder.Factory(
-                    plantCache = plantCache,
-                    notificationCache = notificationCache,
-                    systemNotification = systemNotification,
-                    db.notificationDao2(),
-                    clock = defaultClock,
-                )
-            )
-            .setWorkerFactory(
-                ForgotToWaterReminder.Factory(
-                    plantCache = plantCache,
-                    notificationCache = notificationCache,
-                    systemNotification = systemNotification,
-                    clock = defaultClock,
-                )
-            )
+            .setMinimumLoggingLevel(Log.DEBUG)
+            .setWorkerFactory(CompositeWorkerFactory(listOf(waterFactory, forgotFactory)))
             .build()
 }
 

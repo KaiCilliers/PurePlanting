@@ -1,17 +1,17 @@
 package com.sunrisekcdeveloper.pureplanting.app
 
 import android.content.Context
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
-import com.sunrisekcdeveloper.notification.NotificationCacheFake
-import com.sunrisekcdeveloper.plant.PlantCacheFake
-import com.sunrisekcdeveloper.reminders.ForgotToWaterReminder
-import com.sunrisekcdeveloper.reminders.SystemNotification
+import com.sunrisekcdeveloper.notification.domain.NotificationRepository
+import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
+import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.app.workers.ForgotToWaterReminder
+import com.sunrisekcdeveloper.pureplanting.app.workers.SystemNotification
 import com.sunrisekcdeveloper.shared_test.MutableClock
 import com.sunrisekcdeveloper.shared_test.now
-import com.sunrisekcdeveloper.shared_test.plantForgotten
-import com.sunrisekcdeveloper.shared_test.plantNeedsWaterNow
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.CoreMatchers.`is`
@@ -24,28 +24,30 @@ import java.time.Clock
 class ForgotToWaterReminderTest {
 
     private lateinit var context: Context
-    private lateinit var plantCacheFake: PlantCacheFake
-    private lateinit var notificationsCacheFake: NotificationCacheFake
+    private lateinit var plantRepositoryFake: PlantRepository.Fake
+    private lateinit var notificationsRepositoryFake: NotificationRepository.Fake
     private lateinit var systemNotification: SystemNotification
     private lateinit var mutableClock: MutableClock
     private lateinit var workerFactory: ForgotToWaterReminder.Factory
+    private lateinit var db: PurePlantingDatabase
 
     @Before
     fun setup() {
-        plantCacheFake = PlantCacheFake()
-        notificationsCacheFake = NotificationCacheFake()
-        mutableClock = MutableClock(Clock.systemDefaultZone())
         context = ApplicationProvider.getApplicationContext()
+        db = Room.inMemoryDatabaseBuilder(context, PurePlantingDatabase::class.java).build()
+        plantRepositoryFake = PlantRepository.Fake()
+        notificationsRepositoryFake = NotificationRepository.Fake()
+        mutableClock = MutableClock(Clock.systemDefaultZone())
         systemNotification = SystemNotification(context)
-        workerFactory = ForgotToWaterReminder.Factory(plantCacheFake, notificationsCacheFake, systemNotification, mutableClock)
+        workerFactory = ForgotToWaterReminder.Factory(plantRepositoryFake, notificationsRepositoryFake, systemNotification, db.forgotWaterWorkerDao(), mutableClock)
     }
 
     @After
     fun teardown() {
-        plantCacheFake.throwException = false
-        notificationsCacheFake.throwException = false
-        plantCacheFake.resetData()
-        notificationsCacheFake.resetData()
+        plantRepositoryFake.throwException = false
+        notificationsRepositoryFake.throwException = false
+        plantRepositoryFake.resetData()
+        notificationsRepositoryFake.resetData()
     }
 
     @Test
@@ -62,7 +64,7 @@ class ForgotToWaterReminderTest {
 
             // ASSERTIONS
             assertThat(result, `is`(ListenableWorker.Result.success()))
-            assertThat(notificationsCacheFake.all().size, `is`(0))
+            assertThat(notificationsRepositoryFake.all().size, `is`(0))
         }
     }
 
@@ -74,19 +76,19 @@ class ForgotToWaterReminderTest {
             .setWorkerFactory(workerFactory)
             .build()
 
-        plantCacheFake.save(plantForgotten(now()))
-        plantCacheFake.save(plantForgotten(now()))
+        plantRepositoryFake.save(plantForgotten(now()))
+        plantRepositoryFake.save(plantForgotten(now()))
 
 
         runBlocking {
             // ACTION
             val result = worker.doWork()
-            val notifications = notificationsCacheFake.all()
+            val notifications = notificationsRepositoryFake.all()
 
             // ASSERTIONS
             assertThat(result, `is`(ListenableWorker.Result.success()))
             assertThat(notifications.size, `is`(1))
-            assertThat(notifications.first().type, instanceOf(com.sunrisekcdeveloper.notification.PlantNotificationType.ForgotToWater::class.java))
+            assertThat(notifications.first().type, instanceOf(PlantNotificationType.ForgotToWater::class.java))
             assertThat(notifications.first().type.targetPlants.size, `is`(2))
             assertThat(notifications.first().seen, `is`(false))
         }
@@ -99,14 +101,14 @@ class ForgotToWaterReminderTest {
             .setWorkerFactory(workerFactory)
             .build()
 
-        plantCacheFake.save(plantNeedsWaterNow())
-        plantCacheFake.save(plantForgotten(now()).water())
+        plantRepositoryFake.save(plantNeedsWaterNow())
+        plantRepositoryFake.save(plantForgotten(now()).water())
 
 
         runBlocking {
             // ACTION
             val result = worker.doWork()
-            val notifications = notificationsCacheFake.all()
+            val notifications = notificationsRepositoryFake.all()
 
             // ASSERTIONS
             assertThat(result, `is`(ListenableWorker.Result.success()))
@@ -117,7 +119,7 @@ class ForgotToWaterReminderTest {
     @Test
     fun exception_encountered_returns_retry() {
         // SETUP
-        plantCacheFake.throwException = true
+        plantRepositoryFake.throwException = true
         val worker = TestListenableWorkerBuilder<ForgotToWaterReminder>(context)
             .setWorkerFactory(workerFactory)
             .build()
@@ -126,9 +128,9 @@ class ForgotToWaterReminderTest {
         runBlocking {
             val result = worker.doWork()
 
-            plantCacheFake.throwException = false
+            plantRepositoryFake.throwException = false
             assertThat(result, `is`(ListenableWorker.Result.retry()))
-            assertThat(notificationsCacheFake.all().size, `is`(0))
+            assertThat(notificationsRepositoryFake.all().size, `is`(0))
         }
     }
 
