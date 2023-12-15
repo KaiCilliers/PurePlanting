@@ -68,7 +68,7 @@ kotlin.sourceSets.all() {
 dependencies {
     implementation(project(":library:design"))
     implementation(project(":library:navigation"))
-    implementation(project(":components:plantList"))
+    implementation(project(":components:home"))
     implementation(project(":components:addEdit"))
     implementation(project(":components:detail"))
     implementation(project(":components:notificationList"))

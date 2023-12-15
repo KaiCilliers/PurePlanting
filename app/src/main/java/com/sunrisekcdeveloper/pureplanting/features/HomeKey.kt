@@ -5,10 +5,10 @@ import com.sunrisekcdeveloper.navigation.FragmentKey
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.plantList.HomeViewModel
-import com.sunrisekcdeveloper.plantList.NotificationIconViewModel
-import com.sunrisekcdeveloper.plantList.PlantListViewModel
-import com.sunrisekcdeveloper.plantList.PlantTabFilter
+import com.sunrisekcdeveloper.home.HomeViewModel
+import com.sunrisekcdeveloper.home.NotificationIconViewModel
+import com.sunrisekcdeveloper.home.PlantListViewModel
+import com.sunrisekcdeveloper.home.PlantTabFilter
 import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
 import com.zhuinden.simplestack.ScopeKey
 import com.zhuinden.simplestack.ServiceBinder
@@ -18,7 +18,7 @@ import com.zhuinden.simplestackextensions.servicesktx.rebind
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class MainKey(
+data class HomeKey(
     val overrideSelectedFilter: PlantTabFilter? = null
 ) : FragmentKey(), ScopeKey.Child {
     override fun bindServices(serviceBinder: ServiceBinder) {
@@ -46,7 +46,7 @@ data class MainKey(
         }
     }
 
-    override fun instantiateFragment(): Fragment = MainFragment()
+    override fun instantiateFragment(): Fragment = HomeFragment()
 
     override fun getParentScopes() = listOf(NavigationServiceProvider.Scopes.NOTIFICATION)
 }

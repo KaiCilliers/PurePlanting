@@ -9,7 +9,7 @@ import androidx.work.WorkManager
 import com.sunrisekcdeveloper.navigation.FragmentStateChanger
 import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder
 import com.sunrisekcdeveloper.pureplanting.workers.WaterPlantReminder
-import com.sunrisekcdeveloper.pureplanting.features.MainKey
+import com.sunrisekcdeveloper.pureplanting.features.HomeKey
 import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
 import com.zhuinden.simplestack.BackHandlingModel
 import com.zhuinden.simplestack.Backstack
@@ -52,7 +52,7 @@ class MainActivity : FragmentActivity(), SimpleStateChanger.NavigationHandler {
             .setStateChanger(SimpleStateChanger(this))
             .setScopedServices(NavigationServiceProvider())
             .setGlobalServices(globalServices)
-            .install(this, androidContentFrame, History.of(MainKey()))
+            .install(this, androidContentFrame, History.of(HomeKey()))
 
         backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
         backstack.observeAheadOfTimeWillHandleBackChanged(this, backPressedCallback::isEnabled::set)

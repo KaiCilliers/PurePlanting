@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.plantList
+package com.sunrisekcdeveloper.home
 
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.plant.domain.PlantRepository

@@ -7,8 +7,8 @@ import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
 import com.sunrisekcdeveloper.notificationList.NotificationListViewModel
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.plantList.PlantListViewModel
-import com.sunrisekcdeveloper.plantList.PlantTabFilter
+import com.sunrisekcdeveloper.home.PlantListViewModel
+import com.sunrisekcdeveloper.home.PlantTabFilter
 import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
 import com.zhuinden.simplestack.ScopeKey
 import com.zhuinden.simplestack.ServiceBinder
@@ -37,7 +37,7 @@ data object NotificationListKey : FragmentKey(), ScopeKey.Child {
                                 is PlantNotificationType.ForgotToWater -> PlantTabFilter.FORGOT_TO_WATER
                             }
                         )
-                        backstack.goTo(MainKey())
+                        backstack.goTo(HomeKey())
                     }
 
                     override fun goToDetail(plant: Plant) {

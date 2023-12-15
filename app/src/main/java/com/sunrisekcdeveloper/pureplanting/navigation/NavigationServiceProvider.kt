@@ -2,7 +2,7 @@ package com.sunrisekcdeveloper.pureplanting.navigation
 
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.plantList.PlantListViewModel
+import com.sunrisekcdeveloper.home.PlantListViewModel
 import com.sunrisekcdeveloper.pureplanting.features.AddEditKey
 import com.sunrisekcdeveloper.pureplanting.features.DetailKey
 import com.zhuinden.simplestack.ServiceBinder

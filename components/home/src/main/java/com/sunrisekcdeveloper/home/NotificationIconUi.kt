@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.plantList
+package com.sunrisekcdeveloper.home
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable

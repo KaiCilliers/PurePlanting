@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.plantList
+package com.sunrisekcdeveloper.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -6,7 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
 @Composable
-fun MainUi(viewModel: HomeViewModel) {
+fun HomeUi(viewModel: HomeViewModel) {
     Column {
         NotificationIconUi(viewModel.notificationIconViewModel)
         PlantListUi(viewModel.plantListViewModel)
@@ -15,8 +15,8 @@ fun MainUi(viewModel: HomeViewModel) {
 
 @Preview
 @Composable
-private fun MainUi_Preview() {
+private fun HomeUi_Preview() {
     ThemeSurfaceWrapper {
-        MainUi(HomeViewModel.Fake())
+        HomeUi(HomeViewModel.Fake())
     }
 }

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sunrisekcdeveloper.components.plantList"
+    namespace = "com.sunrisekcdeveloper.components.home"
     compileSdk = 33
 
     defaultConfig {

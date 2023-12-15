@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.plantList
+package com.sunrisekcdeveloper.home
 
 import app.cash.turbine.test
 import assertk.assertThat
