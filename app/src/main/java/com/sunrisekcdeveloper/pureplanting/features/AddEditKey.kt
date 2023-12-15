@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.features
 
 import androidx.fragment.app.Fragment
-import com.sunrisekcdeveloper.addEdit.AddEditComponent
+import com.sunrisekcdeveloper.addEdit.AddEditViewModel
 import com.sunrisekcdeveloper.addEdit.Router
 import com.sunrisekcdeveloper.navigation.FragmentKey
 import com.sunrisekcdeveloper.plant.domain.Plant
@@ -17,7 +17,7 @@ data class AddEditKey(
 ) : FragmentKey() {
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
-            AddEditComponent.Default(
+            AddEditViewModel.Default(
                 plantRepository = lookup(),
                 router = object : Router {
                     override fun jumpToRoot() {
@@ -25,9 +25,9 @@ data class AddEditKey(
                     }
                 },
                 plant = plant
-            ).let {  component ->
-                add(component)
-                rebind<AddEditComponent>(component)
+            ).let {  viewModel ->
+                add(viewModel)
+                rebind<AddEditViewModel>(viewModel)
             }
         }
     }

@@ -23,10 +23,10 @@ import java.util.Locale
 
 @Composable
 fun DetailUi(
-    component: DetailComponent,
+    viewModel: DetailViewModel,
     modifier: Modifier = Modifier,
 ) {
-    val plant = component.plant.collectAsState()
+    val plant = viewModel.plant.collectAsState()
     val timeFormatter = remember { DateTimeFormatter.ofPattern("HH:mm") }
 
     Column(
@@ -70,12 +70,12 @@ fun DetailUi(
             LargeText(text = plant.value.needsWaterToday(LocalDateTime.now()).toString())
         }
 
-        Button(onClick = { component.onEditPlant() }) {
+        Button(onClick = { viewModel.onEditPlant() }) {
             Text(text = "Edit Plant")
         }
 
         if (plant.value.needsWaterToday(LocalDateTime.now())) {
-            Button(onClick = { component.onWaterPlant() }) {
+            Button(onClick = { viewModel.onWaterPlant() }) {
                 Text(text = "Mark as watered")
             }
         }
@@ -100,6 +100,6 @@ private fun LargeText(
 @Composable
 private fun DetailUi_Preview() {
     ThemeSurfaceWrapper {
-        DetailUi(component = DetailComponent.Fake())
+        DetailUi(DetailViewModel.Fake())
     }
 }

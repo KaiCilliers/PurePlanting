@@ -4,15 +4,15 @@ import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
 import java.time.Clock
 
-interface MainComponent {
+interface HomeViewModel {
 
-    val notificationIconComponent: NotificationIconComponent
+    val notificationIconViewModel: NotificationIconViewModel
 
     val plantListViewModel: PlantListViewModel
 
-    class Fake : MainComponent {
+    class Fake : HomeViewModel {
 
-        override val notificationIconComponent = NotificationIconComponent.Fake()
+        override val notificationIconViewModel = NotificationIconViewModel.Fake()
 
         override val plantListViewModel = PlantListViewModel.Fake()
 
@@ -21,21 +21,21 @@ interface MainComponent {
     class Default(
         plantRepository: PlantRepository,
         notificationRepository: NotificationRepository,
-        plantListViewModelRouter: PlantListViewModel.Router,
-        notificationIconComponentRouter: NotificationIconComponent.Router,
+        plantListRouter: PlantListViewModel.Router,
+        notificationIconRouter: NotificationIconViewModel.Router,
         clock: Clock = Clock.systemDefaultZone(),
-        notificationIconComp: NotificationIconComponent? = null,
+        notificationIconComp: NotificationIconViewModel? = null,
         plantListComp: PlantListViewModel? = null,
-    ) : MainComponent {
+    ) : HomeViewModel {
 
-        override val notificationIconComponent = notificationIconComp ?: NotificationIconComponent.Default(
+        override val notificationIconViewModel = notificationIconComp ?: NotificationIconViewModel.Default(
             notificationRepository,
-            notificationIconComponentRouter
+            notificationIconRouter
         )
 
         override val plantListViewModel = plantListComp ?: PlantListViewModel.Default(
             plantRepository,
-            plantListViewModelRouter,
+            plantListRouter,
             clock
         )
     }

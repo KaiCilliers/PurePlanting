@@ -58,17 +58,17 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditUi(
-    component: AddEditComponent,
+    viewModel: AddEditViewModel,
     modifier: Modifier = Modifier,
 ) {
 
-    val image by component.image.collectImmediatelyAsState()
-    val name by component.name.collectImmediatelyAsState()
-    val description by component.description.collectImmediatelyAsState()
-    val size by component.size.collectImmediatelyAsState()
-    val wateringDays by component.wateringDays.collectImmediatelyAsState()
-    val wateringTime by component.wateringTime.collectImmediatelyAsState()
-    val wateringAmount by component.wateringAmount.collectImmediatelyAsState()
+    val image by viewModel.image.collectImmediatelyAsState()
+    val name by viewModel.name.collectImmediatelyAsState()
+    val description by viewModel.description.collectImmediatelyAsState()
+    val size by viewModel.size.collectImmediatelyAsState()
+    val wateringDays by viewModel.wateringDays.collectImmediatelyAsState()
+    val wateringTime by viewModel.wateringTime.collectImmediatelyAsState()
+    val wateringAmount by viewModel.wateringAmount.collectImmediatelyAsState()
 
     var uri: Uri? = null
     var capturedImageUri by remember { mutableStateOf(image.toUri()) }
@@ -90,7 +90,7 @@ fun AddEditUi(
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccessful ->
         if (isSuccessful) {
             uri?.let {
-                component.onImageChanged(it.toString())
+                viewModel.onImageChanged(it.toString())
                 capturedImageUri = it
             }
         } else {
@@ -101,7 +101,7 @@ fun AddEditUi(
 
     val galleryImagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { imgUri ->
         capturedImageUri = imgUri ?: return@rememberLauncherForActivityResult
-        component.onImageChanged(imgUri.toString())
+        viewModel.onImageChanged(imgUri.toString())
     }
 
     val cameraPermissionResultLauncher = rememberLauncherForActivityResult(
@@ -129,7 +129,7 @@ fun AddEditUi(
         PPSizeSelectionDialog(
             dismiss = { showSizeDialog = false },
             initialSelection = size,
-            updateSelection = component::onSizeChanged
+            updateSelection = viewModel::onSizeChanged
         )
     }
 
@@ -137,7 +137,7 @@ fun AddEditUi(
         PPDateSelectionDialog(
             dismiss = { showDatesDialog = false },
             initialSelections = wateringDays,
-            updateSelection = component::onWateringDaysChanged
+            updateSelection = viewModel::onWateringDaysChanged
         )
     }
 
@@ -146,7 +146,7 @@ fun AddEditUi(
         PPTimePickerDialog(
             onCancel = { showTimeDialog = false },
             onConfirm = {
-                component.onWateringTimeChanged(LocalTime.of(timeDialogState.hour, timeDialogState.minute, 0, 0))
+                viewModel.onWateringTimeChanged(LocalTime.of(timeDialogState.hour, timeDialogState.minute, 0, 0))
                 showTimeDialog = false
             },
             toggle = {
@@ -269,24 +269,24 @@ fun AddEditUi(
 
         TextField(
             value = name,
-            onValueChange = component::onNameChanged,
+            onValueChange = viewModel::onNameChanged,
         )
         Spacer(modifier = Modifier.height(12.dp))
 
         TextField(
             value = description,
-            onValueChange = component::onDescriptionChanged,
+            onValueChange = viewModel::onDescriptionChanged,
         )
         Spacer(modifier = Modifier.height(12.dp))
 
         TextField(
             value = wateringAmount,
-            onValueChange = component::onWateringAmountChanged,
+            onValueChange = viewModel::onWateringAmountChanged,
         )
         Spacer(modifier = Modifier.height(12.dp))
 
         Button(
-            onClick = component::onSavePlant
+            onClick = viewModel::onSavePlant
         ) {
             Text(text = "Create a Plant")
         }
@@ -298,6 +298,6 @@ fun AddEditUi(
 @Composable
 private fun AddEditUi_Preview() {
     ThemeSurfaceWrapper {
-        AddEditUi(AddEditComponent.Fake())
+        AddEditUi(AddEditViewModel.Fake())
     }
 }

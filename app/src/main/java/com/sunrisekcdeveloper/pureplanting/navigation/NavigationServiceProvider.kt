@@ -43,6 +43,6 @@ class NavigationServiceProvider : DefaultServiceProvider() {
     }
 
     object Scopes {
-        const val NOTIFICATION = "notification"
+        const val NOTIFICATION = "notification" // todo rename to Home since plantList is being shared
     }
 }

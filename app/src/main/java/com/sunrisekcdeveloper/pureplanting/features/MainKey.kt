@@ -5,8 +5,8 @@ import com.sunrisekcdeveloper.navigation.FragmentKey
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.plantList.MainComponent
-import com.sunrisekcdeveloper.plantList.NotificationIconComponent
+import com.sunrisekcdeveloper.plantList.HomeViewModel
+import com.sunrisekcdeveloper.plantList.NotificationIconViewModel
 import com.sunrisekcdeveloper.plantList.PlantListViewModel
 import com.sunrisekcdeveloper.plantList.PlantTabFilter
 import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
@@ -33,16 +33,16 @@ data class MainKey(
                 }
 
             }
-            val notificationIconRouter = NotificationIconComponent.Router { backstack.goTo(NotificationListKey) }
-            val mainComponent = MainComponent.Default(
+            val notificationIconRouter = NotificationIconViewModel.Router { backstack.goTo(NotificationListKey) }
+            val homeViewModel = HomeViewModel.Default(
                 plantRepository = lookup<PlantRepository>(),
                 notificationRepository = lookup<NotificationRepository>(),
-                plantListViewModelRouter = plantListRouter,
-                notificationIconComponentRouter = notificationIconRouter,
+                plantListRouter = plantListRouter,
+                notificationIconRouter = notificationIconRouter,
                 plantListComp = lookup<PlantListViewModel>()
             )
-            add(mainComponent)
-            rebind<MainComponent>(mainComponent)
+            add(homeViewModel)
+            rebind<HomeViewModel>(homeViewModel)
         }
     }
 

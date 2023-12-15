@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import com.sunrisekcdeveloper.navigation.FragmentKey
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
-import com.sunrisekcdeveloper.notificationList.NotificationListComponent
+import com.sunrisekcdeveloper.notificationList.NotificationListViewModel
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
 import com.sunrisekcdeveloper.plantList.PlantListViewModel
@@ -22,10 +22,10 @@ data object NotificationListKey : FragmentKey(), ScopeKey.Child {
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
             val plantListViewModel = lookup<PlantListViewModel>()
-            val component = NotificationListComponent.Default(
+            val notificationIconViewModel = NotificationListViewModel.Default(
                 notificationRepository = lookup<NotificationRepository>(),
                 plantRepository = lookup<PlantRepository>(),
-                router = object : NotificationListComponent.Router {
+                router = object : NotificationListViewModel.Router {
                     override fun goBack() {
                         backstack.goBack()
                     }
@@ -46,8 +46,8 @@ data object NotificationListKey : FragmentKey(), ScopeKey.Child {
 
                 }
             )
-            add(component)
-            rebind<NotificationListComponent>(component)
+            add(notificationIconViewModel)
+            rebind<NotificationListViewModel>(notificationIconViewModel)
         }
     }
 

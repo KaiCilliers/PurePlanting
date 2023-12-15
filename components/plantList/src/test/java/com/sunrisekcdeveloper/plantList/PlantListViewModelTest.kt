@@ -31,10 +31,10 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.toJavaDuration
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DefaultPlantListComponentTest {
+class PlantListViewModelTest {
 
     private lateinit var plantRepositoryFake: PlantRepository.Fake
-    private lateinit var component: PlantListViewModel.Default
+    private lateinit var viewModel: PlantListViewModel.Default
     private lateinit var mutableClock: MutableClock
     private lateinit var notificationRepositoryFake: NotificationRepository.Fake
     private lateinit var router: PlantListViewModel.Router
@@ -49,7 +49,7 @@ class DefaultPlantListComponentTest {
             override fun goToAddPlant() {}
             override fun goToPlantDetail(plant: Plant) {}
         }
-        component = PlantListViewModel.Default(plantRepositoryFake, router, mutableClock)
+        viewModel = PlantListViewModel.Default(plantRepositoryFake, router, mutableClock)
     }
 
     @AfterEach
@@ -61,7 +61,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `upon init, upcoming filter is selected`() = runTest {
         // SETUP
-        val filterFlow = component.filter
+        val filterFlow = viewModel.filter
 
         // ACTION & ASSERTIONS
         filterFlow.test {
@@ -74,7 +74,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `upcoming filter selected, display only plants that need water`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         val today = today()
 
         plantRepositoryFake.save(plantNeedsWaterNow(today))
@@ -82,7 +82,7 @@ class DefaultPlantListComponentTest {
         plantRepositoryFake.save(plantNeedsWater(today.minusDays(3)))
 
         // ACTION
-        component.onFilterChange(PlantTabFilter.UPCOMING)
+        viewModel.onFilterChange(PlantTabFilter.UPCOMING)
 
         // ASSERTIONS
         plantsFlow.test {
@@ -96,7 +96,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `forgot to water filter selected, display only plants that have been forgotten to be watered`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         val today = today()
 
         plantRepositoryFake.save(plantForgotten())
@@ -105,7 +105,7 @@ class DefaultPlantListComponentTest {
         plantRepositoryFake.save(plantForgotten())
 
         // ACTION
-        component.onFilterChange(PlantTabFilter.FORGOT_TO_WATER)
+        viewModel.onFilterChange(PlantTabFilter.FORGOT_TO_WATER)
 
         // ASSERTIONS
         plantsFlow.test {
@@ -119,7 +119,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `history filter selected, display only plants that have a record of being watered`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
 
         plantRepositoryFake.save(plant())
         plantRepositoryFake.save(plant().water())
@@ -130,7 +130,7 @@ class DefaultPlantListComponentTest {
         // ACTION & ASSERTIONS
         plantsFlow.test {
             awaitItem()
-            component.onFilterChange(PlantTabFilter.HISTORY)
+            viewModel.onFilterChange(PlantTabFilter.HISTORY)
 
             val emission = awaitItem()
 
@@ -141,7 +141,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `water a plant in upcoming list removes it from the list`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         val plantToWater = plantNeedsWaterNow()
 
         plantRepositoryFake.save(plantNeedsWaterNow())
@@ -155,10 +155,10 @@ class DefaultPlantListComponentTest {
         plantsFlow.test {
             awaitItem()
 
-            component.onFilterChange(PlantTabFilter.UPCOMING)
+            viewModel.onFilterChange(PlantTabFilter.UPCOMING)
             assertThat(awaitItem()).hasSize(2)
 
-            component.onWaterPlant(plantToWater)
+            viewModel.onWaterPlant(plantToWater)
             assertThat(awaitItem()).hasSize(1)
         }
     }
@@ -166,7 +166,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `undo watering of a plant with single record in history removes item from history list`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         val plantToUndoWatering = plant().water()
 
         plantRepositoryFake.save(plantNeedsWaterNow())
@@ -180,10 +180,10 @@ class DefaultPlantListComponentTest {
         plantsFlow.test {
             awaitItem()
 
-            component.onFilterChange(PlantTabFilter.HISTORY)
+            viewModel.onFilterChange(PlantTabFilter.HISTORY)
             assertThat(awaitItem()).hasSize(3)
 
-            component.onUndoWater(plantToUndoWatering)
+            viewModel.onUndoWater(plantToUndoWatering)
             assertThat(awaitItem()).hasSize(2)
         }
     }
@@ -199,7 +199,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `water a plant in forgot to water list removes it from the list`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         val plantToUndoWatering = plant().water().water()
 
         plantRepositoryFake.save(plantNeedsWaterNow())
@@ -213,10 +213,10 @@ class DefaultPlantListComponentTest {
         plantsFlow.test {
             awaitItem()
 
-            component.onFilterChange(PlantTabFilter.HISTORY)
+            viewModel.onFilterChange(PlantTabFilter.HISTORY)
             assertThat(awaitItem()).hasSize(3)
 
-            component.onUndoWater(plantToUndoWatering)
+            viewModel.onUndoWater(plantToUndoWatering)
             assertThat(awaitItem()).hasSize(3)
         }
     }
@@ -225,7 +225,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `delete a plant removes it from the current list`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         val upcomingPlant = plantNeedsWaterNow()
         val forgottenPlant = plantForgotten()
         val wateredPlant = plant().water().water()
@@ -241,17 +241,17 @@ class DefaultPlantListComponentTest {
             awaitItem()
 
             assertThat(awaitItem()).hasSize(1)
-            component.onDeletePlant(upcomingPlant)
+            viewModel.onDeletePlant(upcomingPlant)
             assertThat(awaitItem()).hasSize(0)
 
-            component.onFilterChange(PlantTabFilter.FORGOT_TO_WATER)
+            viewModel.onFilterChange(PlantTabFilter.FORGOT_TO_WATER)
             assertThat(awaitItem()).hasSize(2)
-            component.onDeletePlant(forgottenPlant)
+            viewModel.onDeletePlant(forgottenPlant)
             assertThat(awaitItem()).hasSize(1)
 
-            component.onFilterChange(PlantTabFilter.HISTORY)
+            viewModel.onFilterChange(PlantTabFilter.HISTORY)
             assertThat(awaitItem()).hasSize(2)
-            component.onDeletePlant(wateredPlant)
+            viewModel.onDeletePlant(wateredPlant)
             assertThat(awaitItem()).hasSize(1)
         }
     }
@@ -260,7 +260,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `undo deleting a plant returns it to the list it was deleted from`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         val upcomingPlant = plantNeedsWaterNow()
         val forgottenPlant = plantForgotten()
         val wateredPlant = plant().water().water()
@@ -276,23 +276,23 @@ class DefaultPlantListComponentTest {
             awaitItem()
 
             assertThat(awaitItem()).hasSize(1)
-            component.onDeletePlant(upcomingPlant)
+            viewModel.onDeletePlant(upcomingPlant)
             assertThat(awaitItem()).hasSize(0)
-            component.onUndoDelete()
+            viewModel.onUndoDelete()
             assertThat(awaitItem()).hasSize(1)
 
-            component.onFilterChange(PlantTabFilter.FORGOT_TO_WATER)
+            viewModel.onFilterChange(PlantTabFilter.FORGOT_TO_WATER)
             assertThat(awaitItem()).hasSize(2)
-            component.onDeletePlant(forgottenPlant)
+            viewModel.onDeletePlant(forgottenPlant)
             assertThat(awaitItem()).hasSize(1)
-            component.onUndoDelete()
+            viewModel.onUndoDelete()
             assertThat(awaitItem()).hasSize(2)
 
-            component.onFilterChange(PlantTabFilter.HISTORY)
+            viewModel.onFilterChange(PlantTabFilter.HISTORY)
             assertThat(awaitItem()).hasSize(2)
-            component.onDeletePlant(wateredPlant)
+            viewModel.onDeletePlant(wateredPlant)
             assertThat(awaitItem()).hasSize(1)
-            component.onUndoDelete()
+            viewModel.onUndoDelete()
             assertThat(awaitItem()).hasSize(2)
         }
     }
@@ -300,7 +300,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `upcoming plants are sorted in ascending order by the time it needs water`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         val today = today()
         val plantMorning = plantNeedsWaterNow(today.withHour(8))
         val plantAfternoon = plantNeedsWaterNow(today.withHour(12))
@@ -321,7 +321,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `forgot to water plants are sorted in ascending order by the date it needs water`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         val today = today()
         val plantMorning = plantForgotten(today.withHour(8))
         val plantAfternoon = plantForgotten(today.withHour(12))
@@ -335,7 +335,7 @@ class DefaultPlantListComponentTest {
         plantsFlow.test {
             awaitItem()
 
-            component.onFilterChange(PlantTabFilter.FORGOT_TO_WATER)
+            viewModel.onFilterChange(PlantTabFilter.FORGOT_TO_WATER)
             assertThat(awaitItem()).containsExactly(plantMorning, plantAfternoon, plantEvening)
         }
     }
@@ -343,7 +343,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `history plants are sorted in descending order by the latest date it was watered`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         val wateredThird = plant()
         val wateredSecond = plant()
         val wateredFirst = plant()
@@ -361,7 +361,7 @@ class DefaultPlantListComponentTest {
         plantsFlow.test {
             awaitItem()
 
-            component.onFilterChange(PlantTabFilter.HISTORY)
+            viewModel.onFilterChange(PlantTabFilter.HISTORY)
             val emission = awaitItem()
 
             assertThat(emission).hasSize(3)
@@ -375,7 +375,7 @@ class DefaultPlantListComponentTest {
     @Test
     fun `undo watering of a plant with multiple watering records updates the order of the items in history list`() = runTest {
         // SETUP
-        val plantsFlow = component.plants
+        val plantsFlow = viewModel.plants
         var plantToUndo = plant()
 
         // now is 4pm
@@ -402,7 +402,7 @@ class DefaultPlantListComponentTest {
         plantsFlow.test {
             awaitItem()
 
-            component.onFilterChange(PlantTabFilter.HISTORY)
+            viewModel.onFilterChange(PlantTabFilter.HISTORY)
 
             val emission = awaitItem()
             assertThat(emission).hasSize(3)
@@ -410,7 +410,7 @@ class DefaultPlantListComponentTest {
             assertThat(emission[1].dateLastWatered?.hour).isEqualTo(now().minusHours(2).hour) // 2pm
             assertThat(emission[2].dateLastWatered?.hour).isEqualTo(now().minusHours(5).hour) // 11am
 
-            component.onUndoWater(plantToUndo)
+            viewModel.onUndoWater(plantToUndo)
 
             val emission2 = awaitItem()
             assertThat(emission2.first().dateLastWatered?.hour).isEqualTo(now().minusHours(2).hour) // 2pm

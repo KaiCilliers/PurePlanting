@@ -22,12 +22,12 @@ import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
 @Composable
 fun NotificationListUi(
-    component: NotificationListComponent,
+    viewModel: NotificationListViewModel,
     modifier: Modifier = Modifier
 ) {
 
-    val notifications = component.notifications.collectAsState()
-    val filter = component.filter.collectAsState()
+    val notifications = viewModel.notifications.collectAsState()
+    val filter = viewModel.filter.collectAsState()
 
     Column(
         modifier = modifier
@@ -39,7 +39,7 @@ fun NotificationListUi(
                 modifier = Modifier
                     .size(42.dp)
                     .clickable {
-                        component.onBackClick()
+                        viewModel.onBackClick()
                     }
             )
             Text(
@@ -54,7 +54,7 @@ fun NotificationListUi(
                 TabFilterOption(
                     text = it.name,
                     isSelected = filter.value == it,
-                    modifier = Modifier.clickable { component.onFilterChanged(it) }
+                    modifier = Modifier.clickable { viewModel.onFilterChanged(it) }
                 )
             }
         }
@@ -76,7 +76,7 @@ fun NotificationListUi(
                         content = item.type.notificationContent,
                         primaryButtonText = btnText,
                         seen = item.seen,
-                        onItemClicked = { component.onNotificationClick(item) }
+                        onItemClicked = { viewModel.onNotificationClick(item) }
                     )
                 }
             }
@@ -89,6 +89,6 @@ fun NotificationListUi(
 @Composable
 private fun NotificationListUi_Preview() {
     ThemeSurfaceWrapper {
-        NotificationListUi(NotificationListComponent.Fake())
+        NotificationListUi(NotificationListViewModel.Fake())
     }
 }

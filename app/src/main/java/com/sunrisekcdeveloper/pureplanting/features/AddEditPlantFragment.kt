@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.sunrisekcdeveloper.addEdit.AddEditComponent
+import com.sunrisekcdeveloper.addEdit.AddEditViewModel
 import com.sunrisekcdeveloper.addEdit.AddEditUi
 import com.sunrisekcdeveloper.android.navigation.ComposeFragment
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
@@ -28,9 +28,9 @@ class AddEditPlantFragment : ComposeFragment() {
     @Composable
     override fun FragmentComposable(backstack: Backstack) {
         ThemeSurfaceWrapper {
-            val component = remember { backstack.lookup<AddEditComponent>() }
+            val viewModel = remember { backstack.lookup<AddEditViewModel>() }
 
-            AddEditUi(component = component)
+            AddEditUi(viewModel)
         }
     }
 }

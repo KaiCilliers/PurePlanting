@@ -22,11 +22,11 @@ import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationIconUi(
-    component: NotificationIconComponent,
+    viewModel: NotificationIconViewModel,
     modifier: Modifier = Modifier,
 ) {
 
-    val isBadgeVisible by component.isNotificationBadgeVisible.collectAsState()
+    val isBadgeVisible by viewModel.isNotificationBadgeVisible.collectAsState()
 
     Box(modifier = modifier.wrapContentSize()) {
         Icon(
@@ -35,7 +35,7 @@ fun NotificationIconUi(
             modifier = modifier
                 .size(40.dp)
                 .clickable {
-                    component.onIconClick()
+                    viewModel.onIconClick()
                 }
         )
         if (isBadgeVisible) {
@@ -54,6 +54,6 @@ fun NotificationIconUi(
 @Composable
 private fun NotificationIconUi_Preview() {
     ThemeSurfaceWrapper {
-        NotificationIconUi(NotificationIconComponent.Fake())
+        NotificationIconUi(NotificationIconViewModel.Fake())
     }
 }

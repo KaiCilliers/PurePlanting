@@ -20,7 +20,7 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AddEditComponentDefaultTest {
+class AddEditViewModelTest {
 
     private lateinit var plantRepositoryFake: PlantRepository.Fake
     private lateinit var router: Router
@@ -43,58 +43,58 @@ class AddEditComponentDefaultTest {
     @Test
     fun `adding a new plant sets all input fields to their default values`() = runTest {
         // SETUP
-        val component = AddEditComponent.Default(
+        val viewModel = AddEditViewModel.Default(
             plantRepository = plantRepositoryFake,
             plant = null,
             router = router
         )
 
         // ASSERTIONS
-        assertThat(component.image.value).isEqualTo("")
-        assertThat(component.name.value).isEqualTo("")
-        assertThat(component.description.value).isEqualTo("")
-        assertThat(component.size.value).isEqualTo(AddEditComponent.Default.DEFAULT_PLANT_SIZE)
-        assertThat(component.wateringDays.value).isEqualTo(listOf(AddEditComponent.Default.DEFAULT_WATERING_DAY))
-        assertThat(component.wateringTime.value.hour).isEqualTo(AddEditComponent.Default.DEFAULT_WATERING_TIME.hour)
-        assertThat(component.wateringTime.value.minute).isEqualTo(AddEditComponent.Default.DEFAULT_WATERING_TIME.minute)
-        assertThat(component.wateringAmount.value).isEqualTo(AddEditComponent.Default.DEFAULT_WATERING_AMOUNT)
+        assertThat(viewModel.image.value).isEqualTo("")
+        assertThat(viewModel.name.value).isEqualTo("")
+        assertThat(viewModel.description.value).isEqualTo("")
+        assertThat(viewModel.size.value).isEqualTo(AddEditViewModel.Default.DEFAULT_PLANT_SIZE)
+        assertThat(viewModel.wateringDays.value).isEqualTo(listOf(AddEditViewModel.Default.DEFAULT_WATERING_DAY))
+        assertThat(viewModel.wateringTime.value.hour).isEqualTo(AddEditViewModel.Default.DEFAULT_WATERING_TIME.hour)
+        assertThat(viewModel.wateringTime.value.minute).isEqualTo(AddEditViewModel.Default.DEFAULT_WATERING_TIME.minute)
+        assertThat(viewModel.wateringAmount.value).isEqualTo(AddEditViewModel.Default.DEFAULT_WATERING_AMOUNT)
     }
 
     @Test
     fun `editing and existing plant sets input fields to plant's values`() = runTest {
         // SETUP
         val initialPlant = plant()
-        val component = AddEditComponent.Default(plantRepositoryFake, router, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, initialPlant)
 
         // ASSERTIONS
-        assertThat(component.image.value).isEqualTo(initialPlant.details.imageSrcUri)
-        assertThat(component.name.value).isEqualTo(initialPlant.details.name)
-        assertThat(component.description.value).isEqualTo(initialPlant.details.description)
-        assertThat(component.size.value.name).isEqualTo(initialPlant.details.size)
-        assertThat(component.wateringDays.value).isEqualTo(initialPlant.wateringInfo.days)
-        assertThat(component.wateringTime.value.hour).isEqualTo(initialPlant.wateringInfo.time.hour)
-        assertThat(component.wateringTime.value.minute).isEqualTo(initialPlant.wateringInfo.time.minute)
-        assertThat(component.wateringAmount.value).isEqualTo(initialPlant.wateringInfo.amount)
+        assertThat(viewModel.image.value).isEqualTo(initialPlant.details.imageSrcUri)
+        assertThat(viewModel.name.value).isEqualTo(initialPlant.details.name)
+        assertThat(viewModel.description.value).isEqualTo(initialPlant.details.description)
+        assertThat(viewModel.size.value.name).isEqualTo(initialPlant.details.size)
+        assertThat(viewModel.wateringDays.value).isEqualTo(initialPlant.wateringInfo.days)
+        assertThat(viewModel.wateringTime.value.hour).isEqualTo(initialPlant.wateringInfo.time.hour)
+        assertThat(viewModel.wateringTime.value.minute).isEqualTo(initialPlant.wateringInfo.time.minute)
+        assertThat(viewModel.wateringAmount.value).isEqualTo(initialPlant.wateringInfo.amount)
     }
 
     @Test
     fun `save changes without an initial plant creates a new plant`() = runTest {
         // SETUP
-        val component = AddEditComponent.Default(plantRepositoryFake, router, null)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, null)
 
         // ACTION
-        component.image.value = "img"
-        component.name.value = "test 1"
-        component.description.value = "test 1 desc"
-        component.size.value = PlantSize.Medium
-        component.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-        component.wateringTime.value = LocalTime.of(14, 0)
-        component.wateringAmount.value = "400ml"
+        viewModel.image.value = "img"
+        viewModel.name.value = "test 1"
+        viewModel.description.value = "test 1 desc"
+        viewModel.size.value = PlantSize.Medium
+        viewModel.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+        viewModel.wateringTime.value = LocalTime.of(14, 0)
+        viewModel.wateringAmount.value = "400ml"
 
         // ASSERTIONS
         assertThat(plantRepositoryFake.all().size).isZero()
 
-        component.onSavePlant()
+        viewModel.onSavePlant()
         advanceTimeBy(10) // small delay to complete saving of plant
         assertThat(plantRepositoryFake.all().size).isEqualTo(1)
     }
@@ -104,34 +104,34 @@ class AddEditComponentDefaultTest {
         // SETUP
         val initialPlant = plant()
         plantRepositoryFake.save(initialPlant)
-        val component = AddEditComponent.Default(plantRepositoryFake, router, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, initialPlant)
 
         // ACTION
-        component.image.value = "img"
-        component.name.value = "test 1"
-        component.description.value = "test 1 desc"
-        component.size.value = PlantSize.Medium
-        component.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-        component.wateringTime.value = LocalTime.of(14, 0)
-        component.wateringAmount.value = "400ml"
+        viewModel.image.value = "img"
+        viewModel.name.value = "test 1"
+        viewModel.description.value = "test 1 desc"
+        viewModel.size.value = PlantSize.Medium
+        viewModel.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+        viewModel.wateringTime.value = LocalTime.of(14, 0)
+        viewModel.wateringAmount.value = "400ml"
 
         // ASSERTIONS
         assertThat(plantRepositoryFake.all().size).isEqualTo(1)
 
-        component.onSavePlant()
+        viewModel.onSavePlant()
         advanceTimeBy(10)
 
         val updatedPlant = plantRepositoryFake.find(initialPlant.id)
         assertThat(plantRepositoryFake.all().size).isEqualTo(1)
         assertThat(updatedPlant).isNotNull()
-        assertThat(updatedPlant!!.details.imageSrcUri).isEqualTo(component.image.value)
-        assertThat(updatedPlant.details.name).isEqualTo(component.name.value)
-        assertThat(updatedPlant.details.description).isEqualTo(component.description.value)
-        assertThat(updatedPlant.details.size).isEqualTo(component.size.value.name)
-        assertThat(updatedPlant.wateringInfo.days).isEqualTo(component.wateringDays.value)
-        assertThat(updatedPlant.wateringInfo.time.hour).isEqualTo(component.wateringTime.value.hour)
-        assertThat(updatedPlant.wateringInfo.time.minute).isEqualTo(component.wateringTime.value.minute)
-        assertThat(updatedPlant.wateringInfo.amount).isEqualTo(component.wateringAmount.value)
+        assertThat(updatedPlant!!.details.imageSrcUri).isEqualTo(viewModel.image.value)
+        assertThat(updatedPlant.details.name).isEqualTo(viewModel.name.value)
+        assertThat(updatedPlant.details.description).isEqualTo(viewModel.description.value)
+        assertThat(updatedPlant.details.size).isEqualTo(viewModel.size.value.name)
+        assertThat(updatedPlant.wateringInfo.days).isEqualTo(viewModel.wateringDays.value)
+        assertThat(updatedPlant.wateringInfo.time.hour).isEqualTo(viewModel.wateringTime.value.hour)
+        assertThat(updatedPlant.wateringInfo.time.minute).isEqualTo(viewModel.wateringTime.value.minute)
+        assertThat(updatedPlant.wateringInfo.amount).isEqualTo(viewModel.wateringAmount.value)
     }
 
     @Test
@@ -141,15 +141,15 @@ class AddEditComponentDefaultTest {
             waterDays = listOf(DayOfWeek.MONDAY)
         )
         plantRepositoryFake.save(initialPlant)
-        val component = AddEditComponent.Default(plantRepositoryFake, router, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, initialPlant)
 
         // ACTION
-        component.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+        viewModel.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
 
         // ASSERTIONS
         assertThat(plantRepositoryFake.all().size).isEqualTo(1)
 
-        component.onSavePlant()
+        viewModel.onSavePlant()
         advanceTimeBy(10)
 
         val updatedPlant = plantRepositoryFake.find(initialPlant.id)
@@ -165,20 +165,20 @@ class AddEditComponentDefaultTest {
             waterDays = listOf(DayOfWeek.MONDAY)
         )
         plantRepositoryFake.save(initialPlant)
-        val component = AddEditComponent.Default(plantRepositoryFake, router, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, initialPlant)
 
         // ACTION
-        component.image.value = "img"
-        component.name.value = "test 1"
-        component.description.value = "test 1 desc"
-        component.size.value = PlantSize.Medium
-        component.wateringTime.value = LocalTime.of(14, 0)
-        component.wateringAmount.value = "400ml"
+        viewModel.image.value = "img"
+        viewModel.name.value = "test 1"
+        viewModel.description.value = "test 1 desc"
+        viewModel.size.value = PlantSize.Medium
+        viewModel.wateringTime.value = LocalTime.of(14, 0)
+        viewModel.wateringAmount.value = "400ml"
 
         // ASSERTIONS
         assertThat(plantRepositoryFake.all().size).isEqualTo(1)
 
-        component.onSavePlant()
+        viewModel.onSavePlant()
         advanceTimeBy(10)
 
         val updatedPlant = plantRepositoryFake.find(initialPlant.id)

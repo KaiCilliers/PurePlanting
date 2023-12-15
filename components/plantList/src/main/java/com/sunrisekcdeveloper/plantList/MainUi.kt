@@ -6,10 +6,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
 @Composable
-fun MainUi(component: MainComponent) {
+fun MainUi(viewModel: HomeViewModel) {
     Column {
-        NotificationIconUi(component.notificationIconComponent)
-        PlantListUi(component.plantListViewModel)
+        NotificationIconUi(viewModel.notificationIconViewModel)
+        PlantListUi(viewModel.plantListViewModel)
     }
 }
 
@@ -17,6 +17,6 @@ fun MainUi(component: MainComponent) {
 @Composable
 private fun MainUi_Preview() {
     ThemeSurfaceWrapper {
-        MainUi(MainComponent.Fake())
+        MainUi(HomeViewModel.Fake())
     }
 }

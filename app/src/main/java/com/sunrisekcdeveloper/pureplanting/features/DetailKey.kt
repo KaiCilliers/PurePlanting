@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.features
 
 import androidx.fragment.app.Fragment
-import com.sunrisekcdeveloper.detail.DetailComponent
+import com.sunrisekcdeveloper.detail.DetailViewModel
 import com.sunrisekcdeveloper.detail.Router
 import com.sunrisekcdeveloper.navigation.FragmentKey
 import com.sunrisekcdeveloper.plant.domain.Plant
@@ -18,7 +18,7 @@ data class DetailKey(
 ) : FragmentKey() {
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
-            DetailComponent.Default(
+            DetailViewModel.Default(
                 plant,
                 lookup<PlantRepository>(),
                 router = object : Router {
@@ -26,9 +26,9 @@ data class DetailKey(
                         backstack.goTo(AddEditKey(plant))
                     }
                 }
-            ).let { component ->
-                add(component)
-                rebind<DetailComponent>(component)
+            ).let { viewModel ->
+                add(viewModel)
+                rebind<DetailViewModel>(viewModel)
             }
         }
     }

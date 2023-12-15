@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-interface NotificationIconComponent {
+interface NotificationIconViewModel {
 
     fun interface Router {
         fun goToNotificationList()
@@ -19,7 +19,7 @@ interface NotificationIconComponent {
 
     fun onIconClick()
 
-    class Fake : NotificationIconComponent {
+    class Fake : NotificationIconViewModel {
         override val isNotificationBadgeVisible = MutableStateFlow(true)
 
         override fun onIconClick() = Unit
@@ -28,7 +28,7 @@ interface NotificationIconComponent {
     class Default(
         notificationRepository: NotificationRepository,
         private val router: Router
-    ) : NotificationIconComponent {
+    ) : NotificationIconViewModel {
 
         private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
 

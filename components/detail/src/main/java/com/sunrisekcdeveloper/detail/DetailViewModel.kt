@@ -13,14 +13,14 @@ import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalTime
 
-interface DetailComponent {
+interface DetailViewModel {
 
     val plant: StateFlow<Plant>
 
     fun onWaterPlant()
     fun onEditPlant()
 
-    class Fake : DetailComponent {
+    class Fake : DetailViewModel {
         override val plant: StateFlow<Plant> = MutableStateFlow(
             Plant.createNewPlant(
                 name = "Plant Name",
@@ -42,7 +42,7 @@ interface DetailComponent {
         plant: Plant,
         private val plantRepository: PlantRepository,
         private val router: Router
-    ): DetailComponent, Bundleable {
+    ): DetailViewModel, Bundleable {
 
         private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
 

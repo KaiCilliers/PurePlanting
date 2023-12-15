@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-interface AddEditComponent {
+interface AddEditViewModel {
 
     val image: StateFlow<String>
 
@@ -46,7 +46,7 @@ interface AddEditComponent {
 
     fun onWateringAmountChanged(wateringAmount: String)
 
-    class Fake: AddEditComponent {
+    class Fake: AddEditViewModel {
         override val image: StateFlow<String> = MutableStateFlow("image src uri")
         override val name: StateFlow<String> = MutableStateFlow("name")
         override val description: StateFlow<String> = MutableStateFlow("description")
@@ -70,7 +70,7 @@ interface AddEditComponent {
         private val plantRepository: PlantRepository,
         private val router: Router,
         private val plant: Plant?,
-    ) : AddEditComponent, Bundleable {
+    ) : AddEditViewModel, Bundleable {
 
         private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
         private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")

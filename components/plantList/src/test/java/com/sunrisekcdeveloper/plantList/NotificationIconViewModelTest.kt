@@ -20,13 +20,13 @@ import org.junit.jupiter.api.Test
 import java.time.Clock
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DefaultNotificationIconComponentTest {
+class NotificationIconViewModelTest {
 
     private lateinit var plantRepositoryFake: PlantRepository.Fake
-    private lateinit var component: NotificationIconComponent.Default
+    private lateinit var viewModel: NotificationIconViewModel.Default
     private lateinit var mutableClock: MutableClock
     private lateinit var notificationRepositoryFake: NotificationRepository.Fake
-    private lateinit var router: NotificationIconComponent.Router
+    private lateinit var router: NotificationIconViewModel.Router
 
     @BeforeEach
     fun setup() {
@@ -34,8 +34,8 @@ class DefaultNotificationIconComponentTest {
         mutableClock = MutableClock(Clock.systemDefaultZone())
         plantRepositoryFake = PlantRepository.Fake()
         notificationRepositoryFake = NotificationRepository.Fake()
-        router = NotificationIconComponent.Router { }
-        component = NotificationIconComponent.Default(notificationRepositoryFake, router)
+        router = NotificationIconViewModel.Router { }
+        viewModel = NotificationIconViewModel.Default(notificationRepositoryFake, router)
     }
 
     @AfterEach
@@ -47,7 +47,7 @@ class DefaultNotificationIconComponentTest {
     @Test
     fun `badge is visible when unread notifications exist`() = runTest {
         // SETUP
-        val unreadNotificationsFlow = component.isNotificationBadgeVisible
+        val unreadNotificationsFlow = viewModel.isNotificationBadgeVisible
 
         notificationRepositoryFake.save(unreadNotification())
         notificationRepositoryFake.save(unreadNotification())
@@ -65,7 +65,7 @@ class DefaultNotificationIconComponentTest {
     @Test
     fun `badge is not visible when all notifications have been read`() = runTest {
         // SETUP
-        val unreadNotificationsFlow = component.isNotificationBadgeVisible
+        val unreadNotificationsFlow = viewModel.isNotificationBadgeVisible
         val notificationOne = unreadNotification()
         val notificationTwo = unreadNotification()
 
@@ -90,7 +90,7 @@ class DefaultNotificationIconComponentTest {
     @Test
     fun `badge is not visible when zero notifications exist`() = runTest {
         // SETUP
-        val unreadNotificationsFlow = component.isNotificationBadgeVisible
+        val unreadNotificationsFlow = viewModel.isNotificationBadgeVisible
 
         notificationRepositoryFake.resetData(emptyList())
 

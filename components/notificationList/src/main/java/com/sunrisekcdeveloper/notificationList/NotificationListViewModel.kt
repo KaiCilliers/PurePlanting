@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 // perhpas split the diagrams a bit in plantUML - create separate SVG for domain plant and notifications
 typealias NotificationGroupedByDay = Map<Pair<Int, Int>, List<Notification>>
 
-interface NotificationListComponent {
+interface NotificationListViewModel {
 
     val filter: StateFlow<NotificationFilter>
 
@@ -37,7 +37,7 @@ interface NotificationListComponent {
         fun goToDetail(plant: Plant)
     }
 
-    class Fake : NotificationListComponent {
+    class Fake : NotificationListViewModel {
         override val filter: StateFlow<NotificationFilter> = MutableStateFlow(NotificationFilter.ALL)
         override val notifications: StateFlow<NotificationGroupedByDay> = MutableStateFlow(
             mapOf(
@@ -61,7 +61,7 @@ interface NotificationListComponent {
         notificationRepository: NotificationRepository,
         private val plantRepository: PlantRepository,
         private val router: Router
-    ) : NotificationListComponent, Bundleable {
+    ) : NotificationListViewModel, Bundleable {
 
         private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
 
