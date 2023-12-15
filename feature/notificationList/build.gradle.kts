@@ -36,8 +36,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":component:notification"))
-    implementation(project(":component:plant"))
+    implementation(project(":business:notification"))
+    implementation(project(":business:plant"))
     implementation(project(":library:design"))
     implementation(project(":library:navigation"))
 

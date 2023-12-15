@@ -40,8 +40,8 @@ kotlin.sourceSets.all() {
 }
 
 dependencies {
-    implementation(project(":component:plant"))
-    implementation(project(":component:notification"))
+    implementation(project(":business:plant"))
+    implementation(project(":business:notification"))
     implementation(project(":library:design"))
     implementation(project(":library:navigation"))
 

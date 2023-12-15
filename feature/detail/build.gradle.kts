@@ -38,7 +38,7 @@ android {
 
 
 dependencies {
-    implementation(project(":component:plant"))
+    implementation(project(":business:plant"))
     testImplementation(project(":library:test"))
     implementation(project(":library:design"))
     implementation(project(":library:navigation"))

@@ -72,8 +72,8 @@ dependencies {
     implementation(project(":feature:addEdit"))
     implementation(project(":feature:detail"))
     implementation(project(":feature:notificationList"))
-    implementation(project(":component:plant"))
-    implementation(project(":component:notification"))
+    implementation(project(":business:plant"))
+    implementation(project(":business:notification"))
 
     testImplementation(project(":library:test"))
     androidTestImplementation(project(":library:test"))
