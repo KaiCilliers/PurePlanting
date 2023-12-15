@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.app.workers
+package com.sunrisekcdeveloper.pureplanting.workers
 
 import androidx.room.Dao
 import androidx.room.Insert

@@ -9,7 +9,7 @@ import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 fun MainUi(component: MainComponent) {
     Column {
         NotificationIconUi(component.notificationIconComponent)
-        PlantListUi(component.plantListComponent)
+        PlantListUi(component.plantListViewModel)
     }
 }
 

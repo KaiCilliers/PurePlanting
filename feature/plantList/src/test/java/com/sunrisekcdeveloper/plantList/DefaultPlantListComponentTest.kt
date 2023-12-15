@@ -8,8 +8,7 @@ import assertk.assertions.isEqualTo
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.plantList.DefaultPlantListComponent
-import com.sunrisekcdeveloper.plantList.PlantListComponent
+import com.sunrisekcdeveloper.plantList.PlantListViewModel
 import com.sunrisekcdeveloper.plantList.PlantTabFilter
 import com.sunrisekcdeveloper.plantList.plant
 import com.sunrisekcdeveloper.plantList.plantForgotten
@@ -35,10 +34,10 @@ import kotlin.time.toJavaDuration
 class DefaultPlantListComponentTest {
 
     private lateinit var plantRepositoryFake: PlantRepository.Fake
-    private lateinit var component: DefaultPlantListComponent
+    private lateinit var component: PlantListViewModel.Default
     private lateinit var mutableClock: MutableClock
     private lateinit var notificationRepositoryFake: NotificationRepository.Fake
-    private lateinit var router: PlantListComponent.Router
+    private lateinit var router: PlantListViewModel.Router
 
     @BeforeEach
     fun setup() {
@@ -46,11 +45,11 @@ class DefaultPlantListComponentTest {
         mutableClock = MutableClock(Clock.systemDefaultZone())
         plantRepositoryFake = PlantRepository.Fake()
         notificationRepositoryFake = NotificationRepository.Fake()
-        router = object : PlantListComponent.Router {
+        router = object : PlantListViewModel.Router {
             override fun goToAddPlant() {}
             override fun goToPlantDetail(plant: Plant) {}
         }
-        component = DefaultPlantListComponent(plantRepositoryFake, router, mutableClock)
+        component = PlantListViewModel.Default(plantRepositoryFake, router, mutableClock)
     }
 
     @AfterEach

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.app
+package com.sunrisekcdeveloper.pureplanting
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
@@ -7,10 +7,10 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.sunrisekcdeveloper.navigation.FragmentStateChanger
-import com.sunrisekcdeveloper.pureplanting.R
-import com.sunrisekcdeveloper.pureplanting.app.workers.ForgotToWaterReminder
-import com.sunrisekcdeveloper.pureplanting.app.workers.WaterPlantReminder
+import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder
+import com.sunrisekcdeveloper.pureplanting.workers.WaterPlantReminder
 import com.sunrisekcdeveloper.pureplanting.features.MainKey
+import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
 import com.zhuinden.simplestack.BackHandlingModel
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestack.History

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.app
+package com.sunrisekcdeveloper.pureplanting.database
 
 import android.content.Context
 import androidx.room.Database
@@ -10,10 +10,10 @@ import com.sunrisekcdeveloper.notification.data.NotificationEntity
 import com.sunrisekcdeveloper.plant.data.PlantDao
 import com.sunrisekcdeveloper.plant.data.PlantEntity
 import com.sunrisekcdeveloper.plant.data.WateredRecordEntity
-import com.sunrisekcdeveloper.pureplanting.app.workers.ForgotWaterWorkerResultStatusDao
-import com.sunrisekcdeveloper.pureplanting.app.workers.ForgotWaterWorkerResultStatusEntity
-import com.sunrisekcdeveloper.pureplanting.app.workers.WateringWorkerResultStatusDao
-import com.sunrisekcdeveloper.pureplanting.app.workers.WateringWorkerResultStatusEntity
+import com.sunrisekcdeveloper.pureplanting.workers.ForgotWaterWorkerResultStatusDao
+import com.sunrisekcdeveloper.pureplanting.workers.ForgotWaterWorkerResultStatusEntity
+import com.sunrisekcdeveloper.pureplanting.workers.WateringWorkerResultStatusDao
+import com.sunrisekcdeveloper.pureplanting.workers.WateringWorkerResultStatusEntity
 
 @Database(
     entities = [

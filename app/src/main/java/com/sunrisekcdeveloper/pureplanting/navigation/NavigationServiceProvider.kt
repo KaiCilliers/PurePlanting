@@ -1,9 +1,8 @@
-package com.sunrisekcdeveloper.pureplanting.app
+package com.sunrisekcdeveloper.pureplanting.navigation
 
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.plantList.DefaultPlantListComponent
-import com.sunrisekcdeveloper.plantList.PlantListComponent
+import com.sunrisekcdeveloper.plantList.PlantListViewModel
 import com.sunrisekcdeveloper.pureplanting.features.AddEditKey
 import com.sunrisekcdeveloper.pureplanting.features.DetailKey
 import com.zhuinden.simplestack.ServiceBinder
@@ -21,7 +20,7 @@ class NavigationServiceProvider : DefaultServiceProvider() {
         with(serviceBinder) {
             when (scope) {
                 Scopes.NOTIFICATION -> {
-                    val plantListRouter = object : PlantListComponent.Router {
+                    val plantListRouter = object : PlantListViewModel.Router {
                         override fun goToAddPlant() {
                             backstack.goTo(AddEditKey())
                         }
@@ -31,12 +30,12 @@ class NavigationServiceProvider : DefaultServiceProvider() {
                         }
 
                     }
-                    DefaultPlantListComponent(
+                    PlantListViewModel.Default(
                         plantRepository = lookup<PlantRepository>(),
                         router = plantListRouter
                     ).run {
                         add(this)
-                        rebind<PlantListComponent>(this)
+                        rebind<PlantListViewModel>(this)
                     }
                 }
             }

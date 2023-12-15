@@ -4,13 +4,12 @@ import androidx.fragment.app.Fragment
 import com.sunrisekcdeveloper.navigation.FragmentKey
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
-import com.sunrisekcdeveloper.notificationList.DefaultNotificationListComponent
 import com.sunrisekcdeveloper.notificationList.NotificationListComponent
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.plantList.PlantListComponent
+import com.sunrisekcdeveloper.plantList.PlantListViewModel
 import com.sunrisekcdeveloper.plantList.PlantTabFilter
-import com.sunrisekcdeveloper.pureplanting.app.NavigationServiceProvider
+import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
 import com.zhuinden.simplestack.ScopeKey
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackextensions.servicesktx.add
@@ -22,8 +21,8 @@ import kotlinx.parcelize.Parcelize
 data object NotificationListKey : FragmentKey(), ScopeKey.Child {
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
-            val plantListComponent = lookup<PlantListComponent>()
-            val component = DefaultNotificationListComponent(
+            val plantListViewModel = lookup<PlantListViewModel>()
+            val component = NotificationListComponent.Default(
                 notificationRepository = lookup<NotificationRepository>(),
                 plantRepository = lookup<PlantRepository>(),
                 router = object : NotificationListComponent.Router {
@@ -32,7 +31,7 @@ data object NotificationListKey : FragmentKey(), ScopeKey.Child {
                     }
 
                     override fun goToMain(notificationType: PlantNotificationType) {
-                        plantListComponent.onFilterChange(
+                        plantListViewModel.onFilterChange(
                             when (notificationType) {
                                 is PlantNotificationType.NeedsWater -> PlantTabFilter.UPCOMING
                                 is PlantNotificationType.ForgotToWater -> PlantTabFilter.FORGOT_TO_WATER

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.app
+package com.sunrisekcdeveloper.pureplanting
 
 import android.app.Application
 import android.util.Log
@@ -8,10 +8,11 @@ import com.sunrisekcdeveloper.notification.data.DefaultNotificationRepository
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.plant.data.DefaultPlantRepository
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.pureplanting.app.workers.CompositeWorkerFactory
-import com.sunrisekcdeveloper.pureplanting.app.workers.ForgotToWaterReminder
-import com.sunrisekcdeveloper.pureplanting.app.workers.SystemNotification
-import com.sunrisekcdeveloper.pureplanting.app.workers.WaterPlantReminder
+import com.sunrisekcdeveloper.pureplanting.workers.CompositeWorkerFactory
+import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder
+import com.sunrisekcdeveloper.pureplanting.workers.SystemNotification
+import com.sunrisekcdeveloper.pureplanting.workers.WaterPlantReminder
+import com.sunrisekcdeveloper.pureplanting.database.PurePlantingDatabase
 import com.zhuinden.simplestack.GlobalServices
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.rebind

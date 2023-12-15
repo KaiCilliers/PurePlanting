@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.app.workers
+package com.sunrisekcdeveloper.pureplanting.workers
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

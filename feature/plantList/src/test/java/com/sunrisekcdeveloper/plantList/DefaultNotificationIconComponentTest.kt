@@ -23,7 +23,7 @@ import java.time.Clock
 class DefaultNotificationIconComponentTest {
 
     private lateinit var plantRepositoryFake: PlantRepository.Fake
-    private lateinit var component: DefaultNotificationIconComponent
+    private lateinit var component: NotificationIconComponent.Default
     private lateinit var mutableClock: MutableClock
     private lateinit var notificationRepositoryFake: NotificationRepository.Fake
     private lateinit var router: NotificationIconComponent.Router
@@ -35,7 +35,7 @@ class DefaultNotificationIconComponentTest {
         plantRepositoryFake = PlantRepository.Fake()
         notificationRepositoryFake = NotificationRepository.Fake()
         router = NotificationIconComponent.Router { }
-        component = DefaultNotificationIconComponent(notificationRepositoryFake, router)
+        component = NotificationIconComponent.Default(notificationRepositoryFake, router)
     }
 
     @AfterEach

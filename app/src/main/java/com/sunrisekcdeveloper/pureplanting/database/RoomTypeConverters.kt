@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.app
+package com.sunrisekcdeveloper.pureplanting.database
 
 import androidx.room.TypeConverter
 import java.time.DayOfWeek
@@ -49,9 +49,4 @@ class RoomTypeConverters {
     fun listOfStringsToList(list: List<String>?): String? {
         return list?.joinToString(",")
     }
-}
-
-suspend fun main() {
-    val s = DayOfWeek.MONDAY.toString()
-    println(DayOfWeek.valueOf(s))
 }

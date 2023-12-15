@@ -49,20 +49,20 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun PlantListUi(
-    component: PlantListComponent,
+    viewModel: PlantListViewModel,
     modifier: Modifier = Modifier
 ) {
 
-    val plants = component.plants.collectAsState()
-    val filterTabSelected = component.filter.collectAsState()
+    val plants = viewModel.plants.collectAsState()
+    val filterTabSelected = viewModel.filter.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     var showDeleteConfirmationDialog: Plant? by remember { mutableStateOf(null) }
 
-    ObserveAsEvents(flow = component.eventsFlow) { event ->
+    ObserveAsEvents(flow = viewModel.eventsFlow) { event ->
         when (event) {
-            PlantListComponent.Event.DeletedPlant -> {
+            PlantListViewModel.Event.DeletedPlant -> {
                 scope.launch {
                     val result = snackbarHostState.showSnackbar(
                         message = "Successfully deleted plant!",
@@ -71,14 +71,14 @@ fun PlantListUi(
                     
                     when (result) {
                         SnackbarResult.ActionPerformed -> {
-                            component.onUndoDelete()
+                            viewModel.onUndoDelete()
                         }
                         SnackbarResult.Dismissed -> Unit
                     }
                 }
             }
 
-            PlantListComponent.Event.EditedPlant -> {
+            PlantListViewModel.Event.EditedPlant -> {
                 scope.launch {
                     snackbarHostState.showSnackbar(
                         message = "Successfully edited plant!"
@@ -111,7 +111,7 @@ fun PlantListUi(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        component.onDeletePlant(plantToDelete)
+                        viewModel.onDeletePlant(plantToDelete)
                         showDeleteConfirmationDialog = null
                     }
                 ) {
@@ -146,7 +146,7 @@ fun PlantListUi(
                     TabFilterOption(
                         text = it.name,
                         isSelected = filterTabSelected.value == it,
-                        modifier = Modifier.clickable { component.onFilterChange(it) }
+                        modifier = Modifier.clickable { viewModel.onFilterChange(it) }
                     )
                 }
             }
@@ -162,7 +162,7 @@ fun PlantListUi(
                         .padding(20.dp)
                         .size(40.dp)
                         .clickable {
-                            component.onAddPlantClick()
+                            viewModel.onAddPlantClick()
                         }
                 )
             }
@@ -172,9 +172,9 @@ fun PlantListUi(
                     items(plants.value) { plant ->
                         PlantCard(
                             plant = plant,
-                            onWaterClicked = { component.onWaterPlant(plant) },
-                            onCardClick = { component.onPlantClick(plant) },
-                            onUndoWaterClicked = { component.onUndoWater(plant) },
+                            onWaterClicked = { viewModel.onWaterPlant(plant) },
+                            onCardClick = { viewModel.onPlantClick(plant) },
+                            onUndoWaterClicked = { viewModel.onUndoWater(plant) },
                             onDeletePlant = { showDeleteConfirmationDialog = plant }
                         )
                     }
@@ -202,6 +202,6 @@ private fun <T> ObserveAsEvents(flow: Flow<T>, onEvent: (T) -> Unit) {
 @Composable
 private fun PlantListUi_Preview() {
     ThemeSurfaceWrapper {
-        PlantListUi(PlantListComponent.Fake())
+        PlantListUi(PlantListViewModel.Fake())
     }
 }
