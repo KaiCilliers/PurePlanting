@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sunrisekcdeveloper.plant"
+    namespace = "com.sunrisekcdeveloper.business.plant"
     compileSdk = 33
 
     defaultConfig {

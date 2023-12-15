@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sunrisekcdeveloper.component.notification"
+    namespace = "com.sunrisekcdeveloper.business.notification"
     compileSdk = 33
 
     defaultConfig {

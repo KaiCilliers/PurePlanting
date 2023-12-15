@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sunrisekcdeveloper.feature.detail"
+    namespace = "com.sunrisekcdeveloper.components.detail"
     compileSdk = 33
 
     defaultConfig {

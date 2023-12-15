@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sunrisekcdeveloper.feature.notificationList"
+    namespace = "com.sunrisekcdeveloper.components.plantList"
     compileSdk = 33
 
     defaultConfig {
@@ -35,13 +35,18 @@ android {
     }
 }
 
+kotlin.sourceSets.all() {
+    languageSettings.enableLanguageFeature("DataObjects")
+}
+
 dependencies {
-    implementation(project(":business:notification"))
     implementation(project(":business:plant"))
+    implementation(project(":business:notification"))
     implementation(project(":library:design"))
     implementation(project(":library:navigation"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.livedata)
     implementation(libs.compose.ui)
@@ -49,8 +54,6 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons)
-
-    implementation(libs.util.flow.combineTuple)
 
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)

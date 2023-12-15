@@ -16,10 +16,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "PurePlanting"
 include(":app")
-include(":feature:plantList")
-include(":feature:detail")
-include(":feature:addEdit")
-include(":feature:notificationList")
+include(":components:plantList")
+include(":components:detail")
+include(":components:addEdit")
+include(":components:notificationList")
 include(":business:plant")
 include(":business:notification")
 include(":library:design")

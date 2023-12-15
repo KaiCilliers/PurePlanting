@@ -20,7 +20,7 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DefaultAddEditComponentTest {
+class AddEditComponentDefaultTest {
 
     private lateinit var plantRepositoryFake: PlantRepository.Fake
     private lateinit var router: Router
@@ -43,7 +43,7 @@ class DefaultAddEditComponentTest {
     @Test
     fun `adding a new plant sets all input fields to their default values`() = runTest {
         // SETUP
-        val component = DefaultAddEditComponent(
+        val component = AddEditComponent.Default(
             plantRepository = plantRepositoryFake,
             plant = null,
             router = router
@@ -53,18 +53,18 @@ class DefaultAddEditComponentTest {
         assertThat(component.image.value).isEqualTo("")
         assertThat(component.name.value).isEqualTo("")
         assertThat(component.description.value).isEqualTo("")
-        assertThat(component.size.value).isEqualTo(DefaultAddEditComponent.DEFAULT_PLANT_SIZE)
-        assertThat(component.wateringDays.value).isEqualTo(listOf(DefaultAddEditComponent.DEFAULT_WATERING_DAY))
-        assertThat(component.wateringTime.value.hour).isEqualTo(DefaultAddEditComponent.DEFAULT_WATERING_TIME.hour)
-        assertThat(component.wateringTime.value.minute).isEqualTo(DefaultAddEditComponent.DEFAULT_WATERING_TIME.minute)
-        assertThat(component.wateringAmount.value).isEqualTo(DefaultAddEditComponent.DEFAULT_WATERING_AMOUNT)
+        assertThat(component.size.value).isEqualTo(AddEditComponent.Default.DEFAULT_PLANT_SIZE)
+        assertThat(component.wateringDays.value).isEqualTo(listOf(AddEditComponent.Default.DEFAULT_WATERING_DAY))
+        assertThat(component.wateringTime.value.hour).isEqualTo(AddEditComponent.Default.DEFAULT_WATERING_TIME.hour)
+        assertThat(component.wateringTime.value.minute).isEqualTo(AddEditComponent.Default.DEFAULT_WATERING_TIME.minute)
+        assertThat(component.wateringAmount.value).isEqualTo(AddEditComponent.Default.DEFAULT_WATERING_AMOUNT)
     }
 
     @Test
     fun `editing and existing plant sets input fields to plant's values`() = runTest {
         // SETUP
         val initialPlant = plant()
-        val component = DefaultAddEditComponent(plantRepositoryFake, router, initialPlant)
+        val component = AddEditComponent.Default(plantRepositoryFake, router, initialPlant)
 
         // ASSERTIONS
         assertThat(component.image.value).isEqualTo(initialPlant.details.imageSrcUri)
@@ -80,7 +80,7 @@ class DefaultAddEditComponentTest {
     @Test
     fun `save changes without an initial plant creates a new plant`() = runTest {
         // SETUP
-        val component = DefaultAddEditComponent(plantRepositoryFake, router, null)
+        val component = AddEditComponent.Default(plantRepositoryFake, router, null)
 
         // ACTION
         component.image.value = "img"
@@ -104,7 +104,7 @@ class DefaultAddEditComponentTest {
         // SETUP
         val initialPlant = plant()
         plantRepositoryFake.save(initialPlant)
-        val component = DefaultAddEditComponent(plantRepositoryFake, router, initialPlant)
+        val component = AddEditComponent.Default(plantRepositoryFake, router, initialPlant)
 
         // ACTION
         component.image.value = "img"
@@ -141,7 +141,7 @@ class DefaultAddEditComponentTest {
             waterDays = listOf(DayOfWeek.MONDAY)
         )
         plantRepositoryFake.save(initialPlant)
-        val component = DefaultAddEditComponent(plantRepositoryFake, router, initialPlant)
+        val component = AddEditComponent.Default(plantRepositoryFake, router, initialPlant)
 
         // ACTION
         component.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
@@ -165,7 +165,7 @@ class DefaultAddEditComponentTest {
             waterDays = listOf(DayOfWeek.MONDAY)
         )
         plantRepositoryFake.save(initialPlant)
-        val component = DefaultAddEditComponent(plantRepositoryFake, router, initialPlant)
+        val component = AddEditComponent.Default(plantRepositoryFake, router, initialPlant)
 
         // ACTION
         component.image.value = "img"
