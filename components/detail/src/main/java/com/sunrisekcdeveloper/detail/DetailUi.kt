@@ -1,8 +1,11 @@
+@file:Suppress("SameParameterValue")
+
 package com.sunrisekcdeveloper.detail
 
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -42,7 +45,9 @@ import coil.compose.rememberAsyncImagePainter
 import com.sunrisekcdeveloper.components.detail.R
 import com.sunrisekcdeveloper.detail.ui.PPDetailsBanner
 import com.sunrisekcdeveloper.detail.ui.PlantDetailLabel
+import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
+import java.time.LocalDateTime
 
 @Composable
 fun DetailUi(
@@ -51,6 +56,7 @@ fun DetailUi(
 ) {
 
     val plant by viewModel.plant.collectAsState()
+    val needsWaterToday = plant.needsWaterToday(LocalDateTime.now())
 
     Box(
         modifier = modifier
@@ -62,46 +68,43 @@ fun DetailUi(
         ) {
 
             TopSection(
-                plant.details.imageSrcUri,
+                plant = plant,
                 modifier = Modifier.weight(1f)
             )
 
-            BottomSection(
+            Box(
                 modifier = Modifier
-                    .heightIn(min = 350.dp)
-                    .offset(y = (-25).dp),
-                title = plant.details.name,
-                description = plant.details.description,
-                onButtonClick = { viewModel.onWaterPlant() }
-            )
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
+                BottomSection(
+                    modifier = Modifier
+                        .heightIn(min = 350.dp)
+                        .offset(y = (-25).dp),
+                    title = plant.details.name,
+                    description = plant.details.description,
+                    onButtonClick = { viewModel.onWaterPlant() },
+                    needsWaterToday = needsWaterToday,
+                )
+            }
         }
 
-        BackIcon(Modifier.padding(top = 30.dp, start = 20.dp))
+        BackIcon(Modifier.clickable { viewModel.onGoBack() })
 
         EditIcon(
             Modifier
-                .wrapContentSize()
                 .align(alignment = Alignment.TopEnd)
-                .padding(top = 30.dp, end = 20.dp)
+                .clickable { viewModel.onEditPlant() }
         )
-    }
-}
-
-@Preview
-@Composable
-private fun DetailUi_Preview() {
-    ThemeSurfaceWrapper {
-        DetailUi(DetailViewModel.Fake())
     }
 }
 
 @Composable
 private fun TopSection(
-    plantImgSrc: String,
+    plant: Plant,
     modifier: Modifier = Modifier
 ) {
     Box(modifier) {
-        ImageWithBottomFadeGradient(modifier = Modifier.fillMaxSize(), imgSrc = plantImgSrc)
+        ImageWithBottomFadeGradient(modifier = Modifier.fillMaxSize(), imgSrc = plant.details.imageSrcUri)
 
         PPDetailsBanner(
             modifier = Modifier
@@ -109,28 +112,32 @@ private fun TopSection(
                 .padding(bottom = 40.dp)
                 .align(Alignment.BottomCenter),
             labels = listOf(
-                PlantDetailLabel(label = "Size", value = "Medium"),
-                PlantDetailLabel(label = "Water", value = "250ml"),
-                PlantDetailLabel(label = "Frequency", value = "2 times/week"),
+                // todo string resource
+                PlantDetailLabel(label = "Size", value = plant.details.size),
+                PlantDetailLabel(label = "Water", value = plant.wateringInfo.amount),
+                // todo string resource
+                PlantDetailLabel(label = "Frequency", value = "${plant.wateringInfo.days.size} times/week"),
             ),
         )
     }
 }
 
 @Composable
-private fun BackIcon(modifier: Modifier) {
+private fun BackIcon(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = R.drawable.arrow_left_with_border),
         contentDescription = "",
         alignment = Alignment.TopStart,
-        modifier = modifier
+        modifier = modifier.padding(top = 30.dp, start = 20.dp)
     )
 }
 
 @Composable
-private fun EditIcon(modifier: Modifier) {
+private fun EditIcon(modifier: Modifier = Modifier) {
     Surface(
-        modifier = modifier,
+        modifier = modifier
+            .wrapContentSize()
+            .padding(top = 30.dp, end = 20.dp),
         color = MaterialTheme.colorScheme.background,
         shape = RoundedCornerShape(40.dp)
 
@@ -204,6 +211,7 @@ private fun BottomSection(
     title: String,
     description: String,
     onButtonClick: () -> Unit,
+    needsWaterToday: Boolean,
 ) {
     Surface(
         modifier = modifier,
@@ -213,7 +221,8 @@ private fun BottomSection(
         ConstraintLayout(
             Modifier
                 .fillMaxWidth()
-                .padding(20.dp)
+                .padding(horizontal = 20.dp)
+                .padding(top = 20.dp)
         ) {
 
             val (waterButton, descriptionView, titleView) = createRefs()
@@ -231,6 +240,7 @@ private fun BottomSection(
                     },
 
                 )
+
             Text(
                 text = description,
                 style = MaterialTheme.typography.displaySmall,
@@ -246,26 +256,27 @@ private fun BottomSection(
                         width = Dimension.fillToConstraints
                     },
                 lineHeight = 1.5.em,
+            )
 
-                )
             LargeButton(
                 onButtonClick = { onButtonClick() },
-                label = "Mark as Watered",
+                label = "Mark as Watered", // todo string resource
+                enabled = needsWaterToday,
                 modifier = Modifier.constrainAs(waterButton) {
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }
+                },
             )
         }
     }
 }
 
-@Suppress("SameParameterValue")
 @Composable
 private fun LargeButton(
     modifier: Modifier = Modifier,
     onButtonClick: () -> Unit,
+    enabled: Boolean,
     label: String
 ) {
     Button(
@@ -278,6 +289,7 @@ private fun LargeButton(
             defaultElevation = 6.dp,
             pressedElevation = 8.dp
         ),
+        enabled = enabled,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.secondary
         )
@@ -290,5 +302,13 @@ private fun LargeButton(
             modifier = Modifier
                 .padding(vertical = 5.dp)
         )
+    }
+}
+
+@Preview
+@Composable
+private fun DetailUi_Preview() {
+    ThemeSurfaceWrapper {
+        DetailUi(DetailViewModel.Fake())
     }
 }

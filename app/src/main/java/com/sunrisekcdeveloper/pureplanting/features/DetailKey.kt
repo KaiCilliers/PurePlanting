@@ -25,6 +25,10 @@ data class DetailKey(
                     override fun goToEditPlant(plant: Plant) {
                         backstack.goTo(AddEditKey(plant))
                     }
+
+                    override fun goBack() {
+                        backstack.goBack()
+                    }
                 }
             ).let { viewModel ->
                 add(viewModel)

@@ -19,6 +19,7 @@ interface DetailViewModel {
 
     fun onWaterPlant()
     fun onEditPlant()
+    fun onGoBack()
 
     class Fake : DetailViewModel {
         override val plant: StateFlow<Plant> = MutableStateFlow(
@@ -36,6 +37,8 @@ interface DetailViewModel {
         override fun onWaterPlant() = Unit
 
         override fun onEditPlant() = Unit
+
+        override fun onGoBack() = Unit
     }
 
     class Default(
@@ -50,6 +53,7 @@ interface DetailViewModel {
 
         override fun onWaterPlant() {
             viewModelScope.launch {
+                router.goBack()
                 val watered = plant.value.water()
                 plantRepository.save(watered)
                 plant.update { watered }
@@ -58,6 +62,10 @@ interface DetailViewModel {
 
         override fun onEditPlant() {
             router.goToEditPlant(plant.value)
+        }
+
+        override fun onGoBack() {
+            router.goBack()
         }
 
         override fun toBundle(): StateBundle = StateBundle().apply {
