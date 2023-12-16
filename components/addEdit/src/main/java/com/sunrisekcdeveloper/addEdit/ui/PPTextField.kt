@@ -16,7 +16,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.navigation.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

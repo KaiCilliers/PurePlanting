@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.sunrisekcdeveloper.components.detail"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 28
@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons)
+    implementation(libs.util.coil)
+    implementation(libs.compose.constraintlayout)
 
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)

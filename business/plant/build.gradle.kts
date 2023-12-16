@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.sunrisekcdeveloper.business.plant"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 28

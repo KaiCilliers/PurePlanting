@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.sunrisekcdeveloper.components.home"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 28

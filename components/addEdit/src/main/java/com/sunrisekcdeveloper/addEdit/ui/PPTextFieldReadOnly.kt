@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.navigation.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
