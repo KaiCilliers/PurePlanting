@@ -180,7 +180,7 @@ private fun ImageWithBottomFadeGradient(
                 modifier = Modifier
                     .align(alignment = Alignment.TopCenter)
                     .padding(top = 70.dp),
-                painter = painterResource(id = R.drawable.single_plant_placeholder),
+                painter = painterResource(id = com.sunrisekcdeveloper.library.design.R.drawable.single_plant_placeholder),
                 contentDescription = "",
             )
         }

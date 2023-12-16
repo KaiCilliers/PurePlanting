@@ -46,11 +46,11 @@ data class Plant(
             when {
                 this.wateringInfo.days.contains(today.dayOfWeek) -> today
                 this.wateringInfo.days.contains(today.minusDays(1).dayOfWeek) && daysBetween >= 1 -> today.minusDays(1)
-                this.wateringInfo.days.contains(today.minusDays(2).dayOfWeek) && daysBetween >= 2 -> today.minusDays(1)
-                this.wateringInfo.days.contains(today.minusDays(3).dayOfWeek) && daysBetween >= 3 -> today.minusDays(1)
-                this.wateringInfo.days.contains(today.minusDays(4).dayOfWeek) && daysBetween >= 4 -> today.minusDays(1)
-                this.wateringInfo.days.contains(today.minusDays(5).dayOfWeek) && daysBetween >= 5 -> today.minusDays(1)
-                this.wateringInfo.days.contains(today.minusDays(6).dayOfWeek) && daysBetween >= 6 -> today.minusDays(1)
+                this.wateringInfo.days.contains(today.minusDays(2).dayOfWeek) && daysBetween >= 2 -> today.minusDays(2)
+                this.wateringInfo.days.contains(today.minusDays(3).dayOfWeek) && daysBetween >= 3 -> today.minusDays(3)
+                this.wateringInfo.days.contains(today.minusDays(4).dayOfWeek) && daysBetween >= 4 -> today.minusDays(4)
+                this.wateringInfo.days.contains(today.minusDays(5).dayOfWeek) && daysBetween >= 5 -> today.minusDays(5)
+                this.wateringInfo.days.contains(today.minusDays(6).dayOfWeek) && daysBetween >= 6 -> today.minusDays(6)
                 else -> null
             }
         } else null

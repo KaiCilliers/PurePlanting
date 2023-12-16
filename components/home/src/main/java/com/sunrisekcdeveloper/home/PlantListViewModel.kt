@@ -61,11 +61,12 @@ interface PlantListViewModel {
                 Plant.createNewPlant(
                     imageSrc = "",
                     name = "My plant",
-                    description = "this is a description",
+                    description = "This is a description which can span over two lines",
                     size = "medium",
-                    wateringDays = listOf(DayOfWeek.MONDAY),
+                    wateringDays = listOf(DayOfWeek.FRIDAY),
                     wateringTime = LocalTime.now(),
-                    wateringAmount = "230ml"
+                    wateringAmount = "230ml",
+                    createdAt = LocalDateTime.now().minusWeeks(2)
                 ),
                 Plant.createNewPlant(
                     imageSrc = "",
