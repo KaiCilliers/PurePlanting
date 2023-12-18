@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,7 +33,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -43,6 +40,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
 import com.sunrisekcdeveloper.components.detail.R
+import com.sunrisekcdeveloper.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.detail.ui.PPDetailsBanner
 import com.sunrisekcdeveloper.detail.ui.PlantDetailLabel
 import com.sunrisekcdeveloper.plant.domain.Plant
@@ -258,7 +256,7 @@ private fun BottomSection(
                 lineHeight = 1.5.em,
             )
 
-            LargeButton(
+            PrimaryButton(
                 onButtonClick = { onButtonClick() },
                 label = "Mark as Watered", // todo string resource
                 enabled = needsWaterToday,
@@ -269,39 +267,6 @@ private fun BottomSection(
                 },
             )
         }
-    }
-}
-
-@Composable
-private fun LargeButton(
-    modifier: Modifier = Modifier,
-    onButtonClick: () -> Unit,
-    enabled: Boolean,
-    label: String
-) {
-    Button(
-        onClick = { onButtonClick() },
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 60.dp),
-        shape = RoundedCornerShape(7.dp),
-        elevation = ButtonDefaults.buttonElevation(
-            defaultElevation = 6.dp,
-            pressedElevation = 8.dp
-        ),
-        enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.secondary
-        )
-    ) {
-        Text(
-            text = label,
-            color = MaterialTheme.colorScheme.background,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(vertical = 5.dp)
-        )
     }
 }
 
