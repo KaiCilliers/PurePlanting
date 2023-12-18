@@ -40,7 +40,6 @@ fun NotificationIcon(
     ) {
         Surface(
             modifier = Modifier
-                .padding(10.dp)
                 .clickable { onClick() },
             color = neutralus100,
             shape = RoundedCornerShape(percent = 50)
@@ -49,7 +48,7 @@ fun NotificationIcon(
                 painter = painterResource(id = R.drawable.notification),
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(8.dp),
+                    .padding(12.dp),
                 contentDescription = "",
             )
         }
@@ -57,7 +56,7 @@ fun NotificationIcon(
             Badge(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .fillMaxSize(0.3f)
+                    .fillMaxSize(0.25f)
             )
         }
     }
@@ -70,7 +69,7 @@ private fun NotificationIcon_Preview() {
         NotificationIcon(
             showBadge = true,
             onClick = {},
-            modifier = Modifier.size(300.dp)
+            modifier = Modifier.size(100.dp)
         )
     }
 }
