@@ -1,8 +1,10 @@
 package com.sunrisekcdeveloper.detail.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -29,19 +31,24 @@ fun PPDetailsBanner(
     ) {
         Row(
             modifier = Modifier
-                .padding(12.dp),
+                .padding(12.dp)
+                .height(IntrinsicSize.Min),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
+
+            val spacerModifier = Modifier.weight(1f)
+            val dividerModifier = Modifier.width(1.dp).fillMaxHeight()
+
             labels.forEachIndexed { index, plantDetailLabel ->
                 PPDetailsItem(
                     smallLabel = plantDetailLabel.label,
                     bigLabel = plantDetailLabel.value,
                 )
                 if (index != labels.size - 1) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    Divider(modifier = Modifier.width(1.dp).height(50.dp))
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(spacerModifier)
+                    Divider(dividerModifier)
+                    Spacer(spacerModifier)
                 }
             }
         }
