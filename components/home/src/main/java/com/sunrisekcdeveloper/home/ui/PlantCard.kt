@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -34,7 +34,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -130,9 +132,27 @@ private fun TopSection(
     Box(
         modifier = modifier
             .background(otherOlive500.copy(alpha = 0.3f))
-            .fillMaxWidth()
-            .fillMaxHeight(0.5f)
+            .aspectRatio(1f)
     ) {
+        val imageSrc = plant.details.imageSrcUri
+        if (!imageSrc.isNullOrBlank()) {
+            AsyncImage(
+                model = Uri.parse(imageSrc),
+                contentDescription = "",
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Crop,
+                placeholder = debugPlaceholder(R.drawable.preview_plant),
+            )
+        } else {
+            Image(
+                painter = painterResource(id = designR.drawable.single_plant_placeholder),
+                contentDescription = "",
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .scale(0.8f)
+            )
+        }
+
         Column(
             modifier = Modifier.align(Alignment.TopStart)
         ) {
@@ -149,25 +169,6 @@ private fun TopSection(
                     else -> dateFormatter.format(plant.dateNeededWaterBefore(now))
                 },
                 modifier = Modifier.padding(start = 12.dp, top = 4.dp)
-            )
-        }
-
-        val imageSrc = plant.details.imageSrcUri
-        if (false) {
-            AsyncImage(
-                model = Uri.parse(imageSrc),
-                contentDescription = "",
-                alignment = Alignment.Center,
-                contentScale = ContentScale.FillBounds,
-                placeholder = debugPlaceholder(R.drawable.preview_plant),
-            )
-        } else {
-            Image(
-                painter = painterResource(id = designR.drawable.single_plant_placeholder),
-                contentDescription = "",
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .scale(0.8f)
             )
         }
     }
@@ -187,7 +188,7 @@ private fun Tag(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        color = neutralus300.copy(alpha = 0.5f),
+        color = neutralus500,
         shape = RoundedCornerShape(5.dp),
         modifier = modifier.wrapContentSize()
     ) {
