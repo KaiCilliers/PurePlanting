@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.compose.material.icons)
     implementation(libs.compose.constraintlayout)
 
+    implementation(libs.util.coil)
+
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 

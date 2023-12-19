@@ -257,7 +257,7 @@ private fun BottomSection(
             )
 
             PrimaryButton(
-                onButtonClick = { onButtonClick() },
+                onClick = { onButtonClick() },
                 label = "Mark as Watered", // todo string resource
                 enabled = needsWaterToday,
                 modifier = Modifier.constrainAs(waterButton) {

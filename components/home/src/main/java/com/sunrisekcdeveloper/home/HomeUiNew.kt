@@ -16,7 +16,9 @@ import com.sunrisekcdeveloper.home.ui.NotificationIcon
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
 @Composable
-fun HomeUiNew() {
+fun HomeUiNew(
+    viewModel: HomeViewModel
+) {
     Column {
         Row(
             Modifier
@@ -38,7 +40,7 @@ fun HomeUiNew() {
                 onClick = { }
             )
         }
-        PlantListUiNew(viewModel = PlantListViewModel.Fake())
+        PlantListUiNew(viewModel = viewModel.plantListViewModel)
     }
 }
 
@@ -46,6 +48,6 @@ fun HomeUiNew() {
 @Composable
 private fun HomeUiNew_Preview() {
     ThemeSurfaceWrapper {
-        HomeUiNew()
+        HomeUiNew(HomeViewModel.Fake())
     }
 }

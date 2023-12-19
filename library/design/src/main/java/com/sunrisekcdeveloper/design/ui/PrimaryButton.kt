@@ -18,12 +18,12 @@ import com.sunrisekcdeveloper.design.theme.accent500
 @Composable
 fun PrimaryButton(
     modifier: Modifier = Modifier,
-    onButtonClick: () -> Unit,
+    onClick: () -> Unit,
     enabled: Boolean = true,
     label: String
 ) {
     Button(
-        onClick = { onButtonClick() },
+        onClick = { onClick() },
         modifier = modifier
             .wrapContentSize(),
         shape = RoundedCornerShape(7.dp),
@@ -52,6 +52,6 @@ fun PrimaryButton(
 @Composable
 fun PrimaryButton_Preview() {
     PurePlantingTheme {
-        PrimaryButton(onButtonClick = { }, enabled = true, label = "Press Me!")
+        PrimaryButton(onClick = { }, enabled = true, label = "Press Me!")
     }
 }

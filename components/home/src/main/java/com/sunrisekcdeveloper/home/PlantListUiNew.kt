@@ -1,21 +1,44 @@
 package com.sunrisekcdeveloper.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,21 +51,89 @@ import com.sunrisekcdeveloper.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.home.PlantTabFilter.FORGOT_TO_WATER
 import com.sunrisekcdeveloper.home.PlantTabFilter.HISTORY
 import com.sunrisekcdeveloper.home.PlantTabFilter.UPCOMING
+import com.sunrisekcdeveloper.home.ui.DeleteConfirmationDialog
+import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
+import java.time.LocalDateTime
 
 @Composable
-fun PlantListUiNew(
-    viewModel: PlantListViewModel,
-) {
+fun PlantListUiNew(viewModel: PlantListViewModel) {
 
     val selectedFilter by viewModel.filter.collectAsState()
     val plants by viewModel.plants.collectAsState()
 
-    Column {
-        FilterBar(selectedFilter = selectedFilter, onSelection = viewModel::onFilterChange)
-        if (plants.isEmpty()) {
-            EmptyList(viewModel::onAddPlantClick)
+    var requestToDelete: Plant? by remember { mutableStateOf(null) }
+    Box {
+        Column {
+            FilterBar(selectedFilter = selectedFilter, onSelection = viewModel::onFilterChange)
+            if (plants.isEmpty()) {
+                EmptyList(viewModel::onAddPlantClick)
+            } else {
+                Box {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        items(plants, key = { it.id }) { plant ->
+                            com.sunrisekcdeveloper.home.ui.PlantCard(
+                                plant = plant,
+                                needsWater = plant.needsWaterToday(LocalDateTime.now()),
+                                onWaterToggleClick = { viewModel.onWaterPlant(plant) },
+                                onDeletePlant = { requestToDelete = plant },
+                                onCardClick = { viewModel.onPlantClick(plant) },
+                            )
+                        }
+                    }
+                    // todo extract this somehow to be an easier to use gradient fadeout
+                    Column {
+                        Spacer(modifier = Modifier.weight(1f))
+                        Box(
+                            modifier = Modifier
+                                .weight(0.2f)
+                                .fillMaxSize()
+                                .clip(RectangleShape)
+                                .background(
+                                    brush = Brush.verticalGradient(
+                                        colors = listOf(
+                                            Color.Transparent,
+                                            MaterialTheme.colorScheme.background
+                                        )
+                                    )
+                                )
+                        )
+                    }
+                }
+            }
         }
+
+        FloatingActionButton(
+            onClick = viewModel::onAddPlantClick,
+            containerColor = accent500, // todo use MaterialTheme color
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 60.dp)
+                .padding(end = 20.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.plus),
+                contentDescription = "Add Plant",
+                modifier = Modifier.scale(1.2f)
+            )
+        }
+    }
+
+    val plantRequestedToDelete = requestToDelete
+    if (plantRequestedToDelete != null) {
+        DeleteConfirmationDialog(
+            plantName = plantRequestedToDelete.details.name,
+            onConfirm = {
+                viewModel.onDeletePlant(plantRequestedToDelete)
+                requestToDelete = null
+            },
+            onDismiss = { requestToDelete = null }
+        )
     }
 }
 
@@ -59,13 +150,30 @@ private fun FilterBar(
         selected: Boolean,
         onClick: () -> Unit,
     ) {
-        Text(
-            text = text,
-            color = if (selected) accent500 else neutralus300,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-            modifier = Modifier.clickable { onClick() }
-        )
+        Column(
+            modifier = Modifier
+                .width(IntrinsicSize.Min)
+        ) {
+            Text(
+                text = text,
+                color = if (selected) accent500 else neutralus300,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                modifier = Modifier
+                    .width(IntrinsicSize.Max)
+                    .noRippleClickable { onClick() },
+            )
+            if (selected) {
+                Spacer(modifier = Modifier.height(2.dp))
+                Box(
+                    modifier = Modifier
+                        .height(2.dp)
+                        .fillMaxWidth(0.5f)
+                        .clip(CircleShape)
+                        .background(accent500)
+                )
+            }
+        }
     }
 
     Row(
@@ -96,6 +204,13 @@ private fun FilterBar(
     }
 }
 
+fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
+    clickable(indication = null,
+        interactionSource = remember { MutableInteractionSource() }) {
+        onClick()
+    }
+}
+
 @Composable
 private fun EmptyList(
     onButtonClick: () -> Unit,
@@ -105,7 +220,7 @@ private fun EmptyList(
             .fillMaxHeight(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
@@ -129,7 +244,7 @@ private fun EmptyList(
         )
         Spacer(modifier = Modifier.weight(0.05f))
 
-        PrimaryButton(label = "Add Your First Plant", onButtonClick = { onButtonClick() }, )
+        PrimaryButton(label = "Add Your First Plant", onClick = { onButtonClick() })
         Spacer(modifier = Modifier.weight(1f))
     }
 }

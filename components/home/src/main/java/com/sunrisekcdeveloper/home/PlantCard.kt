@@ -44,7 +44,7 @@ fun PlantCard(
 ) {
 
     val needsWaterToday = plant.needsWaterToday(LocalDateTime.now())
-    val dateNeedWater =  if (needsWaterToday) LocalDateTime.now() else plant.dateNeededWaterBefore(LocalDateTime.now())
+    val dateNeedWater = if (needsWaterToday) LocalDateTime.now() else plant.dateNeededWaterBefore(LocalDateTime.now())
     val dateFormatter = remember { DateTimeFormatter.ofPattern("dd-MM") }
     var showOptionsMenu by remember { mutableStateOf(false) }
 

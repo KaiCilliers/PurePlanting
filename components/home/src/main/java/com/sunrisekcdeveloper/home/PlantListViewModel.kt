@@ -61,7 +61,7 @@ interface PlantListViewModel {
                 Plant.createNewPlant(
                     imageSrc = "",
                     name = "My plant",
-                    description = "This is a description which can span over two lines",
+                    description = "This is a description which can span over two lines which is not what we want for the plant card",
                     size = "medium",
                     wateringDays = listOf(DayOfWeek.FRIDAY),
                     wateringTime = LocalTime.now(),
@@ -71,7 +71,7 @@ interface PlantListViewModel {
                 Plant.createNewPlant(
                     imageSrc = "",
                     name = "My plant #2",
-                    description = "this is a description",
+                    description = "short",
                     size = "medium",
                     wateringDays = listOf(DayOfWeek.MONDAY),
                     wateringTime = LocalTime.now(),
@@ -80,6 +80,42 @@ interface PlantListViewModel {
                 Plant.createNewPlant(
                     imageSrc = "",
                     name = "My plant #3",
+                    description = "this is a description",
+                    size = "medium",
+                    wateringDays = listOf(DayOfWeek.MONDAY),
+                    wateringTime = LocalTime.now(),
+                    wateringAmount = "230ml"
+                ),
+                Plant.createNewPlant(
+                    imageSrc = "",
+                    name = "My plant #4",
+                    description = "this is a description",
+                    size = "medium",
+                    wateringDays = listOf(DayOfWeek.MONDAY),
+                    wateringTime = LocalTime.now(),
+                    wateringAmount = "230ml"
+                ),
+                Plant.createNewPlant(
+                    imageSrc = "",
+                    name = "My plant #5",
+                    description = "this is a description",
+                    size = "medium",
+                    wateringDays = listOf(DayOfWeek.MONDAY),
+                    wateringTime = LocalTime.now(),
+                    wateringAmount = "230ml"
+                ),
+                Plant.createNewPlant(
+                    imageSrc = "",
+                    name = "My plant #6",
+                    description = "this is a description",
+                    size = "medium",
+                    wateringDays = listOf(DayOfWeek.MONDAY),
+                    wateringTime = LocalTime.now(),
+                    wateringAmount = "230ml"
+                ),
+                Plant.createNewPlant(
+                    imageSrc = "",
+                    name = "My plant #7",
                     description = "this is a description",
                     size = "medium",
                     wateringDays = listOf(DayOfWeek.MONDAY),

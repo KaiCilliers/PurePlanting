@@ -1,35 +1,52 @@
 package com.sunrisekcdeveloper.home.ui
 
 import android.annotation.SuppressLint
+import android.net.Uri
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.sunrisekcdeveloper.components.home.R
 import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.theme.neutralus300
+import com.sunrisekcdeveloper.design.theme.neutralus500
+import com.sunrisekcdeveloper.design.theme.otherOlive500
 import com.sunrisekcdeveloper.home.PlantListViewModel
 import com.sunrisekcdeveloper.plant.domain.Plant
 import java.time.LocalDateTime
@@ -37,20 +54,35 @@ import java.time.format.DateTimeFormatter
 import com.sunrisekcdeveloper.library.design.R as designR
 
 // todo add leakcanary to project
+// todo image size reduction before saving and using
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlantCard(
     plant: Plant,
     needsWater: Boolean,
     onWaterToggleClick: () -> Unit,
+    onDeletePlant: () -> Unit,
+    onCardClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
+    var showOptionsMenu by remember { mutableStateOf(false) }
+
     Surface(
-        modifier = modifier.wrapContentSize(),
-        shape = RoundedCornerShape(8.dp)
+        modifier = modifier
+            .wrapContentSize()
+            .combinedClickable(
+                onClick = { onCardClick() },
+                onLongClick = { showOptionsMenu = true }
+            ),
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(
+            width = 1.dp,
+            color = neutralus300.copy(alpha = 0.2f)
+        )
     ) {
         Column(
-            Modifier.width(IntrinsicSize.Max)
+            Modifier.fillMaxWidth()
         ) {
             TopSection(
                 plant = plant,
@@ -61,7 +93,25 @@ fun PlantCard(
                 description = plant.details.description,
                 needsWater = needsWater,
                 onButtonClick = { onWaterToggleClick() },
-                modifier = Modifier.wrapContentSize()
+            )
+        }
+        DropdownMenu(
+            expanded = showOptionsMenu,
+            onDismissRequest = { showOptionsMenu = false }
+        ) {
+            DropdownMenuItem(
+                text = { Text(text = "Delete Plant") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = "",
+                    )
+
+                },
+                onClick = {
+                    showOptionsMenu = false
+                    onDeletePlant()
+                }
             )
         }
     }
@@ -78,7 +128,10 @@ private fun TopSection(
     val dateNeedsWater = remember { plant.dateNeededWaterBefore(now) }
 
     Box(
-        modifier = modifier.background(MaterialTheme.colorScheme.onBackground)
+        modifier = modifier
+            .background(otherOlive500.copy(alpha = 0.3f))
+            .fillMaxWidth()
+            .fillMaxHeight(0.5f)
     ) {
         Column(
             modifier = Modifier.align(Alignment.TopStart)
@@ -99,15 +152,34 @@ private fun TopSection(
             )
         }
 
-        Image(
-            painter = painterResource(id = designR.drawable.single_plant_placeholder),
-            contentDescription = "",
-            modifier = Modifier
-                .align(Alignment.Center)
-                .clip(shape = RoundedCornerShape(80.dp))
-        )
+        val imageSrc = plant.details.imageSrcUri
+        if (false) {
+            AsyncImage(
+                model = Uri.parse(imageSrc),
+                contentDescription = "",
+                alignment = Alignment.Center,
+                contentScale = ContentScale.FillBounds,
+                placeholder = debugPlaceholder(R.drawable.preview_plant),
+            )
+        } else {
+            Image(
+                painter = painterResource(id = designR.drawable.single_plant_placeholder),
+                contentDescription = "",
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .scale(0.8f)
+            )
+        }
     }
 }
+
+@Composable
+fun debugPlaceholder(@DrawableRes debugPreview: Int) =
+    if (LocalInspectionMode.current) {
+        painterResource(id = debugPreview)
+    } else {
+        null
+    }
 
 @Composable
 private fun Tag(
@@ -115,7 +187,7 @@ private fun Tag(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        color = neutralus300,
+        color = neutralus300.copy(alpha = 0.5f),
         shape = RoundedCornerShape(5.dp),
         modifier = modifier.wrapContentSize()
     ) {
@@ -152,12 +224,10 @@ private fun BottomSection(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-
-
             Text(
                 text = description,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.surface,
+                color = neutralus500, // todo use MaterialTheme color
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -168,7 +238,6 @@ private fun BottomSection(
         if (needsWater) {
             Image(
                 painter = painterResource(id = R.drawable.water_now_icon),
-                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.secondary),
                 modifier = Modifier.clickable { onButtonClick() },
                 contentDescription = "",
             )
@@ -196,6 +265,8 @@ private fun PlantCard_Preview() {
             plant = plant,
             needsWater = needsWater,
             onWaterToggleClick = {},
+            onDeletePlant = {},
+            onCardClick = {},
             modifier = Modifier.width(200.dp)
         )
     }
