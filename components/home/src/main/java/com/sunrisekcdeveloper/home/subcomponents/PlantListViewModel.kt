@@ -1,5 +1,6 @@
-package com.sunrisekcdeveloper.home
+package com.sunrisekcdeveloper.home.subcomponents
 
+import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
 import com.zhuinden.simplestack.Bundleable

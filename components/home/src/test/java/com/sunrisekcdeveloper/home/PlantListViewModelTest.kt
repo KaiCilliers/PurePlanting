@@ -8,8 +8,8 @@ import assertk.assertions.isEqualTo
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.home.PlantListViewModel
-import com.sunrisekcdeveloper.home.PlantTabFilter
+import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
+import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.home.plant
 import com.sunrisekcdeveloper.home.plantForgotten
 import com.sunrisekcdeveloper.home.plantNeedsWater

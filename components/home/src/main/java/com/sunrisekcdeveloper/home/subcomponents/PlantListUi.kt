@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.home
+package com.sunrisekcdeveloper.home.subcomponents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,16 +48,17 @@ import com.sunrisekcdeveloper.components.home.R
 import com.sunrisekcdeveloper.design.theme.accent500
 import com.sunrisekcdeveloper.design.theme.neutralus300
 import com.sunrisekcdeveloper.design.ui.PrimaryButton
-import com.sunrisekcdeveloper.home.PlantTabFilter.FORGOT_TO_WATER
-import com.sunrisekcdeveloper.home.PlantTabFilter.HISTORY
-import com.sunrisekcdeveloper.home.PlantTabFilter.UPCOMING
+import com.sunrisekcdeveloper.home.models.PlantTabFilter
+import com.sunrisekcdeveloper.home.models.PlantTabFilter.FORGOT_TO_WATER
+import com.sunrisekcdeveloper.home.models.PlantTabFilter.HISTORY
+import com.sunrisekcdeveloper.home.models.PlantTabFilter.UPCOMING
 import com.sunrisekcdeveloper.home.ui.DeleteConfirmationDialog
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import java.time.LocalDateTime
 
 @Composable
-fun PlantListUiNew(viewModel: PlantListViewModel) {
+fun PlantListUi(viewModel: PlantListViewModel) {
 
     val selectedFilter by viewModel.filter.collectAsState()
     val plants by viewModel.plants.collectAsState()
@@ -253,6 +254,6 @@ private fun EmptyList(
 @Composable
 private fun PlantListUi_Preview() {
     ThemeSurfaceWrapper {
-        PlantListUiNew(PlantListViewModel.Fake())
+        PlantListUi(PlantListViewModel.Fake())
     }
 }

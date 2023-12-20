@@ -7,8 +7,8 @@ import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
 import com.sunrisekcdeveloper.notificationList.NotificationListViewModel
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.home.PlantListViewModel
-import com.sunrisekcdeveloper.home.PlantTabFilter
+import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
+import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
 import com.zhuinden.simplestack.ScopeKey
 import com.zhuinden.simplestack.ServiceBinder
