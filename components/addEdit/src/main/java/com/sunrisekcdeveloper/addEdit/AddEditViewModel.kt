@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.addEdit
 
+import com.sunrisekcdeveloper.addEdit.models.PlantSize
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
 import com.zhuinden.simplestack.Bundleable

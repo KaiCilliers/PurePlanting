@@ -16,6 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sunrisekcdeveloper.design.theme.neutralus100
+import com.sunrisekcdeveloper.design.theme.neutralus500
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
 @Composable
@@ -32,7 +34,9 @@ fun InputText(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         colors = TextFieldDefaults.colors(
             unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent
+            focusedIndicatorColor = Color.Transparent,
+            focusedContainerColor = neutralus100,
+            unfocusedContainerColor = neutralus100,
         ),
         shape = RoundedCornerShape(16.dp),
         modifier = modifier.wrapContentHeight(),
