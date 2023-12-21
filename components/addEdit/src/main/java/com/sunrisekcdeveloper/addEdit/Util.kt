@@ -53,6 +53,7 @@ internal fun Context.createTempFileUri(): Uri {
     )
 }
 
+// Used primarily when observing TextField data
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 internal fun <T> StateFlow<T>.collectImmediatelyAsState(

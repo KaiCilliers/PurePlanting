@@ -207,8 +207,7 @@ private fun FilterBar(
         Spacer(modifier = Modifier.weight(0.6f))
     }
 }
-// todo add fade gradient at bottom
-// todo make list item clickable without ripple
+
 // todo toolbar ignore safe areas
 @Composable
 private fun NotificationList(
