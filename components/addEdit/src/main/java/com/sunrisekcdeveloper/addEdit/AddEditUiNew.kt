@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
@@ -20,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,10 +73,15 @@ private fun InputSheet(
             BasicInput(
                 label = "Plant name*",
                 value = name,
-                onValueChange = { viewModel.onNameChanged(it) },
-                modifier = Modifier.fillMaxWidth()
+                onValueChange = viewModel::onNameChanged,
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
-            Row {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 DialogInput(
                     label = "Dates",
                     value = name,
@@ -83,18 +89,23 @@ private fun InputSheet(
                     modifier = Modifier.weight(1f)
                 )
                 DialogInput(
-                    label = "Time*",
+                    label = "Time",
                     value = name,
                     onClick = { /* TODO */ },
                     modifier = Modifier.weight(1f)
                 )
             }
-            Row {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 BasicInput(
                     label = "The amount of water*",
-                    value = name,
-                    onValueChange = { viewModel.onNameChanged(it) },
-                    modifier = Modifier.weight(1f)
+                    value = waterAmount,
+                    onValueChange = viewModel::onWateringAmountChanged,
+                    modifier = Modifier.weight(1f),
+                    singleLine = true
                 )
                 DialogInput(
                     label = "Plant Size*",
@@ -103,10 +114,13 @@ private fun InputSheet(
                     modifier = Modifier.weight(1f)
                 )
             }
+            Spacer(modifier = Modifier.height(16.dp))
+
             BasicInput(
                 label = "Description",
-                value = name,
-                onValueChange = { viewModel.onNameChanged(it) },
+                value = description,
+                onValueChange = viewModel::onDescriptionChanged,
+                singleLine = false,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -118,14 +132,18 @@ private fun BasicInput(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
+    singleLine: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {
         Text(text = label)
+        Spacer(modifier = Modifier.height(8.dp))
         InputText(
             value = value,
             onValueChange = { onValueChange(it) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = singleLine,
+            maxLines = if (singleLine) 1 else Int.MAX_VALUE
         )
     }
 }
