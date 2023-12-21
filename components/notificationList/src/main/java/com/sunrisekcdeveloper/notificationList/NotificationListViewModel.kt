@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.notificationList
 
+import com.sunrisekcdeveloper.models.NotificationFilter
 import com.sunrisekcdeveloper.notification.domain.Notification
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
@@ -16,7 +17,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-// perhpas split the diagrams a bit in plantUML - create separate SVG for domain plant and notifications
 typealias NotificationGroupedByDay = Map<Pair<Int, Int>, List<Notification>>
 
 interface NotificationListViewModel {
@@ -42,7 +42,7 @@ interface NotificationListViewModel {
         override val notifications: StateFlow<NotificationGroupedByDay> = MutableStateFlow(
             mapOf(
                 (10 to 2023) to listOf(Notification.createWaterSoon(listOf("1,2,3"))),
-                (10 to 2023) to listOf(Notification.createWaterSoon(listOf("4,5,6"))),
+                (10 to 2023) to listOf(Notification.createWaterSoon(listOf("6"))),
                 (11 to 2023) to listOf(Notification.createForgotToWater(listOf("1,2,3"))),
                 (12 to 2023) to listOf(Notification.createWaterSoon(listOf("7,8"))),
             ).toSortedMap(

@@ -14,16 +14,17 @@ data class Notification(
             return create(
                 PlantNotificationType.NeedsWater(
                     targetPlants = targetPlantIds,
-                    notificationContent = "Hey, you have ${targetPlantIds.size} plants to water today"
+                    body = "Hey, you have ${targetPlantIds.size} plants to water today"
                 )
             )
         }
 
+        // todo replace with PlantTag to have access to plant name
         fun createForgotToWater(targetPlantIds: List<String>): Notification {
             return create(
                 PlantNotificationType.ForgotToWater(
                     targetPlants = targetPlantIds,
-                    notificationContent = "Hey, you forgot to water your"
+                    body = "Hey, you forgot to water your"
                 )
             )
         }
@@ -37,3 +38,8 @@ data class Notification(
         }
     }
 }
+
+data class PlantTag(
+    val id: String,
+    val name: String,
+)

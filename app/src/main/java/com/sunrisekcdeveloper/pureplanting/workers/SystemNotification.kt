@@ -63,8 +63,8 @@ class SystemNotification(
     private fun createNotification(type: PlantNotificationType): Notification {
         return Notification.Builder(ctx, type.id)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(type.notificationTitle)
-            .setContentText(type.notificationContent)
+            .setContentTitle(type.title)
+            .setContentText(type.body)
             .build()
     }
 }

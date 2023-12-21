@@ -10,8 +10,8 @@ fun Notification.toEntity(): NotificationEntity {
         createdAt = created,
         seen = seen,
         targetPlants = type.targetPlants,
-        title = type.notificationTitle,
-        content = type.notificationContent,
+        title = type.title,
+        content = type.body,
         type = when (type) {
             is PlantNotificationType.ForgotToWater -> NotificationEntityType.FORGOT_TO_WATER
             is PlantNotificationType.NeedsWater -> NotificationEntityType.NEEDS_WATER
@@ -28,14 +28,14 @@ fun NotificationEntity.toNotification(): Notification {
             NotificationEntityType.FORGOT_TO_WATER -> PlantNotificationType.ForgotToWater(
                 targetPlants = targetPlants,
                 id = id,
-                notificationTitle = title,
-                notificationContent = content,
+                title = title,
+                body = content,
             )
             NotificationEntityType.NEEDS_WATER -> PlantNotificationType.NeedsWater(
                 targetPlants = targetPlants,
                 id = id,
-                notificationTitle = title,
-                notificationContent = content,
+                title = title,
+                body = content,
             )
         }
     )

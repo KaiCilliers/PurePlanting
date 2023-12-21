@@ -252,7 +252,7 @@ private fun BottomSection(
 }
 
 @SuppressLint("StateFlowValueCalledInComposition")
-@Preview()
+@Preview(widthDp = 200)
 @Composable
 private fun PlantCard_Preview() {
     PurePlantingTheme {
@@ -266,7 +266,6 @@ private fun PlantCard_Preview() {
             onWaterToggleClick = {},
             onDeletePlant = {},
             onCardClick = {},
-            modifier = Modifier.width(200.dp)
         )
     }
 }

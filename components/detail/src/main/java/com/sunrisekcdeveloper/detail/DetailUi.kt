@@ -40,6 +40,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
 import com.sunrisekcdeveloper.components.detail.R
+import com.sunrisekcdeveloper.design.ui.BackIcon
 import com.sunrisekcdeveloper.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.detail.ui.PPDetailsBanner
 import com.sunrisekcdeveloper.detail.ui.PlantDetailLabel
@@ -86,7 +87,10 @@ fun DetailUi(
             }
         }
 
-        BackIcon(Modifier.clickable { viewModel.onGoBack() })
+        BackIcon(
+            onClick = { viewModel.onGoBack() },
+            modifier = Modifier.padding(top = 30.dp, start = 20.dp)
+        )
 
         EditIcon(
             Modifier
@@ -118,16 +122,6 @@ private fun TopSection(
             ),
         )
     }
-}
-
-@Composable
-private fun BackIcon(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(id = R.drawable.arrow_left_with_border),
-        contentDescription = "",
-        alignment = Alignment.TopStart,
-        modifier = modifier.padding(top = 30.dp, start = 20.dp)
-    )
 }
 
 @Composable
@@ -183,6 +177,7 @@ private fun ImageWithBottomFadeGradient(
             )
         }
 
+        // todo make this a fade component
         Column {
             Spacer(modifier = Modifier.weight(0.8f))
             Box(
