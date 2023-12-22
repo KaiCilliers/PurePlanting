@@ -1,7 +1,9 @@
 package com.sunrisekcdeveloper.addEdit
 
 import android.net.Uri
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +18,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Keyboard
 import androidx.compose.material.icons.outlined.Schedule
@@ -29,6 +33,7 @@ import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,7 +66,6 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import com.sunrisekcdeveloper.library.design.R as designR
 
-// todo continue here - focus on dialog data capturing
 @Composable
 fun AddEditUiNew(viewModel: AddEditViewModel) {
 
@@ -79,7 +84,7 @@ fun AddEditUiNew(viewModel: AddEditViewModel) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun InputSheet(
     viewModel: AddEditViewModel,
@@ -160,91 +165,108 @@ private fun InputSheet(
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
             modifier = modifier.weight(1f),
         ) {
-            Column(
-                modifier = Modifier.padding(20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+            // prevent overscroll, see https://stackoverflow.com/questions/69468212/remove-lazycolumn-overscroll-effect-in-jetpack-compose
+            CompositionLocalProvider(
+                LocalOverscrollConfiguration provides null
             ) {
-                BasicInput(
-                    label = "Plant name*",
-                    value = name,
-                    onValueChange = viewModel::onNameChanged,
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
-                    modifier = Modifier.height(IntrinsicSize.Min)
-                ) {
-                    DialogInput(
-                        label = "Dates",
-                        value = if (wateringDays.size == 1) {
-                            wateringDays.first().name.lowercase()
-                                .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
-                        } else if (wateringDays.size == 7) {
-                            "Everyday"
-                        } else {
-                            wateringDays.joinToString {
-                                it.name
-                                    .take(3)
-                                    .lowercase()
-                                    .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
-                            }
-                        },
-                        onClick = { /* TODO */ },
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Spacer(modifier = Modifier.width(12.dp))
-
-                    DialogInput(
-                        label = "Time",
-                        value = name,
-                        onClick = { /* TODO */ },
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
-                    modifier = Modifier.height(IntrinsicSize.Min)
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     BasicInput(
-                        label = "The amount of water*",
-                        value = waterAmount,
-                        onValueChange = viewModel::onWateringAmountChanged,
-                        modifier = Modifier.weight(1f),
-                        singleLine = true
-                    )
-
-                    Spacer(modifier = Modifier.width(12.dp))
-
-                    DialogInput(
-                        label = "Plant Size*",
+                        label = "Plant name*",
                         value = name,
-                        onClick = { /* TODO */ },
-                        modifier = Modifier.weight(1f)
+                        onValueChange = viewModel::onNameChanged,
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        modifier = Modifier.height(IntrinsicSize.Min)
+                    ) {
+                        DialogInput(
+                            label = "Dates",
+                            value = when (wateringDays.size) {
+                                1 -> {
+                                    wateringDays.first().name.lowercase()
+                                        .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
+                                }
+                                7 -> {
+                                    "Everyday"
+                                }
+                                else -> {
+                                    wateringDays.joinToString {
+                                        it.name
+                                            .take(3)
+                                            .lowercase()
+                                            .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
+                                    }
+                                }
+                            },
+                            onClick = { showDaysDialog = true },
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        DialogInput(
+                            label = "Time",
+                            value = time.format(timeFormatter),
+                            onClick = { showTimeDialog = true },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        modifier = Modifier.height(IntrinsicSize.Min)
+                    ) {
+                        BasicInput(
+                            label = "The amount of water*",
+                            value = waterAmount,
+                            onValueChange = viewModel::onWateringAmountChanged,
+                            modifier = Modifier.weight(1f),
+                            singleLine = true
+                        )
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        DialogInput(
+                            label = "Plant Size*",
+                            value = stringResource(id = size.textResId),
+                            onClick = { showSizeDialog = true },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    BasicInput(
+                        label = "Description",
+                        value = description,
+                        onValueChange = viewModel::onDescriptionChanged,
+                        singleLine = false,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 20.dp)
                     )
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-
-                BasicInput(
-                    label = "Description",
-                    value = description,
-                    onValueChange = viewModel::onDescriptionChanged,
-                    singleLine = false,
-                    modifier = Modifier.fillMaxWidth()
-                )
             }
         }
-        PrimaryButton(
-            onClick = { viewModel.onSavePlant() },
-            label = "Create a Plant",
-            modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .padding(bottom = 20.dp)
-                .fillMaxWidth()
-        )
+        Surface(
+            color = neutralus0
+        ) {
+            PrimaryButton(
+                onClick = { viewModel.onSavePlant() },
+                label = "Create a Plant",
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(bottom = 20.dp)
+                    .fillMaxWidth()
+            )
+        }
     }
 }
 

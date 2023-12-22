@@ -40,7 +40,7 @@ fun InputText(
         ),
         shape = RoundedCornerShape(16.dp),
         modifier = modifier.wrapContentHeight(),
-        singleLine = true,
+        singleLine = singleLine,
         maxLines = maxLines
     )
 }
