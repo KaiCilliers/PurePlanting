@@ -3,8 +3,8 @@
 ## Important
 - [x] Logic to mark notifications as read
 - [x] System notification deeplink on tap
-- [ ] Fix bug where workers only run when app is foregrounded
-- [ ] Fix bug where notification is received every 15min
+- [ ] (Pending...) Fix bug where workers only run when app is foregrounded
+- [ ] (Pending...) Fix bug where notification is received every 15min
 - [x] Snackbar emitter
 - [x] Animations for dialog appearance
 - [x] List content update with animation

@@ -39,7 +39,7 @@ class ForgotToWaterReminderTest {
         plantRepositoryFake = PlantRepository.Fake()
         notificationsRepositoryFake = NotificationRepository.Fake()
         mutableClock = MutableClock(Clock.systemDefaultZone())
-        systemNotification = SystemNotification(context)
+        systemNotification = SystemNotification(context, plantRepositoryFake)
         workerFactory = ForgotToWaterReminder.Factory(plantRepositoryFake, notificationsRepositoryFake, systemNotification, db.forgotWaterWorkerDao(), mutableClock)
     }
 
@@ -118,7 +118,7 @@ class ForgotToWaterReminderTest {
     }
 
     @Test
-    fun exception_encountered_returns_retry() {
+    fun exception_encountered_returns_failure() {
         // SETUP
         plantRepositoryFake.throwException = true
         val worker = TestListenableWorkerBuilder<ForgotToWaterReminder>(context)
@@ -130,7 +130,7 @@ class ForgotToWaterReminderTest {
             val result = worker.doWork()
 
             plantRepositoryFake.throwException = false
-            assertThat(result, `is`(ListenableWorker.Result.retry()))
+            assertThat(result, `is`(ListenableWorker.Result.failure()))
             assertThat(notificationsRepositoryFake.all().size, `is`(0))
         }
     }

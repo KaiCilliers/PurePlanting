@@ -43,7 +43,7 @@ class ForgotToWaterReminder(
 
             dao.insert(
                 ForgotWaterWorkerResultStatusEntity(
-                    status = "Success Forgot using composite worker",
+                    status = "+ Success Forgot using composite worker",
                     amountOfPlants = plantsForgotten.size,
                     notificationId = notificationId,
                     atDate = LocalDateTime.now()
@@ -54,16 +54,16 @@ class ForgotToWaterReminder(
         } catch (e: Exception) {
             dao.insert(
                 ForgotWaterWorkerResultStatusEntity(
-                    status = "Failed! Forgot using composite worker",
+                    status = "+ Failed! Forgot using composite worker",
                     amountOfPlants = 0,
                     notificationId = null,
                     atDate = LocalDateTime.now(),
                     failureMsg = e.message
                 )
             )
-            println("Failed to successfully execute ${this::class.simpleName}")
+            println("+ Failed to successfully execute ${this::class.simpleName}")
             e.printStackTrace()
-            Result.retry()
+            Result.failure()
         }
     }
 

@@ -6,7 +6,8 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 
 class CompositeWorkerFactory(
-    private val factories: List<WorkerFactory>
+    private val forgotToWaterReminderFactory: ForgotToWaterReminder.Factory,
+    private val waterPlantReminderFactory: WaterPlantReminder.Factory,
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -14,12 +15,10 @@ class CompositeWorkerFactory(
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? {
-        for (factory in factories) {
-            val worker = factory.createWorker(appContext, workerClassName, workerParameters)
-            if (worker != null) {
-                return worker
-            }
+        return when(workerClassName) {
+            ForgotToWaterReminder::class.java.name -> forgotToWaterReminderFactory.createWorker(appContext, workerClassName, workerParameters)
+            WaterPlantReminder::class.java.name -> waterPlantReminderFactory.createWorker(appContext, workerClassName, workerParameters)
+            else -> null
         }
-        return null
     }
 }

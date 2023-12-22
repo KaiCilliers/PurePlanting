@@ -40,7 +40,7 @@ class WaterPlantReminderTest {
         plantRepositoryFake = PlantRepository.Fake()
         notificationRepositoryFake = NotificationRepository.Fake()
         mutableClock = MutableClock(Clock.systemDefaultZone())
-        systemNotification = SystemNotification(context)
+        systemNotification = SystemNotification(context, plantRepositoryFake)
         plantReminderWorkerFactory = WaterPlantReminder.Factory(plantRepositoryFake, notificationRepositoryFake, systemNotification, db.waterWorkerDao(), mutableClock)
     }
 

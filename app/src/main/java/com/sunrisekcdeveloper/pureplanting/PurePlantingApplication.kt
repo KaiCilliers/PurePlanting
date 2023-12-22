@@ -3,6 +3,9 @@ package com.sunrisekcdeveloper.pureplanting
 import android.app.Application
 import android.util.Log
 import androidx.work.Configuration
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.notification.data.DefaultNotificationRepository
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
@@ -16,7 +19,13 @@ import com.sunrisekcdeveloper.pureplanting.database.PurePlantingDatabase
 import com.zhuinden.simplestack.GlobalServices
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.rebind
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.time.Clock
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.util.concurrent.TimeUnit
 
 class PurePlantingApplication : Application(), Configuration.Provider {
     lateinit var globalServices: GlobalServices
@@ -49,6 +58,12 @@ class PurePlantingApplication : Application(), Configuration.Provider {
         )
     }
 
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setMinimumLoggingLevel(Log.DEBUG)
+            .setWorkerFactory(CompositeWorkerFactory(forgotFactory, waterFactory))
+            .build()
+
     override fun onCreate() {
         super.onCreate()
 
@@ -59,12 +74,46 @@ class PurePlantingApplication : Application(), Configuration.Provider {
             .rebind<NotificationRepository>(notificationRepository)
             .add(snackbarEmitter)
             .build()
+
+        MainScope().launch {
+            schedulePlantWateringWorker()
+            scheduleForgotToWaterReminder()
+        }
     }
 
-    override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
-            .setMinimumLoggingLevel(Log.DEBUG)
-            .setWorkerFactory(CompositeWorkerFactory(listOf(waterFactory, forgotFactory)))
+    private fun schedulePlantWateringWorker() {
+        val request = PeriodicWorkRequestBuilder<WaterPlantReminder>(
+            repeatInterval = 15,
+            repeatIntervalTimeUnit = TimeUnit.MINUTES,
+        )
             .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                WaterPlantReminder.TAG,
+                ExistingPeriodicWorkPolicy.KEEP,
+                request
+            )
+    }
+
+    private fun scheduleForgotToWaterReminder() {
+        val today = LocalDateTime.now()
+        val tomorrow = LocalDateTime.of(today.toLocalDate().plusDays(1), LocalTime.MIDNIGHT)
+        val millisToTomorrow = Duration.between(today, tomorrow.plusHours(2)).toMillis()
+
+        val request = PeriodicWorkRequestBuilder<ForgotToWaterReminder>(
+            repeatInterval = 24,
+            repeatIntervalTimeUnit = TimeUnit.HOURS
+        )
+            .setInitialDelay(millisToTomorrow, TimeUnit.MILLISECONDS)
+            .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                ForgotToWaterReminder.TAG,
+                ExistingPeriodicWorkPolicy.KEEP,
+                request
+            )
+    }
 }
 

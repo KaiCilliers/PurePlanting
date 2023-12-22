@@ -81,9 +81,6 @@ class MainActivity : FragmentActivity() {
         backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
         backstack.observeAheadOfTimeWillHandleBackChanged(this, backPressedCallback::isEnabled::set)
 
-        schedulePlantWateringWorker()
-        scheduleForgotToWaterReminder()
-
         setContent {
             BackstackProvider(backstack) {
                 PurePlantingTheme {
@@ -130,41 +127,6 @@ class MainActivity : FragmentActivity() {
                 }
             }
         }
-    }
-
-    private fun schedulePlantWateringWorker() {
-        val request = PeriodicWorkRequestBuilder<WaterPlantReminder>(
-            repeatInterval = 15,
-            repeatIntervalTimeUnit = TimeUnit.MINUTES,
-        )
-            .build()
-
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
-                WaterPlantReminder.TAG,
-                ExistingPeriodicWorkPolicy.KEEP,
-                request
-            )
-    }
-
-    private fun scheduleForgotToWaterReminder() {
-        val today = LocalDateTime.now()
-        val tomorrow = LocalDateTime.of(today.toLocalDate().plusDays(1), LocalTime.MIDNIGHT)
-        val millisToTomorrow = Duration.between(today, tomorrow.plusHours(2)).toMillis()
-
-        val request = PeriodicWorkRequestBuilder<ForgotToWaterReminder>(
-            repeatInterval = 24,
-            repeatIntervalTimeUnit = TimeUnit.HOURS
-        )
-            .setInitialDelay(millisToTomorrow, TimeUnit.MILLISECONDS)
-            .build()
-
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
-                ForgotToWaterReminder.TAG,
-                ExistingPeriodicWorkPolicy.KEEP,
-                request
-            )
     }
 
     companion object {

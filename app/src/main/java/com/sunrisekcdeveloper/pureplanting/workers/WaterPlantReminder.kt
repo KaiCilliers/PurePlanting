@@ -42,7 +42,7 @@ class WaterPlantReminder(
 
             dao.insert(
                 WateringWorkerResultStatusEntity(
-                    status = "Success Plant Water using composite worker",
+                    status = "+ Success Plant Water using composite worker",
                     amountOfPlants = plantsThatNeedsWatering.size,
                     notificationId = notificationId,
                     atDate = LocalDateTime.now(clock)
@@ -53,14 +53,14 @@ class WaterPlantReminder(
         } catch (e: Exception) {
             dao.insert(
                 WateringWorkerResultStatusEntity(
-                    status = "Failed! Plant Water using composite worker",
+                    status = "+ Failed! Plant Water using composite worker",
                     amountOfPlants = 0,
                     notificationId = null,
                     atDate = LocalDateTime.now(),
                     failureMsg = e.message
                 )
             )
-            println("Failed to successfully execute ${this::class.simpleName}")
+            println("+ Failed to successfully execute ${this::class.simpleName}")
             e.printStackTrace()
             Result.failure()
         }
