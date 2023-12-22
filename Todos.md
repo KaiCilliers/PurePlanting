@@ -15,6 +15,7 @@
 - [ ] Incorrect notification message for single plants
 - [ ] Plant list empty state per filter
 - [ ] Notification List empty state
+- [ ] Home with correct background
 - [ ] Override toolbar safe area
 
 ## Not important
@@ -23,6 +24,9 @@
 - [ ] Be able to run all tests with a single command
 - [ ] Common Android and Kotlin Gradle files
 - [ ] Clean up Gradle files and only use dependencies that are required by module
+- [ ] App Icon per build config
+- [ ] App name per build config
+- [ ] R8 file per module
 
 ### Logic
 - [ ] Worker to clear temp files
