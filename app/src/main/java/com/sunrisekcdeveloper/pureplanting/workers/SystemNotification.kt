@@ -5,17 +5,26 @@ import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Parcelable
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
+import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
+import com.sunrisekcdeveloper.plant.domain.Plant
+import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.MainActivity
 import com.sunrisekcdeveloper.pureplanting.R
+import kotlinx.parcelize.Parcelize
 import com.sunrisekcdeveloper.notification.domain.Notification as DomainNotification
 
 class SystemNotification(
     private val ctx: Context,
+    private val plantRepository: PlantRepository,
 ) {
     private val isNotificationPermissionGranted: Boolean
         get() {
@@ -26,7 +35,7 @@ class SystemNotification(
         }
 
     @SuppressLint("MissingPermission")
-    fun send(domainNotification: DomainNotification) {
+    suspend fun send(domainNotification: DomainNotification) {
         ensureChannelExists(domainNotification.type)
         val notification: Notification = createNotification(domainNotification.type)
         if (isNotificationPermissionGranted) {
@@ -60,11 +69,53 @@ class SystemNotification(
         }
     }
 
-    private fun createNotification(type: PlantNotificationType): Notification {
+    private suspend fun createNotification(type: PlantNotificationType): Notification {
+
+        val intent = Intent(ctx, MainActivity::class.java).apply {
+            putExtra(MainActivity.DEEPLINK_KEY, deeplinkDestinationFrom(type))
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
         return Notification.Builder(ctx, type.id)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(type.title)
             .setContentText(type.body)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
             .build()
     }
+
+    private suspend fun deeplinkDestinationFrom(type: PlantNotificationType): DeeplinkDestination {
+        return if (type.targetPlants.size == 1) {
+            val plant = firstPlant(type)
+            if (plant != null) {
+                DeeplinkDestination.Detail(plant)
+            } else {
+                DeeplinkDestination.Home()
+            }
+        } else {
+            when (type) {
+                is PlantNotificationType.ForgotToWater -> DeeplinkDestination.Home(PlantTabFilter.FORGOT_TO_WATER)
+                is PlantNotificationType.NeedsWater -> DeeplinkDestination.Home(PlantTabFilter.UPCOMING)
+            }
+        }
+    }
+
+    private suspend fun firstPlant(notificationType: PlantNotificationType): Plant? {
+        return notificationType.targetPlants.firstOrNull()?.run {
+            plantRepository.find(this)
+        }
+    }
+}
+
+sealed class DeeplinkDestination : Parcelable {
+
+    @Parcelize
+    data class Detail(val plant: Plant) : DeeplinkDestination()
+
+    @Parcelize
+    data class Home(val selectedFilter: PlantTabFilter = PlantTabFilter.UPCOMING) : DeeplinkDestination()
 }

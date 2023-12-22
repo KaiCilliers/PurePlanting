@@ -23,10 +23,10 @@ class PurePlantingApplication : Application(), Configuration.Provider {
         private set
 
     // Create global dependencies
-    private val systemNotification by lazy { SystemNotification(applicationContext) }
     private val defaultClock = Clock.systemDefaultZone()
     private val db by lazy { PurePlantingDatabase.getDatabase(this) }
     private val plantRepository by lazy { DefaultPlantRepository(db.plantDao()) }
+    private val systemNotification by lazy { SystemNotification(applicationContext, plantRepository) }
     private val notificationRepository by lazy { DefaultNotificationRepository(db.notificationDao()) }
     private val snackbarEmitter by lazy { SnackbarEmitter() }
 

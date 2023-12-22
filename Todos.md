@@ -2,7 +2,7 @@
 
 ## Important
 - [x] Logic to mark notifications as read
-- [ ] System notification deeplink on tap
+- [x] System notification deeplink on tap
 - [ ] Fix bug where workers only run when app is foregrounded
 - [ ] Fix bug where notification is received every 15min
 - [x] Snackbar emitter
