@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.home.subcomponents
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -55,6 +56,7 @@ import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import java.time.LocalDateTime
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun PlantListUi(viewModel: PlantListViewModel) {
 
@@ -82,6 +84,7 @@ internal fun PlantListUi(viewModel: PlantListViewModel) {
                                 onWaterToggleClick = { viewModel.onWaterPlant(plant) },
                                 onDeletePlant = { requestToDelete = plant },
                                 onCardClick = { viewModel.onPlantClick(plant) },
+                                modifier = Modifier.animateItemPlacement()
                             )
                         }
                     }

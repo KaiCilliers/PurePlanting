@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.notificationList
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -209,6 +210,7 @@ private fun FilterBar(
 }
 
 // todo toolbar ignore safe areas
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun NotificationList(
     notifications: NotificationGroupedByDay,
@@ -227,7 +229,7 @@ private fun NotificationList(
         modifier = Modifier.fillMaxHeight()
     ){
         notifications.forEach { entry ->
-            item {
+            item(entry.key) {
                 Text(
                     text = when {
                         entry.key.first == today.dayOfYear && entry.key.second == today.year -> "Today"
@@ -236,7 +238,7 @@ private fun NotificationList(
                     },
                     color = neutralus500,
                     style = MaterialTheme.typography.displaySmall,
-                    modifier = titleListItemPadding
+                    modifier = titleListItemPadding.animateItemPlacement()
                 )
             }
             itemsIndexed(entry.value, key = { _, item -> item.id }) { index, item ->

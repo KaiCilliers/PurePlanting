@@ -6,8 +6,8 @@
 - [ ] Fix bug where workers only run when app is foregrounded
 - [ ] Fix bug where notification is received every 15min
 - [x] Snackbar emitter
-- [ ] Animations for dialog appearance
-- [ ] List content update with animation
+- [x] Animations for dialog appearance
+- [x] List content update with animation
 - [ ] Detail screen description content spacing
 - [ ] Plant list empty state per filter
 - [ ] Notification List empty state
