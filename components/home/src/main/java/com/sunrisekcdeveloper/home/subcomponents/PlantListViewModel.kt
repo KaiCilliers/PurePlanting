@@ -1,5 +1,7 @@
 package com.sunrisekcdeveloper.home.subcomponents
 
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
@@ -7,14 +9,10 @@ import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.statebundle.StateBundle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.Clock
@@ -32,8 +30,6 @@ interface PlantListViewModel {
     val filter: StateFlow<PlantTabFilter>
 
     val plants: StateFlow<List<Plant>>
-
-    val eventsFlow: Flow<Event>
 
     fun onWaterPlant(plant: Plant)
 
@@ -126,8 +122,6 @@ interface PlantListViewModel {
             )
         )
 
-        override val eventsFlow: Flow<Event> = emptyFlow()
-
         override fun onWaterPlant(plant: Plant) = Unit
 
         override fun onUndoWater(plant: Plant) = Unit
@@ -147,15 +141,13 @@ interface PlantListViewModel {
     class Default(
         private val plantRepository: PlantRepository,
         private val router: Router,
+        private val eventEmitter: SnackbarEmitter,
         private val clock: Clock = Clock.systemDefaultZone(),
     ) : PlantListViewModel, Bundleable {
 
         private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
 
         private var recentlyDeletedPlant: Plant? = null
-
-        private val eventsChannel = Channel<Event>()
-        override val eventsFlow = eventsChannel.receiveAsFlow()
 
         override val filter = MutableStateFlow(PlantTabFilter.UPCOMING)
 
@@ -197,7 +189,10 @@ interface PlantListViewModel {
             viewModelScope.launch {
                 plantRepository.remove(plant.id)
                 recentlyDeletedPlant = plant
-                eventsChannel.send(Event.DeletedPlant)
+                eventEmitter.emit(SnackbarEmitterType.Undo(
+                    text = "Deleted plant \"${plant.details.name}\"",
+                    undoAction = ::onUndoDelete
+                ))
             }
         }
 

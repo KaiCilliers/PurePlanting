@@ -5,13 +5,25 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.design.ui.ObserveAsEvents
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.pureplanting.features.HomeKey
 import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
 import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder
@@ -25,6 +37,8 @@ import com.zhuinden.simplestackcomposeintegration.core.BackstackProvider
 import com.zhuinden.simplestackcomposeintegration.core.ComposeStateChanger
 import com.zhuinden.simplestackextensions.lifecyclektx.observeAheadOfTimeWillHandleBackChanged
 import com.zhuinden.simplestackextensions.navigatorktx.androidContentFrame
+import com.zhuinden.simplestackextensions.servicesktx.get
+import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -65,26 +79,49 @@ class MainActivity : FragmentActivity() {
         setContent {
             BackstackProvider(backstack) {
                 PurePlantingTheme {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        composeStateChanger.RenderScreen()
+                    
+                    val snackbarHostState = remember { SnackbarHostState() }
+                    val scope = rememberCoroutineScope()
+                    val context = LocalContext.current
+                    
+                    Scaffold(
+                        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+                    ) { contentPadding ->
+
+                        ObserveAsEvents(flow = globalServices.get<SnackbarEmitter>().eventFlow) { eventType ->
+                            scope.launch { 
+                                when(eventType) {
+                                    is SnackbarEmitterType.Text -> snackbarHostState.showSnackbar(eventType.text)
+                                    is SnackbarEmitterType.TextRes -> snackbarHostState.showSnackbar(context.getString(eventType.resId))
+                                    is SnackbarEmitterType.Undo -> {
+                                        val result = snackbarHostState.showSnackbar(
+                                            message = eventType.text,
+                                            actionLabel = "Undo",
+                                            duration = SnackbarDuration.Long,
+                                        )
+
+                                        when (result) {
+                                            SnackbarResult.ActionPerformed -> eventType.undoAction()
+                                            SnackbarResult.Dismissed -> { }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .padding(contentPadding)
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            composeStateChanger.RenderScreen()
+                        }
                     }
+
                 }
             }
         }
-
-//        MainScope().launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                withContext(Dispatchers.Main) {
-//                    app.globalServices.get<SnackbarEmitter>().snackbarEvent.collect {
-//                        println("deadpool - event $it")
-////                        Snackbar.make(binding.root, "asdasdas", Snackbar.LENGTH_SHORT).show()
-//                    }
-//                }
-//            }
-//        }
     }
 
     private fun schedulePlantWateringWorker() {

@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.home
 
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.home.subcomponents.NotificationIconViewModel
 import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
@@ -26,6 +27,7 @@ interface HomeViewModel {
         plantListRouter: PlantListViewModel.Router,
         notificationIconRouter: NotificationIconViewModel.Router,
         clock: Clock = Clock.systemDefaultZone(),
+        eventEmitter: SnackbarEmitter,
         notificationIconComp: NotificationIconViewModel? = null,
         plantListComp: PlantListViewModel? = null,
     ) : HomeViewModel {
@@ -38,7 +40,8 @@ interface HomeViewModel {
         override val plantListViewModel = plantListComp ?: PlantListViewModel.Default(
             plantRepository,
             plantListRouter,
-            clock
+            eventEmitter,
+            clock,
         )
     }
 

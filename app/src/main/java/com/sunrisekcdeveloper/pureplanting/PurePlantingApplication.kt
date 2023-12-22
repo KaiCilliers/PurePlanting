@@ -28,7 +28,6 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     private val db by lazy { PurePlantingDatabase.getDatabase(this) }
     private val plantRepository by lazy { DefaultPlantRepository(db.plantDao()) }
     private val notificationRepository by lazy { DefaultNotificationRepository(db.notificationDao()) }
-    // todo make use of snackbar emitter, material 3!
     private val snackbarEmitter by lazy { SnackbarEmitter() }
 
     private val waterFactory by lazy {

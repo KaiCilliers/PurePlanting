@@ -1,6 +1,9 @@
 package com.sunrisekcdeveloper.addEdit
 
 import com.sunrisekcdeveloper.addEdit.models.PlantSize
+import com.sunrisekcdeveloper.design.EventEmitter
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
 import com.zhuinden.simplestack.Bundleable
@@ -79,6 +82,7 @@ interface AddEditViewModel {
     class Default(
         private val plantRepository: PlantRepository,
         private val router: Router,
+        private val eventEmitter: SnackbarEmitter,
         private val plant: Plant?,
     ) : AddEditViewModel, Bundleable {
 
@@ -105,7 +109,7 @@ interface AddEditViewModel {
             )
             // validation can be placed here or enforced in the UI OR both
             plantRepository.save(newPlant)
-            // notification can be sent after sending
+            eventEmitter.emit(SnackbarEmitterType.Text("Created new plant \"${newPlant.details.name}\"!"))
             router.jumpToRoot()
         }
 
@@ -128,7 +132,7 @@ interface AddEditViewModel {
                 )
             )
             plantRepository.save(updatedPlant)
-            // notification can be sent after sending
+            eventEmitter.emit(SnackbarEmitterType.Text("Updated \"${updatedPlant.details.name}\"!"))
             router.jumpToRoot()
         }
 

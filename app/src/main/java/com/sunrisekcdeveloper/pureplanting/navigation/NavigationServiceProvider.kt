@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.navigation
 
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
 import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
@@ -32,7 +33,8 @@ class NavigationServiceProvider : DefaultServiceProvider() {
                     }
                     PlantListViewModel.Default(
                         plantRepository = lookup<PlantRepository>(),
-                        router = plantListRouter
+                        router = plantListRouter,
+                        eventEmitter = lookup<SnackbarEmitter>()
                     ).run {
                         add(this)
                         rebind<PlantListViewModel>(this)

@@ -38,18 +38,7 @@ data class HomeKey(
 
     @Composable
     override fun ScreenComposable(modifier: Modifier) {
-        val emitter = rememberService<SnackbarEmitter>()
         val viewModel = rememberService<HomeViewModel>()
-        val scope = rememberCoroutineScope()
-
-        LaunchedEffect(Unit) {
-            scope.launch {
-                while (true) {
-                    emitter.emit(SnackbarEmitterType.Text("Nice ${(0..100).random()}"))
-                    delay(5000L)
-                }
-            }
-        }
         HomeUi(viewModel)
     }
 
@@ -72,6 +61,7 @@ data class HomeKey(
                 plantRepository = lookup<PlantRepository>(),
                 notificationRepository = lookup<NotificationRepository>(),
                 plantListRouter = plantListRouter,
+                eventEmitter = lookup<SnackbarEmitter>(),
                 notificationIconRouter = notificationIconRouter,
                 plantListComp = lookup<PlantListViewModel>()
             )

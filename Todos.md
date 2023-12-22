@@ -5,7 +5,7 @@
 - [ ] System notification deeplink on tap
 - [ ] Fix bug where workers only run when app is foregrounded
 - [ ] Fix bug where notification is received every 15min
-- [ ] Snackbar emitter
+- [x] Snackbar emitter
 - [ ] Animations for dialog appearance
 - [ ] List content update with animation
 - [ ] Detail screen description content spacing

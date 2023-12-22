@@ -39,6 +39,7 @@ data class AddEditKey(
                         backstack.goBack()
                     }
                 },
+                eventEmitter = lookup(),
                 plant = plant
             ).let {  viewModel ->
                 add(viewModel)
