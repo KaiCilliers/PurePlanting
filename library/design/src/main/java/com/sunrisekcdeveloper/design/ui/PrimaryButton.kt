@@ -24,8 +24,7 @@ fun PrimaryButton(
 ) {
     Button(
         onClick = { onClick() },
-        modifier = modifier
-            .wrapContentSize(),
+        modifier = modifier,
         shape = RoundedCornerShape(7.dp),
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 6.dp,

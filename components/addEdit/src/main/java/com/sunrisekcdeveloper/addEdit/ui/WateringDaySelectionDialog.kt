@@ -124,9 +124,7 @@ fun WateringDaySelectionDialog(
 
                         Text(
                             text = day.name.lowercase()
-                                .replaceFirstChar {
-                                    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-                                },
+                                .replaceFirstChar { it.titlecase(Locale.getDefault()) },
                             color = if (!everyDayChecked) neutralus900.copy(alpha = 0.8f) else neutralus900,
                             modifier = Modifier
                                 .padding(start = 2.dp)

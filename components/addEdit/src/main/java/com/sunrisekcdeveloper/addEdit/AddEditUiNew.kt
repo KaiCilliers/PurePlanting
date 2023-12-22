@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Keyboard
@@ -36,6 +38,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -49,6 +53,7 @@ import com.sunrisekcdeveloper.design.theme.neutralus0
 import com.sunrisekcdeveloper.design.theme.neutralus100
 import com.sunrisekcdeveloper.design.theme.otherOlive500
 import com.sunrisekcdeveloper.design.ui.BackIcon
+import com.sunrisekcdeveloper.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.design.ui.PrimarySmallButton
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import java.time.LocalTime
@@ -62,9 +67,13 @@ fun AddEditUiNew(viewModel: AddEditViewModel) {
     val imgSrc: String by viewModel.image.collectImmediatelyAsState()
 
     PlantBox {
-        BackIcon(onClick = {})
+        BackIcon(
+            onClick = {},
+            modifier = Modifier.padding(top = 30.dp, start = 20.dp) // todo extract modifier to be used across screens
+        )
         Column {
             Header(imgSrc)
+            Spacer(modifier = Modifier.height(16.dp))
             InputSheet(viewModel)
         }
     }
@@ -145,69 +154,97 @@ private fun InputSheet(
         )
     }
 
-    Surface(
-        color = neutralus0,
-        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-        modifier = modifier.fillMaxSize(),
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+    Column {
+        Surface(
+            color = neutralus0,
+            shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+            modifier = modifier.weight(1f),
         ) {
-            BasicInput(
-                label = "Plant name*",
-                value = name,
-                onValueChange = viewModel::onNameChanged,
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.height(IntrinsicSize.Min)
-            ) {
-                DialogInput(
-                    label = "Dates",
-                    value = name,
-                    onClick = { /* TODO */ },
-                    modifier = Modifier.weight(1f)
-                )
-                DialogInput(
-                    label = "Time",
-                    value = name,
-                    onClick = { /* TODO */ },
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.height(IntrinsicSize.Min)
+            Column(
+                modifier = Modifier.padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 BasicInput(
-                    label = "The amount of water*",
-                    value = waterAmount,
-                    onValueChange = viewModel::onWateringAmountChanged,
-                    modifier = Modifier.weight(1f),
-                    singleLine = true
-                )
-                DialogInput(
-                    label = "Plant Size*",
+                    label = "Plant name*",
                     value = name,
-                    onClick = { /* TODO */ },
-                    modifier = Modifier.weight(1f)
+                    onValueChange = viewModel::onNameChanged,
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min)
+                ) {
+                    DialogInput(
+                        label = "Dates",
+                        value = if (wateringDays.size == 1) {
+                            wateringDays.first().name.lowercase()
+                                .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
+                        } else if (wateringDays.size == 7) {
+                            "Everyday"
+                        } else {
+                            wateringDays.joinToString {
+                                it.name
+                                    .take(3)
+                                    .lowercase()
+                                    .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
+                            }
+                        },
+                        onClick = { /* TODO */ },
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    DialogInput(
+                        label = "Time",
+                        value = name,
+                        onClick = { /* TODO */ },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min)
+                ) {
+                    BasicInput(
+                        label = "The amount of water*",
+                        value = waterAmount,
+                        onValueChange = viewModel::onWateringAmountChanged,
+                        modifier = Modifier.weight(1f),
+                        singleLine = true
+                    )
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    DialogInput(
+                        label = "Plant Size*",
+                        value = name,
+                        onClick = { /* TODO */ },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                BasicInput(
+                    label = "Description",
+                    value = description,
+                    onValueChange = viewModel::onDescriptionChanged,
+                    singleLine = false,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
-
-            BasicInput(
-                label = "Description",
-                value = description,
-                onValueChange = viewModel::onDescriptionChanged,
-                singleLine = false,
-                modifier = Modifier.fillMaxWidth()
-            )
         }
+        PrimaryButton(
+            onClick = { viewModel.onSavePlant() },
+            label = "Create a Plant",
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .padding(bottom = 20.dp)
+                .fillMaxWidth()
+        )
     }
 }
 
@@ -243,13 +280,13 @@ private fun DialogInput(
     Column(modifier) {
         Text(text = label)
         Spacer(modifier = Modifier.height(8.dp))
-        Surface (
+        Surface(
             modifier = Modifier
                 .noRippleClickable { onClick() }
                 .fillMaxSize(),
             shape = RoundedCornerShape(16.dp),
             color = neutralus100
-        ){
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(14.dp)
@@ -284,14 +321,16 @@ fun Header(
         )
     } else {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Spacer(modifier = Modifier.fillMaxHeight(0.05f))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
                 PlantPlaceholderImage()
             }
+            Spacer(modifier = Modifier.fillMaxHeight(0.05f))
             PrimarySmallButton(
                 onClick = { /*TODO*/ },
                 label = "Add Image"
