@@ -8,7 +8,7 @@
 - [x] Snackbar emitter
 - [x] Animations for dialog appearance
 - [x] List content update with animation
-- [ ] Detail screen description content spacing
+- [x] Detail screen description content spacing
 - [ ] Plant list empty state per filter
 - [ ] Notification List empty state
 - [ ] Override toolbar safe area

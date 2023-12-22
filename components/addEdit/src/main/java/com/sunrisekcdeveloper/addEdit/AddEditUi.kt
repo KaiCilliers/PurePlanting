@@ -137,7 +137,7 @@ fun AddEditUi(viewModel: AddEditViewModel) {
         }
         BackIcon(
             onClick = { viewModel.onBackClick() },
-            modifier = Modifier.padding(top = 30.dp, start = 20.dp) // todo extract modifier to be used across screens
+            modifier = Modifier.padding(top = 30.dp, start = 20.dp)
         )
     }
 }
@@ -217,11 +217,11 @@ private fun InputSheet(
         )
     }
 
-    Column {
+    Column(modifier) {
         Surface(
             color = neutralus0,
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-            modifier = modifier.weight(1f),
+            modifier = Modifier.weight(1f),
         ) {
             Column(
                 modifier = Modifier
