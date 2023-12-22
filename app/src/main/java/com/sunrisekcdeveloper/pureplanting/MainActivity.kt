@@ -24,8 +24,10 @@ import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.ui.ObserveAsEvents
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
+import com.sunrisekcdeveloper.pureplanting.features.DetailKey
 import com.sunrisekcdeveloper.pureplanting.features.HomeKey
 import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
+import com.sunrisekcdeveloper.pureplanting.workers.DeeplinkDestination
 import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder
 import com.sunrisekcdeveloper.pureplanting.workers.WaterPlantReminder
 import com.zhuinden.simplestack.AsyncStateChanger
@@ -60,6 +62,12 @@ class MainActivity : FragmentActivity() {
 
         onBackPressedDispatcher.addCallback(backPressedCallback)
 
+        val initialBackstack = when(val deeplinkData = intent.getParcelableExtra<DeeplinkDestination>(DEEPLINK_KEY)) {
+            is DeeplinkDestination.Detail -> History.of(HomeKey(), DetailKey(deeplinkData.plant))
+            is DeeplinkDestination.Home -> History.of(HomeKey(deeplinkData.selectedFilter))
+            null -> History.of(HomeKey())
+        }
+
         val app = application as PurePlantingApplication
         val globalServices = app.globalServices
 
@@ -68,7 +76,7 @@ class MainActivity : FragmentActivity() {
             .setStateChanger(AsyncStateChanger(composeStateChanger))
             .setScopedServices(NavigationServiceProvider())
             .setGlobalServices(globalServices)
-            .install(this, androidContentFrame, History.of(HomeKey()))
+            .install(this, androidContentFrame, initialBackstack)
 
         backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
         backstack.observeAheadOfTimeWillHandleBackChanged(this, backPressedCallback::isEnabled::set)
@@ -157,5 +165,9 @@ class MainActivity : FragmentActivity() {
                 ExistingPeriodicWorkPolicy.KEEP,
                 request
             )
+    }
+
+    companion object {
+        const val DEEPLINK_KEY = "deeplink_key"
     }
 }
