@@ -17,6 +17,11 @@ import java.time.format.DateTimeFormatter
 
 interface AddEditViewModel {
 
+    interface Router {
+        fun jumpToRoot()
+        fun goBack()
+    }
+
     val image: StateFlow<String>
 
     val name: StateFlow<String>
@@ -32,6 +37,8 @@ interface AddEditViewModel {
     val wateringAmount: StateFlow<String>
 
     fun onSavePlant()
+
+    fun onBackClick()
 
     fun onImageChanged(image: String)
 
@@ -57,6 +64,8 @@ interface AddEditViewModel {
         override val wateringAmount: StateFlow<String> = MutableStateFlow("120ml")
 
         override fun onSavePlant() = Unit
+        override fun onBackClick() = Unit
+
         override fun onImageChanged(image: String) = Unit
         override fun onNameChanged(name: String) = Unit
         override fun onDescriptionChanged(description: String) = Unit
@@ -129,6 +138,10 @@ interface AddEditViewModel {
             } else {
                 updatePlant(plant)
             }
+        }
+
+        override fun onBackClick() {
+            router.goBack()
         }
 
         override fun onImageChanged(image: String) {

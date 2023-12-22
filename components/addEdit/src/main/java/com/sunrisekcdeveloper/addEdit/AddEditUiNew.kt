@@ -137,7 +137,7 @@ fun AddEditUiNew(viewModel: AddEditViewModel) {
             InputSheet(viewModel)
         }
         BackIcon(
-            onClick = { viewModel },
+            onClick = { viewModel.onBackClick() },
             modifier = Modifier.padding(top = 30.dp, start = 20.dp) // todo extract modifier to be used across screens
         )
     }
