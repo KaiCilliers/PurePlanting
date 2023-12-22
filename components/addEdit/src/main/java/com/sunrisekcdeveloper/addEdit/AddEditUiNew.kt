@@ -224,96 +224,92 @@ private fun InputSheet(
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
             modifier = modifier.weight(1f),
         ) {
-            // prevent overscroll, see https://stackoverflow.com/questions/69468212/remove-lazycolumn-overscroll-effect-in-jetpack-compose
-            CompositionLocalProvider(
-                LocalOverscrollConfiguration provides null
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(rememberScrollState())
-                        .padding(20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    BasicInput(
-                        label = "Plant name*",
-                        value = name,
-                        onValueChange = viewModel::onNameChanged,
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
+                BasicInput(
+                    label = "Plant name*",
+                    value = name,
+                    onValueChange = viewModel::onNameChanged,
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
 
-                    Row(
-                        modifier = Modifier.height(IntrinsicSize.Min)
-                    ) {
-                        DialogInput(
-                            label = "Dates",
-                            value = when (wateringDays.size) {
-                                1 -> {
-                                    wateringDays.first().name.lowercase()
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min)
+                ) {
+                    DialogInput(
+                        label = "Dates",
+                        value = when (wateringDays.size) {
+                            1 -> {
+                                wateringDays.first().name.lowercase()
+                                    .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
+                            }
+
+                            7 -> {
+                                "Everyday"
+                            }
+
+                            else -> {
+                                wateringDays.joinToString {
+                                    it.name
+                                        .take(3)
+                                        .lowercase()
                                         .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
                                 }
+                            }
+                        },
+                        onClick = { showDaysDialog = true },
+                        modifier = Modifier.weight(1f)
+                    )
 
-                                7 -> {
-                                    "Everyday"
-                                }
+                    Spacer(modifier = Modifier.width(12.dp))
 
-                                else -> {
-                                    wateringDays.joinToString {
-                                        it.name
-                                            .take(3)
-                                            .lowercase()
-                                            .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
-                                    }
-                                }
-                            },
-                            onClick = { showDaysDialog = true },
-                            modifier = Modifier.weight(1f)
-                        )
-
-                        Spacer(modifier = Modifier.width(12.dp))
-
-                        DialogInput(
-                            label = "Time",
-                            value = time.format(timeFormatter),
-                            onClick = { showTimeDialog = true },
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(
-                        modifier = Modifier.height(IntrinsicSize.Min)
-                    ) {
-                        BasicInput(
-                            label = "The amount of water*",
-                            value = waterAmount,
-                            onValueChange = viewModel::onWateringAmountChanged,
-                            modifier = Modifier.weight(1f),
-                            singleLine = true
-                        )
-
-                        Spacer(modifier = Modifier.width(12.dp))
-
-                        DialogInput(
-                            label = "Plant Size*",
-                            value = stringResource(id = size.textResId),
-                            onClick = { showSizeDialog = true },
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    BasicInput(
-                        label = "Description",
-                        value = description,
-                        onValueChange = viewModel::onDescriptionChanged,
-                        singleLine = false,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 20.dp)
+                    DialogInput(
+                        label = "Time",
+                        value = time.format(timeFormatter),
+                        onClick = { showTimeDialog = true },
+                        modifier = Modifier.weight(1f)
                     )
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min)
+                ) {
+                    // todo digit input with ml suffix
+                    BasicInput(
+                        label = "The amount of water*",
+                        value = waterAmount,
+                        onValueChange = viewModel::onWateringAmountChanged,
+                        modifier = Modifier.weight(1f),
+                        singleLine = true
+                    )
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    DialogInput(
+                        label = "Plant Size*",
+                        value = stringResource(id = size.textResId),
+                        onClick = { showSizeDialog = true },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                BasicInput(
+                    label = "Description",
+                    value = description,
+                    onValueChange = viewModel::onDescriptionChanged,
+                    singleLine = false,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp)
+                )
             }
         }
         Surface(
