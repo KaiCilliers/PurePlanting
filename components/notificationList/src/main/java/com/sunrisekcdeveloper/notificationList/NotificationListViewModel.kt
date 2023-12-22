@@ -7,6 +7,7 @@ import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
 import com.zhuinden.simplestack.Bundleable
+import com.zhuinden.simplestack.ScopedServices
 import com.zhuinden.statebundle.StateBundle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,8 @@ interface NotificationListViewModel {
     fun onFilterChanged(filter: NotificationFilter)
 
     fun onNotificationClick(notification: Notification)
+
+    fun onSeenNotifications()
 
     fun onBackClick()
 
@@ -54,14 +57,15 @@ interface NotificationListViewModel {
         override fun onFilterChanged(filter: NotificationFilter) = Unit
         override fun onNotificationClick(notification: Notification) = Unit
         override fun onBackClick() = Unit
+        override fun onSeenNotifications() = Unit
 
     }
 
     class Default(
-        notificationRepository: NotificationRepository,
+        private val notificationRepository: NotificationRepository,
         private val plantRepository: PlantRepository,
         private val router: Router
-    ) : NotificationListViewModel, Bundleable {
+    ) : NotificationListViewModel, Bundleable, ScopedServices.Activated {
 
         private val viewModelScope = CoroutineScope(Dispatchers.Main.immediate)
 
@@ -106,6 +110,20 @@ interface NotificationListViewModel {
         override fun onBackClick() {
             router.goBack()
         }
+
+        override fun onSeenNotifications() {
+            viewModelScope.launch {
+                notificationRepository.all().forEach {
+                    if (!it.seen) notificationRepository.markAsSeen(it.id)
+                }
+            }
+        }
+
+        override fun onServiceInactive() {
+            onSeenNotifications()
+        }
+
+        override fun onServiceActive() { }
 
         override fun toBundle(): StateBundle = StateBundle().apply {
             putString("activeNotificationFilter", filter.value.toString())

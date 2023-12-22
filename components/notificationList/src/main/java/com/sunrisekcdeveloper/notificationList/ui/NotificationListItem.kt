@@ -54,6 +54,7 @@ fun NotificationListItem(
             TopSection(
                 title = notification.type.title,
                 time = notification.created.format(DateTimeFormatter.ofPattern("hh:mm a")), // create formatter somewhere and reuse
+                seen = notification.seen
             )
             BottomSection(
                 body = notification.type.body,
@@ -68,6 +69,7 @@ fun NotificationListItem(
 private fun TopSection(
     title: String,
     time: String,
+    seen: Boolean,
 ) {
     Row (
         verticalAlignment = Alignment.CenterVertically
@@ -88,14 +90,16 @@ private fun TopSection(
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        Canvas(
-            modifier = Modifier
-                .size(12.dp)
-                .align(Alignment.Top), // todo align with baseline of text in row
-            onDraw = {
-                drawCircle(color = Color.Red)
-            }
-        )
+        if (!seen) {
+            Canvas(
+                modifier = Modifier
+                    .size(12.dp)
+                    .align(Alignment.Top), // todo align with baseline of text in row
+                onDraw = {
+                    drawCircle(color = Color.Red)
+                }
+            )
+        }
     }
 }
 
@@ -148,9 +152,9 @@ private fun NotificationListItem_Preview(
     }
 }
 
-class NotificationPreviewParameterProvider : PreviewParameterProvider<Notification> {
+private class NotificationPreviewParameterProvider : PreviewParameterProvider<Notification> {
     override val values = sequenceOf(
-        Notification.createForgotToWater(listOf("1")),
+        Notification.createForgotToWater(listOf("1")).copy(seen = true),
         Notification.createForgotToWater(listOf("1", "2")),
         Notification.createWaterSoon(listOf("1")),
         Notification.createWaterSoon(listOf("1", "2")),

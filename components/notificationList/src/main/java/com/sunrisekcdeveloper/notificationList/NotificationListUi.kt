@@ -65,6 +65,7 @@ fun NotificationListUi(
 
     val notifications by viewModel.notifications.collectAsState()
     val filter by viewModel.filter.collectAsState()
+
     Box(
         Modifier.background(otherOlive500.copy(alpha = 0.7f)) // todo uniform background color for screens, ie MaterialTheme :)
     ) {

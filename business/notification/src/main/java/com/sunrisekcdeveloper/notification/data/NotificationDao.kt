@@ -17,7 +17,7 @@ interface NotificationDao {
 
     @Query("""
         UPDATE NotificationEntity
-        SET seen = "true"        
+        SET seen = 1        
         WHERE :id = id 
     """)
     suspend fun markAsSeen(id: String)
