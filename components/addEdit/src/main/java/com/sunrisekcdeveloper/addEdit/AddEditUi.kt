@@ -47,7 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
-import com.sunrisekcdeveloper.addEdit.ui.PPDateSelectionDialog
+import com.sunrisekcdeveloper.addEdit.ui.WateringDaySelectionDialog
 import com.sunrisekcdeveloper.addEdit.ui.PlantSizeSelectionDialog
 import com.sunrisekcdeveloper.addEdit.ui.PPTextFieldReadOnly
 import com.sunrisekcdeveloper.addEdit.ui.PPTimePickerDialog
@@ -134,10 +134,10 @@ fun AddEditUi(
     }
 
     if (showDatesDialog) {
-        PPDateSelectionDialog(
-            dismiss = { showDatesDialog = false },
-            initialSelections = wateringDays,
-            updateSelection = viewModel::onWateringDaysChanged
+        WateringDaySelectionDialog(
+            onDismiss = { showDatesDialog = false },
+            initialSelection = wateringDays,
+            onSelection = viewModel::onWateringDaysChanged
         )
     }
 

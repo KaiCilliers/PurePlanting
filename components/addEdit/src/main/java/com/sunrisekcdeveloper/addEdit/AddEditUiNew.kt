@@ -40,11 +40,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.sunrisekcdeveloper.addEdit.ui.InputText
-import com.sunrisekcdeveloper.addEdit.ui.PPDateSelectionDialog
+import com.sunrisekcdeveloper.addEdit.ui.WateringDaySelectionDialog
 import com.sunrisekcdeveloper.addEdit.ui.PlantSizeSelectionDialog
 import com.sunrisekcdeveloper.addEdit.ui.PPTimePickerDialog
-import com.sunrisekcdeveloper.addEdit.ui.noRippleClickable
 import com.sunrisekcdeveloper.components.addEdit.R
+import com.sunrisekcdeveloper.design.noRippleClickable
 import com.sunrisekcdeveloper.design.theme.neutralus0
 import com.sunrisekcdeveloper.design.theme.neutralus100
 import com.sunrisekcdeveloper.design.theme.otherOlive500
@@ -101,10 +101,10 @@ private fun InputSheet(
     }
 
     if (showDaysDialog) {
-        PPDateSelectionDialog(
-            dismiss = { showDaysDialog = false },
-            initialSelections = wateringDays,
-            updateSelection = viewModel::onWateringDaysChanged
+        WateringDaySelectionDialog(
+            onDismiss = { showDaysDialog = false },
+            initialSelection = wateringDays,
+            onSelection = viewModel::onWateringDaysChanged
         )
     }
 
