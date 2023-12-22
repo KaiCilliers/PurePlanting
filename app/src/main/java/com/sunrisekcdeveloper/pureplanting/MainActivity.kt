@@ -132,8 +132,4 @@ class MainActivity : FragmentActivity() {
     companion object {
         const val DEEPLINK_KEY = "deeplink_key"
     }
-
-    companion object {
-        const val DEEPLINK_KEY = "deeplink_key"
-    }
 }
