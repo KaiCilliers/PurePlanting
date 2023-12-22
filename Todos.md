@@ -27,6 +27,7 @@
 - [ ] App Icon per build config
 - [ ] App name per build config
 - [ ] R8 file per module
+- [ ] Screen with info of app version and name
 
 ### Logic
 - [ ] Worker to clear temp files
