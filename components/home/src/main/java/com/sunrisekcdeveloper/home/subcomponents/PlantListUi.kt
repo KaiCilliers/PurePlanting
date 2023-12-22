@@ -81,7 +81,13 @@ internal fun PlantListUi(viewModel: PlantListViewModel) {
                             com.sunrisekcdeveloper.home.ui.PlantCard(
                                 plant = plant,
                                 needsWater = plant.needsWaterToday(LocalDateTime.now()),
-                                onWaterToggleClick = { viewModel.onWaterPlant(plant) },
+                                onWaterToggleClick = { needsWater ->
+                                    if (needsWater) {
+                                        viewModel.onWaterPlant(plant)
+                                    } else {
+                                        viewModel.onUndoWater(plant)
+                                    }
+                                },
                                 onDeletePlant = { requestToDelete = plant },
                                 onCardClick = { viewModel.onPlantClick(plant) },
                                 modifier = Modifier.animateItemPlacement()

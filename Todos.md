@@ -9,6 +9,10 @@
 - [x] Animations for dialog appearance
 - [x] List content update with animation
 - [x] Detail screen description content spacing
+- [ ] Water soon bug where all unwatered plants are sent in notification
+- [ ] Potential bug based on resolution of above - Bug where workmanager is triggered for water soon immediately when app is launched
+- [x] Unwater soon not working
+- [ ] Incorrect notification message for single plants
 - [ ] Plant list empty state per filter
 - [ ] Notification List empty state
 - [ ] Override toolbar safe area

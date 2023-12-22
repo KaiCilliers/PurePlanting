@@ -60,7 +60,7 @@ import com.sunrisekcdeveloper.library.design.R as designR
 fun PlantCard(
     plant: Plant,
     needsWater: Boolean,
-    onWaterToggleClick: () -> Unit,
+    onWaterToggleClick: (needsWater: Boolean) -> Unit,
     onDeletePlant: () -> Unit,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -92,7 +92,7 @@ fun PlantCard(
                 title = plant.details.name,
                 description = plant.details.description,
                 needsWater = needsWater,
-                onButtonClick = { onWaterToggleClick() },
+                onButtonClick = { onWaterToggleClick(needsWater) },
             )
         }
         DropdownMenu(
