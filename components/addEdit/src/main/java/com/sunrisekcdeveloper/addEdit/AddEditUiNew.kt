@@ -1,6 +1,10 @@
 package com.sunrisekcdeveloper.addEdit
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalOverscrollConfiguration
@@ -12,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,17 +47,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.sunrisekcdeveloper.addEdit.ui.InputText
-import com.sunrisekcdeveloper.addEdit.ui.WateringDaySelectionDialog
-import com.sunrisekcdeveloper.addEdit.ui.PlantSizeSelectionDialog
 import com.sunrisekcdeveloper.addEdit.ui.PPTimePickerDialog
+import com.sunrisekcdeveloper.addEdit.ui.PlantSizeSelectionDialog
+import com.sunrisekcdeveloper.addEdit.ui.WateringDaySelectionDialog
 import com.sunrisekcdeveloper.components.addEdit.R
 import com.sunrisekcdeveloper.design.noRippleClickable
 import com.sunrisekcdeveloper.design.theme.neutralus0
@@ -71,16 +75,71 @@ fun AddEditUiNew(viewModel: AddEditViewModel) {
 
     val imgSrc: String by viewModel.image.collectImmediatelyAsState()
 
+    var capturedImageUri: Uri? = null
+    val context = LocalContext.current
+
+    var showCameraPermissionRationale by remember { mutableStateOf(false) }
+    var hasAskedCameraPermissionBefore by remember { mutableStateOf(false) }
+
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccessful ->
+        if (isSuccessful) {
+            capturedImageUri?.let {
+                viewModel.onImageChanged(it.toString())
+                capturedImageUri = it
+            }
+        } else {
+            capturedImageUri = null
+        }
+    }
+
+    val cameraPermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            hasAskedCameraPermissionBefore = true
+            if (isGranted) {
+                capturedImageUri = context.createTempFileUri()
+                cameraLauncher.launch(capturedImageUri)
+            }
+        }
+    )
+
+    if (showCameraPermissionRationale) {
+        PermissionDialog(
+            permissionTextProvider = CameraPermissionTextProvider(),
+            isPermanentlyDeclined = !context.shouldShowRationale(Manifest.permission.CAMERA) && hasAskedCameraPermissionBefore,
+            onDismiss = { showCameraPermissionRationale = false },
+            onOkClick = { cameraPermissionResultLauncher.launch(Manifest.permission.CAMERA) },
+            onGoToAppSettingsClick = { context.openAppSettings() })
+    }
+
     PlantBox {
-        BackIcon(
-            onClick = {},
-            modifier = Modifier.padding(top = 30.dp, start = 20.dp) // todo extract modifier to be used across screens
+        Header(
+            imgSrc = imgSrc,
         )
-        Column {
-            Header(imgSrc)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxHeight(0.7f)
+        ) {
+            PrimarySmallButton(
+                onClick = {
+                    if (context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        capturedImageUri = context.createTempFileUri()
+                        cameraLauncher.launch(capturedImageUri)
+                    } else {
+                        showCameraPermissionRationale = true
+                    }
+                },
+                label = "Add Image"
+            )
             Spacer(modifier = Modifier.height(16.dp))
             InputSheet(viewModel)
         }
+        BackIcon(
+            onClick = { viewModel },
+            modifier = Modifier.padding(top = 30.dp, start = 20.dp) // todo extract modifier to be used across screens
+        )
     }
 }
 
@@ -194,9 +253,11 @@ private fun InputSheet(
                                     wateringDays.first().name.lowercase()
                                         .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
                                 }
+
                                 7 -> {
                                     "Everyday"
                                 }
+
                                 else -> {
                                     wateringDays.joinToString {
                                         it.name
@@ -331,20 +392,22 @@ private fun DialogInput(
 // todo move all these private composables to internal ones into separate files
 @Composable
 fun Header(
-    imgSrc: String? = null
+    imgSrc: String? = null,
 ) {
-    if (imgSrc.isNullOrBlank()) {
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            painter = rememberAsyncImagePainter(model = Uri.parse(imgSrc)),
-            contentDescription = "",
-            alignment = Alignment.Center,
-            contentScale = ContentScale.FillBounds
-        )
-    } else {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (!imgSrc.isNullOrBlank()) {
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f),
+                painter = rememberAsyncImagePainter(model = Uri.parse(imgSrc)),
+                contentDescription = "",
+                alignment = Alignment.Center,
+                contentScale = ContentScale.FillWidth
+            )
+        } else {
             Spacer(modifier = Modifier.fillMaxHeight(0.05f))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -353,10 +416,6 @@ fun Header(
                 PlantPlaceholderImage()
             }
             Spacer(modifier = Modifier.fillMaxHeight(0.05f))
-            PrimarySmallButton(
-                onClick = { /*TODO*/ },
-                label = "Add Image"
-            )
         }
     }
 }
