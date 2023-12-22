@@ -9,11 +9,6 @@ anroidx-lifecycle-runtimeKtx = "2.6.1"
 # COMPOSE UI
 compose-bom = "2023.10.01"
 
-# NAVIGATION
-simple-stack-core = "2.8.0"
-simple-stack-extensions = "2.3.3"
-simple-stack-compose = "0.12.2"
-
 # ROOM
 room = "2.6.0"
 
@@ -68,9 +63,9 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 # NAVIGATION
-simple-stack-core = { module = "com.github.Zhuinden:simple-stack", version.ref = "simple-stack-core" }
-simple-stack-extensions = { module = "com.github.Zhuinden:simple-stack-extensions", version.ref = "simple-stack-extensions" }
-simple-stack-compose = { module = "com.github.Zhuinden:simple-stack-compose-integration", version.ref = "simple-stack-compose" }
+simple-stack-core = { module = "com.github.Zhuinden:simple-stack", version = "2.8.0" }
+simple-stack-extensions = { module = "com.github.Zhuinden:simple-stack-extensions", version = "2.3.3" }
+simple-stack-compose = { module = "com.github.Zhuinden:simple-stack-compose-integration", version = "0.12.2" }
 
 # UTIL
 util-coil = { module = "io.coil-kt:coil-compose", version.ref = "util-coil" }
@@ -99,7 +94,7 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [bundles]
-simplestack = ["simple-stack-core", "simple-stack-extensions"]
+simplestack = ["simple-stack-core", "simple-stack-extensions", "simple-stack-compose"]
 junit5 = ["junit-jupiter-api", "junit-jupiter-params"]
 eventEmitter = ["util-eventEmitter", "util-liveEvent"]
 [plugins]

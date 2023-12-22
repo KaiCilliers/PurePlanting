@@ -1,26 +1,39 @@
 package com.sunrisekcdeveloper.pureplanting.features
 
-import androidx.fragment.app.Fragment
-import com.sunrisekcdeveloper.navigation.FragmentKey
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.Modifier
+import com.sunrisekcdeveloper.home.models.PlantTabFilter
+import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
+import com.sunrisekcdeveloper.navigation.ComposeKey
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
+import com.sunrisekcdeveloper.notificationList.NotificationListUi
 import com.sunrisekcdeveloper.notificationList.NotificationListViewModel
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
-import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
-import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
-import com.zhuinden.simplestack.History
 import com.zhuinden.simplestack.ScopeKey
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestack.StateChange
+import com.zhuinden.simplestackcomposeintegration.services.rememberService
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.lookup
 import com.zhuinden.simplestackextensions.servicesktx.rebind
 import kotlinx.parcelize.Parcelize
 
+@Immutable
 @Parcelize
-data object NotificationListKey : FragmentKey(), ScopeKey.Child {
+data object NotificationListKey : ComposeKey(), ScopeKey.Child {
+
+    @Composable
+    override fun ScreenComposable(modifier: Modifier) {
+        val viewModel = rememberService<NotificationListViewModel>()
+        NotificationListUi(viewModel)
+    }
+
+    override fun getParentScopes() = listOf(NavigationServiceProvider.Scopes.NOTIFICATION)
+
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
             val plantListViewModel = lookup<PlantListViewModel>()
@@ -52,8 +65,4 @@ data object NotificationListKey : FragmentKey(), ScopeKey.Child {
             rebind<NotificationListViewModel>(notificationIconViewModel)
         }
     }
-
-    override fun instantiateFragment(): Fragment = NotificationsFragment()
-
-    override fun getParentScopes() = listOf(NavigationServiceProvider.Scopes.NOTIFICATION)
 }

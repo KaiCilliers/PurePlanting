@@ -56,7 +56,7 @@ import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import java.time.LocalDateTime
 
 @Composable
-fun PlantListUi(viewModel: PlantListViewModel) {
+internal fun PlantListUi(viewModel: PlantListViewModel) {
 
     val selectedFilter by viewModel.filter.collectAsState()
     val plants by viewModel.plants.collectAsState()

@@ -1,19 +1,31 @@
 package com.sunrisekcdeveloper.pureplanting.features
 
-import androidx.fragment.app.Fragment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.Modifier
+import com.sunrisekcdeveloper.addEdit.AddEditUi
 import com.sunrisekcdeveloper.addEdit.AddEditViewModel
-import com.sunrisekcdeveloper.navigation.FragmentKey
+import com.sunrisekcdeveloper.navigation.ComposeKey
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.zhuinden.simplestack.ServiceBinder
+import com.zhuinden.simplestackcomposeintegration.services.rememberService
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.lookup
 import com.zhuinden.simplestackextensions.servicesktx.rebind
 import kotlinx.parcelize.Parcelize
 
+@Immutable
 @Parcelize
 data class AddEditKey(
     val plant: Plant? = null
-) : FragmentKey() {
+) : ComposeKey() {
+
+    @Composable
+    override fun ScreenComposable(modifier: Modifier) {
+        val viewModel = rememberService<AddEditViewModel>()
+        AddEditUi(viewModel)
+    }
+
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
             AddEditViewModel.Default(
@@ -34,6 +46,4 @@ data class AddEditKey(
             }
         }
     }
-
-    override fun instantiateFragment(): Fragment = AddEditPlantFragment()
 }

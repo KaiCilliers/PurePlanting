@@ -98,7 +98,6 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-    implementation(libs.bundles.simplestack)
     implementation(libs.androidx.work.runtimeKtx)
     implementation(libs.util.coil)
     implementation(libs.util.flow.combineTuple)

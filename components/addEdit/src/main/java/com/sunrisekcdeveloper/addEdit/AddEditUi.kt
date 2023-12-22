@@ -7,7 +7,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,7 +37,6 @@ import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,6 +57,7 @@ import com.sunrisekcdeveloper.addEdit.ui.PlantSizeSelectionDialog
 import com.sunrisekcdeveloper.addEdit.ui.WateringDaySelectionDialog
 import com.sunrisekcdeveloper.components.addEdit.R
 import com.sunrisekcdeveloper.design.noRippleClickable
+import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.theme.neutralus0
 import com.sunrisekcdeveloper.design.theme.neutralus100
 import com.sunrisekcdeveloper.design.theme.otherOlive500
@@ -71,7 +70,7 @@ import java.time.format.DateTimeFormatter
 import com.sunrisekcdeveloper.library.design.R as designR
 
 @Composable
-fun AddEditUiNew(viewModel: AddEditViewModel) {
+fun AddEditUi(viewModel: AddEditViewModel) {
 
     val imgSrc: String by viewModel.image.collectImmediatelyAsState()
 
@@ -433,7 +432,9 @@ private fun PlantBox(
 ) {
     Box(
         contentAlignment = contentAlignment,
-        modifier = modifier.background(otherOlive500.copy(alpha = 0.7f)) // todo uniform background color for screens, ie MaterialTheme :)
+        modifier = modifier
+            .background(otherOlive500.copy(alpha = 0.7f)) // todo uniform background color for screens, ie MaterialTheme :)
+            .fillMaxSize()
     ) {
         Image(
             painter = painterResource(id = designR.drawable.banner_plant),
@@ -445,8 +446,8 @@ private fun PlantBox(
 
 @Preview
 @Composable
-fun AddEditUiNew_Preview() {
-    ThemeSurfaceWrapper {
-        AddEditUiNew(AddEditViewModel.Fake())
+fun AddEditUi_Preview() {
+    PurePlantingTheme {
+        AddEditUi(AddEditViewModel.Fake())
     }
 }
