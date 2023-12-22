@@ -48,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
 import com.sunrisekcdeveloper.addEdit.ui.PPDateSelectionDialog
-import com.sunrisekcdeveloper.addEdit.ui.PPSizeSelectionDialog
+import com.sunrisekcdeveloper.addEdit.ui.PlantSizeSelectionDialog
 import com.sunrisekcdeveloper.addEdit.ui.PPTextFieldReadOnly
 import com.sunrisekcdeveloper.addEdit.ui.PPTimePickerDialog
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
@@ -126,10 +126,10 @@ fun AddEditUi(
     )
 
     if (showSizeDialog) {
-        PPSizeSelectionDialog(
-            dismiss = { showSizeDialog = false },
+        PlantSizeSelectionDialog(
+            onDismiss = { showSizeDialog = false },
             initialSelection = size,
-            updateSelection = viewModel::onSizeChanged
+            onSelection = viewModel::onSizeChanged
         )
     }
 

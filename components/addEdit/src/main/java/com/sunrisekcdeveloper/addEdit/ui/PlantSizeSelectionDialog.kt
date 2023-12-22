@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonColors
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,18 +27,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.sunrisekcdeveloper.addEdit.models.PlantSize
+import com.sunrisekcdeveloper.design.theme.accent500
+import com.sunrisekcdeveloper.design.ui.PrimaryButton
+import com.sunrisekcdeveloper.design.ui.SecondaryButton
 
 @Composable
-fun PPSizeSelectionDialog(
-    dismiss: () -> Unit,
+fun PlantSizeSelectionDialog(
+    onDismiss: () -> Unit,
     initialSelection: PlantSize,
-    updateSelection: (PlantSize) -> Unit,
+    onSelection: (PlantSize) -> Unit,
 ) {
 
     val plantSizeOptions = listOf(PlantSize.Small, PlantSize.Medium, PlantSize.Large, PlantSize.XLarge)
     var currentSelection by remember { mutableStateOf(initialSelection) }
 
-    Dialog(onDismissRequest = { dismiss() }) {
+    Dialog(onDismissRequest = { onDismiss() }) {
         Surface(
             shape = RoundedCornerShape(16.dp),
             color = Color.White,
@@ -52,7 +57,10 @@ fun PPSizeSelectionDialog(
                     ) {
                         RadioButton(
                             selected = currentSelection == plantSize,
-                            onClick = { currentSelection = plantSize }
+                            onClick = { currentSelection = plantSize },
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = accent500
+                            )
                         )
                         Text(
                             text = stringResource(plantSize.textResId),
@@ -62,15 +70,22 @@ fun PPSizeSelectionDialog(
                     Spacer(modifier = Modifier.height(8.dp))
                 }
                 Row {
-                    Button(onClick = { dismiss() }) {
-                        Text(text = "Cancel")
-                    }
-                    Button(onClick = {
-                        updateSelection(currentSelection)
-                        dismiss()
-                    }) {
-                        Text(text = "Got it")
-                    }
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    SecondaryButton(
+                        onClick = { onDismiss() },
+                        label = "Cancel"
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    PrimaryButton(
+                        onClick = {
+                            onSelection(currentSelection)
+                            onDismiss()
+                        },
+                        label = "Got it"
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
                 }
             }
         }
@@ -79,13 +94,13 @@ fun PPSizeSelectionDialog(
 
 @Preview
 @Composable
-private fun PPSingleSelectionDialog_Preview() {
+private fun SingleSelectionDialog_Preview() {
 
     var selection: PlantSize by remember { mutableStateOf(PlantSize.Medium) }
 
-    PPSizeSelectionDialog(
-        dismiss = { },
+    PlantSizeSelectionDialog(
+        onDismiss = { },
         initialSelection = selection,
-        updateSelection = { selection = it }
+        onSelection = { selection = it }
     )
 }
