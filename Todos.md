@@ -17,6 +17,9 @@
 - [x] Notification List empty state
 - [x] Home with correct background
 - [x] Override toolbar safe area
+- [ ] Improved scroll experience
+- [ ] Animation for recompositions
+- [ ] Solution for empty list state shown just before list data appears
 
 ## Not important
 
