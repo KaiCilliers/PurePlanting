@@ -7,6 +7,7 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.sunrisekcdeveloper.notification.domain.Notification
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
+import com.sunrisekcdeveloper.notification.domain.PlantTag
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
 import java.time.Clock
 import java.time.LocalDateTime
@@ -35,7 +36,7 @@ class WaterPlantReminder(
 
             // on tap open app on plants screen
             if (plantsThatNeedsWatering.isNotEmpty()) {
-                val notification = Notification.createWaterSoon(plantsThatNeedsWatering.map { it.id })
+                val notification = Notification.createWaterSoon(plantsThatNeedsWatering.map { PlantTag(it.id, "name") })
                 notificationRepository.save(notification)
                 systemNotification.send(notification)
                 notificationId = notification.id

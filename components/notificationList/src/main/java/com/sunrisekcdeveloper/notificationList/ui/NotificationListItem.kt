@@ -31,6 +31,7 @@ import com.sunrisekcdeveloper.design.theme.neutralus900
 import com.sunrisekcdeveloper.design.theme.otherOlive500
 import com.sunrisekcdeveloper.library.design.R
 import com.sunrisekcdeveloper.notification.domain.Notification
+import com.sunrisekcdeveloper.notification.domain.PlantTag
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -154,9 +155,9 @@ private fun NotificationListItem_Preview(
 
 private class NotificationPreviewParameterProvider : PreviewParameterProvider<Notification> {
     override val values = sequenceOf(
-        Notification.createForgotToWater(listOf("1")).copy(seen = true),
-        Notification.createForgotToWater(listOf("1", "2")),
-        Notification.createWaterSoon(listOf("1")),
-        Notification.createWaterSoon(listOf("1", "2")),
+        Notification.createForgotToWater(listOf(PlantTag("1", "name"))).copy(seen = true),
+        Notification.createForgotToWater(listOf(PlantTag("1", "name"), PlantTag("2", "name"))),
+        Notification.createWaterSoon(listOf(PlantTag("1", "name"))),
+        Notification.createWaterSoon(listOf(PlantTag("1", "name"), PlantTag("2", "name"))),
     )
 }

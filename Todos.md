@@ -12,7 +12,7 @@
 - [x] Water soon bug where all unwatered plants are sent in notification
 - [ ] Potential bug based on resolution of above - Bug where workmanager is triggered for water soon immediately when app is launched
 - [x] Unwater soon not working
-- [ ] Incorrect notification message for single plants
+- [x] Incorrect notification message for single plants
 - [ ] Plant list empty state per filter
 - [ ] Notification List empty state
 - [ ] Home with correct background

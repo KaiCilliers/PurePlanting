@@ -10,21 +10,29 @@ data class Notification(
     val type: PlantNotificationType,
 ) {
     companion object {
-        fun createWaterSoon(targetPlantIds: List<String>): Notification {
+        fun createWaterSoon(targetPlants: List<PlantTag>): Notification {
             return create(
                 PlantNotificationType.NeedsWater(
-                    targetPlants = targetPlantIds,
-                    body = "Hey, you have ${targetPlantIds.size} plants to water today"
+                    targetPlants = targetPlants.map { it.id },
+                    body = if (targetPlants.size == 1) {
+                        "Hey, \"${targetPlants.first().name}\" needs water soon"
+                    } else {
+                        "Hey, you have ${targetPlants.size} plants that need water soon"
+                    }
                 )
             )
         }
 
         // todo replace with PlantTag to have access to plant name
-        fun createForgotToWater(targetPlantIds: List<String>): Notification {
+        fun createForgotToWater(targetPlants: List<PlantTag>): Notification {
             return create(
                 PlantNotificationType.ForgotToWater(
-                    targetPlants = targetPlantIds,
-                    body = "Hey, you forgot to water your"
+                    targetPlants = targetPlants.map { it.id },
+                    body = if (targetPlants.size == 1) {
+                        "Hey, you forgot to water \"${targetPlants.first().name}\" yesterday"
+                    } else {
+                        "Hey, you forgot to water some plants yesterday"
+                    }
                 )
             )
         }
