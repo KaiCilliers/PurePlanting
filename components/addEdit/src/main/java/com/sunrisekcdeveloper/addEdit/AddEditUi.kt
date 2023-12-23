@@ -62,6 +62,7 @@ import com.sunrisekcdeveloper.design.theme.neutralus0
 import com.sunrisekcdeveloper.design.theme.neutralus100
 import com.sunrisekcdeveloper.design.theme.otherOlive500
 import com.sunrisekcdeveloper.design.ui.BackIcon
+import com.sunrisekcdeveloper.design.ui.PlantBox
 import com.sunrisekcdeveloper.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.design.ui.PrimarySmallButton
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
@@ -422,26 +423,6 @@ private fun PlantPlaceholderImage(modifier: Modifier = Modifier) {
         painter = painterResource(id = designR.drawable.single_plant_placeholder),
         contentDescription = "",
     )
-}
-
-@Composable
-private fun PlantBox(
-    modifier: Modifier = Modifier,
-    contentAlignment: Alignment = Alignment.TopStart,
-    content: @Composable BoxScope.() -> Unit = {}
-) {
-    Box(
-        contentAlignment = contentAlignment,
-        modifier = modifier
-            .background(otherOlive500.copy(alpha = 0.7f)) // todo uniform background color for screens, ie MaterialTheme :)
-            .fillMaxSize()
-    ) {
-        Image(
-            painter = painterResource(id = designR.drawable.banner_plant),
-            contentDescription = ""
-        )
-        content()
-    }
 }
 
 @Preview

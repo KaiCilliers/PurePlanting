@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sunrisekcdeveloper.design.ui.PlantBox
 import com.sunrisekcdeveloper.home.subcomponents.NotificationIconUi
 import com.sunrisekcdeveloper.home.subcomponents.PlantListUi
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
@@ -20,27 +21,29 @@ import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 fun HomeUi(
     viewModel: HomeViewModel
 ) {
-    Column {
-        Row(
-            Modifier
-                .padding(horizontal = 20.dp)
-                .padding(top = 35.dp)
-                .wrapContentHeight()
-        ) {
-            Text(
-                text = "Let's care\nMy Plants!",
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.weight(1f)
-            )
-            NotificationIconUi(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .size(50.dp), // todo update notification icon to scale predictably (try to set size smaller)
-                viewModel = viewModel.notificationIconViewModel
-            )
+    PlantBox {
+        Column {
+            Row(
+                Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 35.dp)
+                    .wrapContentHeight()
+            ) {
+                Text(
+                    text = "Let's care\nMy Plants!",
+                    style = MaterialTheme.typography.displayLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.weight(1f)
+                )
+                NotificationIconUi(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .size(50.dp), // todo update notification icon to scale predictably (try to set size smaller)
+                    viewModel = viewModel.notificationIconViewModel
+                )
+            }
+            PlantListUi(viewModel = viewModel.plantListViewModel)
         }
-        PlantListUi(viewModel = viewModel.plantListViewModel)
     }
 }
 

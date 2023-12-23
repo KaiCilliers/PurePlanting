@@ -16,12 +16,12 @@ import com.sunrisekcdeveloper.design.noRippleClickable
 import com.sunrisekcdeveloper.design.topEndIconPadding
 import com.sunrisekcdeveloper.design.topStartIconPadding
 import com.sunrisekcdeveloper.design.ui.BackIcon
+import com.sunrisekcdeveloper.design.ui.PlantBox
 import com.sunrisekcdeveloper.detail.models.DetailItem
 import com.sunrisekcdeveloper.detail.ui.BannerDetails
 import com.sunrisekcdeveloper.detail.ui.DetailSheet
 import com.sunrisekcdeveloper.detail.ui.EditIcon
 import com.sunrisekcdeveloper.detail.ui.Header
-import com.sunrisekcdeveloper.detail.ui.PlantBox
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import java.time.LocalDateTime
 

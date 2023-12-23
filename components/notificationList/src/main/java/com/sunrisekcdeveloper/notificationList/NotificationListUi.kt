@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,9 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +43,7 @@ import com.sunrisekcdeveloper.design.theme.neutralus300
 import com.sunrisekcdeveloper.design.theme.neutralus500
 import com.sunrisekcdeveloper.design.theme.otherOlive500
 import com.sunrisekcdeveloper.design.ui.BackIcon
+import com.sunrisekcdeveloper.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.models.NotificationFilter
 import com.sunrisekcdeveloper.models.NotificationFilter.ALL
 import com.sunrisekcdeveloper.models.NotificationFilter.FORGOT_TO_WATER
@@ -66,7 +64,7 @@ fun NotificationListUi(
     val notifications by viewModel.notifications.collectAsState()
     val filter by viewModel.filter.collectAsState()
 
-    Box(
+    BoxWithBottomFade(
         Modifier.background(otherOlive500.copy(alpha = 0.7f)) // todo uniform background color for screens, ie MaterialTheme :)
     ) {
         Image(
@@ -89,25 +87,7 @@ fun NotificationListUi(
                 )
             }
         }
-        Column {
-            Spacer(modifier = Modifier.weight(0.8f))
-            Box(
-                modifier = Modifier
-                    .weight(0.2f)
-                    .fillMaxSize()
-                    .clip(RectangleShape)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                MaterialTheme.colorScheme.background
-                            )
-                        )
-                    )
-            )
-        }
     }
-
 }
 
 
@@ -228,7 +208,7 @@ private fun NotificationList(
 
     LazyColumn(
         modifier = Modifier.fillMaxHeight()
-    ){
+    ) {
         notifications.forEach { entry ->
             item(entry.key) {
                 Text(
@@ -248,7 +228,7 @@ private fun NotificationList(
                     onClick = { onItemClick(item) },
                     modifier = notificationListItemPadding
                 )
-                if (index < entry.value.lastIndex) Divider(color = Color.Gray.copy(alpha = 0.05f), thickness = 1.dp,)
+                if (index < entry.value.lastIndex) Divider(color = Color.Gray.copy(alpha = 0.05f), thickness = 1.dp)
             }
         }
     }

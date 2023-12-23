@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,9 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +42,7 @@ import com.sunrisekcdeveloper.components.home.R
 import com.sunrisekcdeveloper.design.noRippleClickable
 import com.sunrisekcdeveloper.design.theme.accent500
 import com.sunrisekcdeveloper.design.theme.neutralus300
+import com.sunrisekcdeveloper.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.home.models.PlantTabFilter.FORGOT_TO_WATER
@@ -70,7 +67,7 @@ internal fun PlantListUi(viewModel: PlantListViewModel) {
             if (plants.isEmpty()) {
                 EmptyList(viewModel::onAddPlantClick)
             } else {
-                Box {
+                BoxWithBottomFade {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(20.dp),
@@ -93,24 +90,6 @@ internal fun PlantListUi(viewModel: PlantListViewModel) {
                                 modifier = Modifier.animateItemPlacement()
                             )
                         }
-                    }
-                    // todo extract this somehow to be an easier to use gradient fadeout
-                    Column {
-                        Spacer(modifier = Modifier.weight(1f))
-                        Box(
-                            modifier = Modifier
-                                .weight(0.2f)
-                                .fillMaxSize()
-                                .clip(RectangleShape)
-                                .background(
-                                    brush = Brush.verticalGradient(
-                                        colors = listOf(
-                                            Color.Transparent,
-                                            MaterialTheme.colorScheme.background
-                                        )
-                                    )
-                                )
-                        )
                     }
                 }
             }
@@ -216,37 +195,39 @@ private fun FilterBar(
 private fun EmptyList(
     onButtonClick: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
+    BoxWithBottomFade {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
 
-        Image(
-            painter = painterResource(id = R.drawable.three_plants),
-            contentDescription = ""
-        )
-        Spacer(modifier = Modifier.weight(0.1f))
+            Image(
+                painter = painterResource(id = R.drawable.three_plants),
+                contentDescription = ""
+            )
+            Spacer(modifier = Modifier.weight(0.1f))
 
-        // todo string resources
-        Text(
-            text = "Sorry.",
-            style = MaterialTheme.typography.displayLarge,
-        )
-        Spacer(modifier = Modifier.weight(0.05f))
+            // todo string resources
+            Text(
+                text = "Sorry.",
+                style = MaterialTheme.typography.displayLarge,
+            )
+            Spacer(modifier = Modifier.weight(0.05f))
 
-        Text(
-            text = "There are no plants in the list, please add your first plant.",
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
-        Spacer(modifier = Modifier.weight(0.05f))
+            Text(
+                text = "There are no plants in the list, please add your first plant.",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(horizontal = 30.dp)
+            )
+            Spacer(modifier = Modifier.weight(0.05f))
 
-        PrimaryButton(label = "Add Your First Plant", onClick = { onButtonClick() })
-        Spacer(modifier = Modifier.weight(1f))
+            PrimaryButton(label = "Add Your First Plant", onClick = { onButtonClick() })
+            Spacer(modifier = Modifier.weight(1f))
+        }
     }
 }
 
