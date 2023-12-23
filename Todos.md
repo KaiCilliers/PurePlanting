@@ -18,6 +18,7 @@
 - [x] Home with correct background
 - [x] Override toolbar safe area
 - [ ] Improved scroll experience
+- [ ] Card tags alpha values
 - [ ] Animation for recompositions
 - [x] Solution for empty list state shown just before list data appears
 

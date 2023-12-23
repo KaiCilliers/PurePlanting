@@ -273,6 +273,7 @@ private fun NotificationList(
             .windowInsetsPadding(WindowInsets.navigationBars)
             .fillMaxHeight()
     ) {
+        // todo replace with sticky header
         notifications.forEach { entry ->
             item(entry.key) {
                 Text(
