@@ -21,15 +21,13 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.components.home.R
-import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.home.models.PlantTabFilter.FORGOT_TO_WATER
 import com.sunrisekcdeveloper.home.models.PlantTabFilter.HISTORY
 import com.sunrisekcdeveloper.home.models.PlantTabFilter.UPCOMING
-import com.sunrisekcdeveloper.notification.domain.Notification
-import com.sunrisekcdeveloper.notification.domain.PlantTag
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.library.design.R as designR
 
 @Composable
 internal fun EmptyPlantList(
@@ -52,7 +50,7 @@ internal fun EmptyPlantList(
             Spacer(modifier = Modifier.weight(1f))
 
             Image(
-                painter = painterResource(id = R.drawable.three_plants),
+                painter = painterResource(id = designR.drawable.three_plants),
                 contentDescription = ""
             )
             Spacer(modifier = Modifier.weight(0.1f))

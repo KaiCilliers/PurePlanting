@@ -44,28 +44,29 @@ interface NotificationListViewModel {
     class Fake : NotificationListViewModel {
         override val filter: StateFlow<NotificationFilter> = MutableStateFlow(NotificationFilter.ALL)
         override val notifications: StateFlow<NotificationGroupedByDay> = MutableStateFlow(
-            mapOf(
-                (10 to 2023) to listOf(Notification.createWaterSoon(listOf(
-                    PlantTag("1", "plant"),
-                    PlantTag("2", "plant"),
-                    PlantTag("3", "plant"),
-                ))),
-                (10 to 2023) to listOf(Notification.createWaterSoon(listOf(
-                    PlantTag("4", "plant")
-                ))),
-                (11 to 2023) to listOf(Notification.createForgotToWater(listOf(
-                    PlantTag("1", "plant"),
-                    PlantTag("2", "plant"),
-                    PlantTag("3", "plant"),
-                ))),
-                (12 to 2023) to listOf(Notification.createWaterSoon(listOf(
-                    PlantTag("1", "plant"),
-                    PlantTag("2", "plant")
-                ))),
-            ).toSortedMap(
-                compareByDescending<Pair<Int, Int>> { (_, year) -> year }
-                    .thenByDescending { (day, _) -> day }
-            )
+            emptyMap()
+//            mapOf(
+//                (10 to 2023) to listOf(Notification.createWaterSoon(listOf(
+//                    PlantTag("1", "plant"),
+//                    PlantTag("2", "plant"),
+//                    PlantTag("3", "plant"),
+//                ))),
+//                (10 to 2023) to listOf(Notification.createWaterSoon(listOf(
+//                    PlantTag("4", "plant")
+//                ))),
+//                (11 to 2023) to listOf(Notification.createForgotToWater(listOf(
+//                    PlantTag("1", "plant"),
+//                    PlantTag("2", "plant"),
+//                    PlantTag("3", "plant"),
+//                ))),
+//                (12 to 2023) to listOf(Notification.createWaterSoon(listOf(
+//                    PlantTag("1", "plant"),
+//                    PlantTag("2", "plant")
+//                ))),
+//            ).toSortedMap(
+//                compareByDescending<Pair<Int, Int>> { (_, year) -> year }
+//                    .thenByDescending { (day, _) -> day }
+//            )
         )
 
         override fun onFilterChanged(filter: NotificationFilter) = Unit

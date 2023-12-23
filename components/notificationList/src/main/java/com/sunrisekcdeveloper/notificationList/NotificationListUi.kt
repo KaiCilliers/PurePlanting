@@ -3,12 +3,14 @@ package com.sunrisekcdeveloper.notificationList
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -71,20 +73,52 @@ fun NotificationListUi(
             painter = painterResource(id = designR.drawable.banner_plant),
             contentDescription = ""
         )
-        Column {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Header(
                 selectedFilter = filter,
                 onFilterChange = { viewModel.onFilterChanged(it) },
                 onBackClick = { viewModel.onBackClick() }
             )
-            Surface(
-                color = neutralus100,
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
-            ) {
-                NotificationList(
-                    notifications = notifications,
-                    onItemClick = { viewModel.onNotificationClick(it) }
-                )
+            if (notifications.isNotEmpty()) {
+                Surface(
+                    color = neutralus100,
+                    shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                ) {
+                    NotificationList(
+                        notifications = notifications,
+                        onItemClick = { viewModel.onNotificationClick(it) }
+                    )
+                }
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Image(
+                        painter = painterResource(id = designR.drawable.three_plants),
+                        contentDescription = ""
+                    )
+                    Spacer(modifier = Modifier.weight(0.1f))
+
+                    Text(
+                        text = "Nothing to see here.",
+                        style = MaterialTheme.typography.displayLarge,
+                    )
+                    Spacer(modifier = Modifier.weight(0.05f))
+
+                    Text(
+                        text = "Notifications that you receive will be placed here for you to review at any time",
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(horizontal = 30.dp)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                }
             }
         }
     }

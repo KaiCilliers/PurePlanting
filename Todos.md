@@ -14,7 +14,7 @@
 - [x] Unwater soon not working
 - [x] Incorrect notification message for single plants
 - [x] Plant list empty state per filter
-- [ ] Notification List empty state
+- [x] Notification List empty state
 - [ ] Home with correct background
 - [ ] Override toolbar safe area
 
