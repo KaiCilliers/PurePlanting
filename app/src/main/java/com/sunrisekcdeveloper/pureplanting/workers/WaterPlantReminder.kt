@@ -29,6 +29,7 @@ class WaterPlantReminder(
                 .all()
                 .filter { it.needsWaterToday(today) }
                 .filter { it.wateringInfo.time.isBefore(now.plusMinutes(15)) }
+                .filter { it.wateringInfo.time.isAfter(now) }
 
             var notificationId: String? = null
 
