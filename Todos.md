@@ -13,7 +13,7 @@
 - [ ] Potential bug based on resolution of above - Bug where workmanager is triggered for water soon immediately when app is launched
 - [x] Unwater soon not working
 - [x] Incorrect notification message for single plants
-- [ ] Plant list empty state per filter
+- [x] Plant list empty state per filter
 - [ ] Notification List empty state
 - [ ] Home with correct background
 - [ ] Override toolbar safe area

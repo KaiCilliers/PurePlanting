@@ -49,6 +49,8 @@ import com.sunrisekcdeveloper.home.models.PlantTabFilter.FORGOT_TO_WATER
 import com.sunrisekcdeveloper.home.models.PlantTabFilter.HISTORY
 import com.sunrisekcdeveloper.home.models.PlantTabFilter.UPCOMING
 import com.sunrisekcdeveloper.home.ui.DeleteConfirmationDialog
+import com.sunrisekcdeveloper.home.ui.EmptyPlantList
+import com.sunrisekcdeveloper.home.ui.FilterBar
 import com.sunrisekcdeveloper.plant.domain.Plant
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import java.time.LocalDateTime
@@ -65,7 +67,7 @@ internal fun PlantListUi(viewModel: PlantListViewModel) {
         Column {
             FilterBar(selectedFilter = selectedFilter, onSelection = viewModel::onFilterChange)
             if (plants.isEmpty()) {
-                EmptyList(viewModel::onAddPlantClick)
+                EmptyPlantList(selectedFilter = selectedFilter)
             } else {
                 BoxWithBottomFade {
                     LazyVerticalGrid(
@@ -121,113 +123,6 @@ internal fun PlantListUi(viewModel: PlantListViewModel) {
             },
             onDismiss = { requestToDelete = null }
         )
-    }
-}
-
-@Composable
-private fun FilterBar(
-    selectedFilter: PlantTabFilter,
-    onSelection: (PlantTabFilter) -> Unit,
-    modifier: Modifier = Modifier
-) {
-
-    @Composable
-    fun FilterBarItem(
-        text: String,
-        selected: Boolean,
-        onClick: () -> Unit,
-    ) {
-        Column(
-            modifier = Modifier
-                .width(IntrinsicSize.Min)
-        ) {
-            Text(
-                text = text,
-                color = if (selected) accent500 else neutralus300,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-                modifier = Modifier
-                    .width(IntrinsicSize.Max)
-                    .noRippleClickable { onClick() },
-            )
-            if (selected) {
-                Spacer(modifier = Modifier.height(2.dp))
-                Box(
-                    modifier = Modifier
-                        .height(2.dp)
-                        .fillMaxWidth(0.5f)
-                        .clip(CircleShape)
-                        .background(accent500)
-                )
-            }
-        }
-    }
-
-    Row(
-        modifier = modifier
-            .wrapContentWidth()
-            .padding(start = 20.dp),
-    ) {
-        FilterBarItem(
-            text = "Upcoming",
-            selected = selectedFilter == UPCOMING,
-            onClick = { onSelection(UPCOMING) }
-        )
-        Spacer(modifier = Modifier.weight(0.2f))
-
-        FilterBarItem(
-            text = "Forgot to Water",
-            selected = selectedFilter == FORGOT_TO_WATER,
-            onClick = { onSelection(FORGOT_TO_WATER) }
-        )
-        Spacer(modifier = Modifier.weight(0.2f))
-
-        FilterBarItem(
-            text = "History",
-            selected = selectedFilter == HISTORY,
-            onClick = { onSelection(HISTORY) }
-        )
-        Spacer(modifier = Modifier.weight(0.6f))
-    }
-}
-
-@Composable
-private fun EmptyList(
-    onButtonClick: () -> Unit,
-) {
-    BoxWithBottomFade {
-        Column(
-            modifier = Modifier
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(modifier = Modifier.weight(1f))
-
-            Image(
-                painter = painterResource(id = R.drawable.three_plants),
-                contentDescription = ""
-            )
-            Spacer(modifier = Modifier.weight(0.1f))
-
-            // todo string resources
-            Text(
-                text = "Sorry.",
-                style = MaterialTheme.typography.displayLarge,
-            )
-            Spacer(modifier = Modifier.weight(0.05f))
-
-            Text(
-                text = "There are no plants in the list, please add your first plant.",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(horizontal = 30.dp)
-            )
-            Spacer(modifier = Modifier.weight(0.05f))
-
-            PrimaryButton(label = "Add Your First Plant", onClick = { onButtonClick() })
-            Spacer(modifier = Modifier.weight(1f))
-        }
     }
 }
 
