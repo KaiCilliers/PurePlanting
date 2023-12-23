@@ -25,6 +25,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            manifestPlaceholders["appLabel"] = "PurePlanting - Debug"
+            isDebuggable = true
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
