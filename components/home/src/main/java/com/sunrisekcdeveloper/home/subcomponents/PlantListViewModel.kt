@@ -31,6 +31,8 @@ interface PlantListViewModel {
 
     val plants: StateFlow<List<Plant>>
 
+    val isLoading: StateFlow<Boolean>
+
     fun onWaterPlant(plant: Plant)
 
     fun onUndoWater(plant: Plant)
@@ -52,6 +54,8 @@ interface PlantListViewModel {
 
     class Fake : PlantListViewModel {
         override val filter: StateFlow<PlantTabFilter> = MutableStateFlow(PlantTabFilter.UPCOMING)
+
+        override val isLoading: StateFlow<Boolean> = MutableStateFlow(true)
 
         override val plants: StateFlow<List<Plant>> = MutableStateFlow(
             listOf(
@@ -151,7 +155,10 @@ interface PlantListViewModel {
 
         override val filter = MutableStateFlow(PlantTabFilter.UPCOMING)
 
+        override val isLoading = MutableStateFlow(true)
+
         override val plants = combine(plantRepository.observe(), filter) { allPlants, selectedFilter ->
+            isLoading.value = false
             val filteredPlants = allPlants.filter {
                 when (selectedFilter) {
                     PlantTabFilter.UPCOMING -> it.needsWaterToday(LocalDateTime.now(clock))

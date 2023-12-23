@@ -27,6 +27,8 @@ interface NotificationListViewModel {
 
     val notifications: StateFlow<NotificationGroupedByDay>
 
+    val isLoading: StateFlow<Boolean>
+
     fun onFilterChanged(filter: NotificationFilter)
 
     fun onNotificationClick(notification: Notification)
@@ -43,6 +45,7 @@ interface NotificationListViewModel {
 
     class Fake : NotificationListViewModel {
         override val filter: StateFlow<NotificationFilter> = MutableStateFlow(NotificationFilter.ALL)
+        override val isLoading: StateFlow<Boolean> = MutableStateFlow(false)
         override val notifications: StateFlow<NotificationGroupedByDay> = MutableStateFlow(
             mapOf(
                 (10 to 2023) to listOf(Notification.createWaterSoon(listOf(
@@ -85,8 +88,11 @@ interface NotificationListViewModel {
 
         override val filter = MutableStateFlow(NotificationFilter.ALL)
 
+        override val isLoading = MutableStateFlow(true)
+
         override val notifications: StateFlow<NotificationGroupedByDay> =
             combine(notificationRepository.observe(), filter) { notifications, activeFilter ->
+                isLoading.value = false
                 when (activeFilter) {
                     NotificationFilter.ALL -> notifications
                     NotificationFilter.FORGOT_TO_WATER -> notifications

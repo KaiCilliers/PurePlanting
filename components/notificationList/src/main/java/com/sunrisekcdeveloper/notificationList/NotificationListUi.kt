@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -76,6 +77,7 @@ fun NotificationListUi(
 
     val notifications by viewModel.notifications.collectAsState()
     val filter by viewModel.filter.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
     BoxWithBottomFade(
         Modifier.background(otherOlive500.copy(alpha = 0.7f)) // todo uniform background color for screens, ie MaterialTheme :)
@@ -94,43 +96,55 @@ fun NotificationListUi(
                     selectedFilter = filter,
                     onFilterChange = { viewModel.onFilterChanged(it) },
                 )
-                if (notifications.isNotEmpty()) {
-                    Surface(
-                        color = neutralus100,
-                        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-                    ) {
-                        NotificationList(
-                            notifications = notifications,
-                            onItemClick = { viewModel.onNotificationClick(it) }
+                when {
+                    isLoading -> {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        LinearProgressIndicator(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(4.dp),
+                            color = accent500
                         )
                     }
-                } else {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Spacer(modifier = Modifier.weight(1f))
+                    notifications.isEmpty() -> {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Spacer(modifier = Modifier.weight(1f))
 
-                        Image(
-                            painter = painterResource(id = designR.drawable.three_plants),
-                            contentDescription = ""
-                        )
-                        Spacer(modifier = Modifier.weight(0.1f))
+                            Image(
+                                painter = painterResource(id = designR.drawable.three_plants),
+                                contentDescription = ""
+                            )
+                            Spacer(modifier = Modifier.weight(0.1f))
 
-                        Text(
-                            text = "Nothing to see here.",
-                            style = MaterialTheme.typography.displayLarge,
-                        )
-                        Spacer(modifier = Modifier.weight(0.05f))
+                            Text(
+                                text = "Nothing to see here.",
+                                style = MaterialTheme.typography.displayLarge,
+                            )
+                            Spacer(modifier = Modifier.weight(0.05f))
 
-                        Text(
-                            text = "Notifications that you receive will be placed here for you to review at any time",
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(horizontal = 30.dp)
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
+                            Text(
+                                text = "Notifications that you receive will be placed here for you to review at any time",
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.padding(horizontal = 30.dp)
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
+                    else -> {
+                        Surface(
+                            color = neutralus100,
+                            shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                        ) {
+                            NotificationList(
+                                notifications = notifications,
+                                onItemClick = { viewModel.onNotificationClick(it) }
+                            )
+                        }
                     }
                 }
             }
