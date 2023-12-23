@@ -1,8 +1,10 @@
 package com.sunrisekcdeveloper.pureplanting
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,8 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.ui.ObserveAsEvents
@@ -51,8 +55,10 @@ class MainActivity : FragmentActivity() {
         }
     }
 
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         onBackPressedDispatcher.addCallback(backPressedCallback)
 
@@ -84,8 +90,9 @@ class MainActivity : FragmentActivity() {
                     val context = LocalContext.current
                     
                     Scaffold(
-                        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-                    ) { contentPadding ->
+                        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+                        containerColor = Color.Transparent
+                    ) { _ ->
 
                         val lifecycleOwner = LocalLifecycleOwner.current
                         LaunchedEffect(lifecycleOwner.lifecycle) {
@@ -112,9 +119,7 @@ class MainActivity : FragmentActivity() {
                         }
 
                         Box(
-                            modifier = Modifier
-                                .padding(contentPadding)
-                                .fillMaxSize(),
+                            modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
                             composeStateChanger.RenderScreen()

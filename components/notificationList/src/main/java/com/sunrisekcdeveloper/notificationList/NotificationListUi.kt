@@ -7,14 +7,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -44,6 +49,7 @@ import com.sunrisekcdeveloper.design.theme.neutralus100
 import com.sunrisekcdeveloper.design.theme.neutralus300
 import com.sunrisekcdeveloper.design.theme.neutralus500
 import com.sunrisekcdeveloper.design.theme.otherOlive500
+import com.sunrisekcdeveloper.design.topStartIconPadding
 import com.sunrisekcdeveloper.design.ui.BackIcon
 import com.sunrisekcdeveloper.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.models.NotificationFilter
@@ -57,6 +63,11 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.sunrisekcdeveloper.library.design.R as designR
+
+private val headingPadding = PaddingValues(
+    start = 20.dp,
+    top = 12.dp
+)
 
 @Composable
 fun NotificationListUi(
@@ -73,53 +84,62 @@ fun NotificationListUi(
             painter = painterResource(id = designR.drawable.banner_plant),
             contentDescription = ""
         )
-        Column(
-            modifier = Modifier.fillMaxWidth()
+        Box(
+            modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
         ) {
-            Header(
-                selectedFilter = filter,
-                onFilterChange = { viewModel.onFilterChanged(it) },
-                onBackClick = { viewModel.onBackClick() }
-            )
-            if (notifications.isNotEmpty()) {
-                Surface(
-                    color = neutralus100,
-                    shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-                ) {
-                    NotificationList(
-                        notifications = notifications,
-                        onItemClick = { viewModel.onNotificationClick(it) }
-                    )
-                }
-            } else {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Spacer(modifier = Modifier.weight(1f))
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Header(
+                    selectedFilter = filter,
+                    onFilterChange = { viewModel.onFilterChanged(it) },
+                )
+                if (notifications.isNotEmpty()) {
+                    Surface(
+                        color = neutralus100,
+                        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                    ) {
+                        NotificationList(
+                            notifications = notifications,
+                            onItemClick = { viewModel.onNotificationClick(it) }
+                        )
+                    }
+                } else {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Spacer(modifier = Modifier.weight(1f))
 
-                    Image(
-                        painter = painterResource(id = designR.drawable.three_plants),
-                        contentDescription = ""
-                    )
-                    Spacer(modifier = Modifier.weight(0.1f))
+                        Image(
+                            painter = painterResource(id = designR.drawable.three_plants),
+                            contentDescription = ""
+                        )
+                        Spacer(modifier = Modifier.weight(0.1f))
 
-                    Text(
-                        text = "Nothing to see here.",
-                        style = MaterialTheme.typography.displayLarge,
-                    )
-                    Spacer(modifier = Modifier.weight(0.05f))
+                        Text(
+                            text = "Nothing to see here.",
+                            style = MaterialTheme.typography.displayLarge,
+                        )
+                        Spacer(modifier = Modifier.weight(0.05f))
 
-                    Text(
-                        text = "Notifications that you receive will be placed here for you to review at any time",
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(horizontal = 30.dp)
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
+                        Text(
+                            text = "Notifications that you receive will be placed here for you to review at any time",
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(horizontal = 30.dp)
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
                 }
             }
+            BackIcon(
+                onClick = viewModel::onBackClick,
+                modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.statusBars)
+                    .padding(headingPadding)
+            )
         }
     }
 }
@@ -129,18 +149,12 @@ fun NotificationListUi(
 private fun Header(
     selectedFilter: NotificationFilter,
     onFilterChange: (NotificationFilter) -> Unit,
-    onBackClick: () -> Unit,
 ) {
     Column {
         Row(
-            modifier = Modifier
-                .padding(start = 20.dp)
-                .padding(top = 12.dp),
+            modifier = Modifier.padding(headingPadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BackIcon(
-                onClick = { onBackClick() },
-            )
             Text(
                 text = "Notifications",
                 textAlign = TextAlign.Center,
@@ -241,7 +255,9 @@ private fun NotificationList(
         .padding(top = 8.dp)
 
     LazyColumn(
-        modifier = Modifier.fillMaxHeight()
+        modifier = Modifier
+            .windowInsetsPadding(WindowInsets.navigationBars)
+            .fillMaxHeight()
     ) {
         notifications.forEach { entry ->
             item(entry.key) {
@@ -264,6 +280,9 @@ private fun NotificationList(
                 )
                 if (index < entry.value.lastIndex) Divider(color = Color.Gray.copy(alpha = 0.05f), thickness = 1.dp)
             }
+        }
+        item {
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 

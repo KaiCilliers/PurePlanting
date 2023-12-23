@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.sunrisekcdeveloper.design.noRippleClickable
 import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.library.design.R
 
@@ -19,7 +20,7 @@ fun BackIcon(
         painter = painterResource(id = R.drawable.arrow_left_with_border),
         contentDescription = "",
         alignment = Alignment.TopStart,
-        modifier = modifier.clickable { onClick() }
+        modifier = modifier.noRippleClickable { onClick() }
     )
 }
 

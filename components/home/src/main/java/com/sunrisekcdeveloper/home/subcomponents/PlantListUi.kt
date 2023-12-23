@@ -92,6 +92,9 @@ internal fun PlantListUi(viewModel: PlantListViewModel) {
                                 modifier = Modifier.animateItemPlacement()
                             )
                         }
+                        item {
+                            Spacer(modifier = Modifier.height(100.dp))
+                        }
                     }
                 }
             }

@@ -16,7 +16,7 @@
 - [x] Plant list empty state per filter
 - [x] Notification List empty state
 - [x] Home with correct background
-- [ ] Override toolbar safe area
+- [x] Override toolbar safe area
 
 ## Not important
 

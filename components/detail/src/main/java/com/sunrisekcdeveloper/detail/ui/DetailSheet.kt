@@ -1,8 +1,11 @@
 package com.sunrisekcdeveloper.detail.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -58,13 +61,14 @@ internal fun DetailSheet(
             }
         }
         Surface(
-            color = neutralus0
+            color = neutralus0,
         ) {
             PrimaryButton(
                 onClick = { onButtonClick() },
                 label = "Mark as Watered", // todo string resource
                 enabled = needsWaterToday,
                 modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.navigationBars)
                     .padding(horizontal = 20.dp)
                     .padding(bottom = 20.dp)
                     .fillMaxWidth()

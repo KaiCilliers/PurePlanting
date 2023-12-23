@@ -2,9 +2,15 @@
 
 package com.sunrisekcdeveloper.detail
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,44 +38,49 @@ fun DetailUi(viewModel: DetailViewModel) {
     val needsWaterToday = plant.needsWaterToday(LocalDateTime.now())
 
     PlantBox {
-        Header(
-            plant.details.imageSrcUri
-        )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxHeight(0.7f)
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            BannerDetails(
+            Header(plant.details.imageSrcUri)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .padding(horizontal = 40.dp)
-                    .padding(bottom = 40.dp),
-                labels = listOf(
-                    // todo string resource
-                    DetailItem(label = "Size", value = plant.details.size),
-                    DetailItem(label = "Water", value = plant.wateringInfo.amount),
-                    // todo string resource
-                    DetailItem(label = "Frequency", value = "${plant.wateringInfo.days.size} times/week"),
-                ),
+                    .align(Alignment.BottomCenter)
+                    .fillMaxHeight(0.7f)
+            ) {
+                BannerDetails(
+                    modifier = Modifier
+                        .padding(horizontal = 40.dp)
+                        .padding(bottom = 40.dp),
+                    labels = listOf(
+                        // todo string resource
+                        DetailItem(label = "Size", value = plant.details.size),
+                        DetailItem(label = "Water", value = plant.wateringInfo.amount),
+                        // todo string resource
+                        DetailItem(label = "Frequency", value = "${plant.wateringInfo.days.size} times/week"),
+                    ),
+                )
+                DetailSheet(
+                    title = plant.details.name,
+                    description = plant.details.description,
+                    onButtonClick = { viewModel.onWaterPlant() },
+                    needsWaterToday = needsWaterToday
+                )
+            }
+            BackIcon(
+                onClick = viewModel::onGoBack,
+                modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.statusBars)
+                    .topStartIconPadding()
             )
-            DetailSheet(
-                title = plant.details.name,
-                description = plant.details.description,
-                onButtonClick = { viewModel.onWaterPlant() },
-                needsWaterToday = needsWaterToday
+            EditIcon(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .windowInsetsPadding(WindowInsets.statusBars)
+                    .topEndIconPadding()
+                    .noRippleClickable { viewModel.onEditPlant() }
             )
         }
-        BackIcon(
-            onClick = viewModel::onGoBack,
-            modifier = Modifier.topStartIconPadding()
-        )
-        EditIcon(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .topEndIconPadding()
-                .noRippleClickable { viewModel.onEditPlant() }
-        )
     }
 }
 
