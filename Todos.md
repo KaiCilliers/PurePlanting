@@ -15,7 +15,7 @@
 - [x] Incorrect notification message for single plants
 - [x] Plant list empty state per filter
 - [x] Notification List empty state
-- [ ] Home with correct background
+- [x] Home with correct background
 - [ ] Override toolbar safe area
 
 ## Not important
