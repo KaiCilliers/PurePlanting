@@ -11,15 +11,14 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.fragment.app.FragmentActivity
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.ui.ObserveAsEvents
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
@@ -28,8 +27,7 @@ import com.sunrisekcdeveloper.pureplanting.features.DetailKey
 import com.sunrisekcdeveloper.pureplanting.features.HomeKey
 import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
 import com.sunrisekcdeveloper.pureplanting.workers.DeeplinkDestination
-import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder
-import com.sunrisekcdeveloper.pureplanting.workers.WaterPlantReminder
+import com.zhuinden.liveevent.observe
 import com.zhuinden.simplestack.AsyncStateChanger
 import com.zhuinden.simplestack.BackHandlingModel
 import com.zhuinden.simplestack.Backstack
@@ -41,10 +39,6 @@ import com.zhuinden.simplestackextensions.lifecyclektx.observeAheadOfTimeWillHan
 import com.zhuinden.simplestackextensions.navigatorktx.androidContentFrame
 import com.zhuinden.simplestackextensions.servicesktx.get
 import kotlinx.coroutines.launch
-import java.time.Duration
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.util.concurrent.TimeUnit
 
 class MainActivity : FragmentActivity() {
 
@@ -93,21 +87,24 @@ class MainActivity : FragmentActivity() {
                         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
                     ) { contentPadding ->
 
-                        ObserveAsEvents(flow = globalServices.get<SnackbarEmitter>().eventFlow) { eventType ->
-                            scope.launch { 
-                                when(eventType) {
-                                    is SnackbarEmitterType.Text -> snackbarHostState.showSnackbar(eventType.text)
-                                    is SnackbarEmitterType.TextRes -> snackbarHostState.showSnackbar(context.getString(eventType.resId))
-                                    is SnackbarEmitterType.Undo -> {
-                                        val result = snackbarHostState.showSnackbar(
-                                            message = eventType.text,
-                                            actionLabel = "Undo",
-                                            duration = SnackbarDuration.Long,
-                                        )
+                        val lifecycleOwner = LocalLifecycleOwner.current
+                        LaunchedEffect(lifecycleOwner.lifecycle) {
+                            globalServices.get<SnackbarEmitter>().snackbarEvents.observe(lifecycleOwner) { eventType ->
+                                scope.launch {
+                                    when(eventType) {
+                                        is SnackbarEmitterType.Text -> snackbarHostState.showSnackbar(eventType.text)
+                                        is SnackbarEmitterType.TextRes -> snackbarHostState.showSnackbar(context.getString(eventType.resId))
+                                        is SnackbarEmitterType.Undo -> {
+                                            val result = snackbarHostState.showSnackbar(
+                                                message = eventType.text,
+                                                actionLabel = "Undo",
+                                                duration = SnackbarDuration.Long,
+                                            )
 
-                                        when (result) {
-                                            SnackbarResult.ActionPerformed -> eventType.undoAction()
-                                            SnackbarResult.Dismissed -> { }
+                                            when (result) {
+                                                SnackbarResult.ActionPerformed -> eventType.undoAction()
+                                                SnackbarResult.Dismissed -> { }
+                                            }
                                         }
                                     }
                                 }
