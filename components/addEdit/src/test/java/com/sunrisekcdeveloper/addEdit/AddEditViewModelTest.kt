@@ -6,6 +6,7 @@ import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotNull
 import assertk.assertions.isZero
 import com.sunrisekcdeveloper.addEdit.models.PlantSize
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.plant.domain.PlantRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,14 +25,17 @@ import java.time.LocalTime
 class AddEditViewModelTest {
 
     private lateinit var plantRepositoryFake: PlantRepository.Fake
-    private lateinit var router: Router
+    private lateinit var router: AddEditViewModel.Router
+    private lateinit var eventEmitter: SnackbarEmitter
 
     @BeforeEach
     fun setup() {
         Dispatchers.setMain(StandardTestDispatcher())
+        eventEmitter = SnackbarEmitter()
         plantRepositoryFake = PlantRepository.Fake()
-        router = object : Router {
+        router = object : AddEditViewModel.Router {
             override fun jumpToRoot() { }
+            override fun goBack() { }
         }
     }
 
@@ -47,7 +51,8 @@ class AddEditViewModelTest {
         val viewModel = AddEditViewModel.Default(
             plantRepository = plantRepositoryFake,
             plant = null,
-            router = router
+            router = router,
+            eventEmitter = eventEmitter
         )
 
         // ASSERTIONS
@@ -65,7 +70,7 @@ class AddEditViewModelTest {
     fun `editing and existing plant sets input fields to plant's values`() = runTest {
         // SETUP
         val initialPlant = plant()
-        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
 
         // ASSERTIONS
         assertThat(viewModel.image.value).isEqualTo(initialPlant.details.imageSrcUri)
@@ -81,7 +86,7 @@ class AddEditViewModelTest {
     @Test
     fun `save changes without an initial plant creates a new plant`() = runTest {
         // SETUP
-        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, null)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, null)
 
         // ACTION
         viewModel.image.value = "img"
@@ -105,7 +110,7 @@ class AddEditViewModelTest {
         // SETUP
         val initialPlant = plant()
         plantRepositoryFake.save(initialPlant)
-        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
 
         // ACTION
         viewModel.image.value = "img"
@@ -142,7 +147,7 @@ class AddEditViewModelTest {
             waterDays = listOf(DayOfWeek.MONDAY)
         )
         plantRepositoryFake.save(initialPlant)
-        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
 
         // ACTION
         viewModel.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
@@ -156,7 +161,7 @@ class AddEditViewModelTest {
         val updatedPlant = plantRepositoryFake.find(initialPlant.id)
         assertThat(plantRepositoryFake.all().size).isEqualTo(1)
         assertThat(updatedPlant).isNotNull()
-        assertThat(updatedPlant!!.wateringInfo.daysLastModified).isGreaterThan(initialPlant.wateringInfo.daysLastModified)
+        assertThat(updatedPlant!!.wateringInfo.lastModifiedWateringDays).isGreaterThan(initialPlant.wateringInfo.lastModifiedWateringDays)
     }
 
     @Test
@@ -166,7 +171,7 @@ class AddEditViewModelTest {
             waterDays = listOf(DayOfWeek.MONDAY)
         )
         plantRepositoryFake.save(initialPlant)
-        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
 
         // ACTION
         viewModel.image.value = "img"
@@ -185,7 +190,7 @@ class AddEditViewModelTest {
         val updatedPlant = plantRepositoryFake.find(initialPlant.id)
         assertThat(plantRepositoryFake.all().size).isEqualTo(1)
         assertThat(updatedPlant).isNotNull()
-        assertThat(updatedPlant!!.wateringInfo.daysLastModified).isEqualTo(initialPlant.wateringInfo.daysLastModified)
+        assertThat(updatedPlant!!.wateringInfo.lastModifiedWateringDays).isEqualTo(initialPlant.wateringInfo.lastModifiedWateringDays)
     }
 
 }

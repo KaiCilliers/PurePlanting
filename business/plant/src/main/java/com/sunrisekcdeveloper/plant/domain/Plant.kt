@@ -20,6 +20,10 @@ data class Plant(
         get() = wateringInfo.history.lastOrNull()
 
     fun needsWaterToday(today: LocalDateTime): Boolean {
+        // needs water if it was forgotten
+        if (missedLatestWateringDate(today)) {
+            return true
+        }
         // 1. todays day of week matces one of the plants watering days
         val needsWater = wateringInfo.days.contains(today.dayOfWeek)
         // 2. plant has not bee watered today
@@ -31,7 +35,7 @@ data class Plant(
         // 1. calculate the latest date the plant needed water
         val dateNeededWater = dateNeededWaterBefore(today)
         // 2. taht date needs to be after the date watering data was last modified
-        val isAfterCreatedDate = dateNeededWater?.isAfter(this.wateringInfo.daysLastModified) ?: false
+        val isAfterCreatedDate = dateNeededWater?.isAfter(this.wateringInfo.lastModifiedWateringDays) ?: false
         // 3. that date needs to be before today
         val isBeforeToday = dateNeededWater?.isBefore(today) ?: false
         // 4. that date needs to be after the last watering date in history
@@ -40,9 +44,9 @@ data class Plant(
     }
 
     fun dateNeededWaterBefore(today: LocalDateTime): LocalDateTime? {
-        val daysBetween = today.getDaysBetween(this.wateringInfo.daysLastModified)
+        val daysBetween = today.getDaysBetween(this.wateringInfo.lastModifiedWateringDays)
 
-        return if (today.isAfter(this.wateringInfo.daysLastModified)) {
+        return if (today.isAfter(this.wateringInfo.lastModifiedWateringDays)) {
             when {
                 this.wateringInfo.days.contains(today.dayOfWeek) -> today
                 this.wateringInfo.days.contains(today.minusDays(1).dayOfWeek) && daysBetween >= 1 -> today.minusDays(1)
@@ -122,7 +126,7 @@ data class Plant(
                     days = wateringDays,
                     amount = wateringAmount,
                     history = emptyList(),
-                    daysLastModified = createdAt
+                    lastModifiedWateringDays = createdAt
                 )
             )
         }

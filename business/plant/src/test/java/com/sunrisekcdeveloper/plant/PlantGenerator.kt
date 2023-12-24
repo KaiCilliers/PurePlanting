@@ -27,7 +27,7 @@ fun plant(
             time = atTime,
             days = waterDays,
             amount = "240ml",
-            daysLastModified = modifiedWaterDaysAt,
+            lastModifiedWateringDays = modifiedWaterDaysAt,
             history = listOf()
         ),
         createdAt = createdAt,

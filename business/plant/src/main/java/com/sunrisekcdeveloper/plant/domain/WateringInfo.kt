@@ -11,7 +11,7 @@ data class WateringInfo(
     val time: LocalTime,
     val days: List<DayOfWeek>,
     val amount: String,
-    val daysLastModified: LocalDateTime = LocalDateTime.now(),
+    val lastModifiedWateringDays: LocalDateTime = LocalDateTime.now(),
     val history: List<LocalDateTime> = emptyList(),
 ): Parcelable
 

@@ -215,7 +215,7 @@ class PlantTest {
 
         // ACTION
         val userUpdatedPlant = forgotToWaterPlant.copy(wateringInfo = forgotToWaterPlant.wateringInfo.copy(
-            daysLastModified = today
+            lastModifiedWateringDays = today
         ))
 
         // ASSERTIONS
@@ -242,7 +242,7 @@ class PlantTest {
         val updatedPlant = plant.copy(
             wateringInfo = plant.wateringInfo.copy(
                 days = listOf(fourDaysAgo.dayOfWeek),
-                daysLastModified = fourDaysAgo.plusDays(1)
+                lastModifiedWateringDays = fourDaysAgo.plusDays(1)
             ),
         )
 
@@ -307,6 +307,19 @@ class PlantTest {
 
         // ASSERTIONS
         assertThat(wateredTwoDaysAgoPlant.needsWaterToday(today)).isFalse()
+    }
+
+    @Test
+    fun `plant needs water today if it was forgotten`() {
+        // SETUP
+        val forgottenPlant = plantForgotten(today())
+
+        // ACTION
+        val needsWater = forgottenPlant.needsWaterToday(today())
+
+        // ASSERTIONS
+        assertThat(needsWater).isTrue()
+
     }
 
 }

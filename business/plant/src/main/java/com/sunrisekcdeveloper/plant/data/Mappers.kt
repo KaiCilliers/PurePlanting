@@ -23,7 +23,7 @@ fun Plant.toEntity(): PlantEntity {
         timeToWater = wateringInfo.time,
         daysToWater = wateringInfo.days,
         amountToWaterWith = wateringInfo.amount,
-        createdAt = createdAt,
+        createdAt = wateringInfo.lastModifiedWateringDays,
     )
 }
 
@@ -40,7 +40,8 @@ fun PlantWithWaterRecords.toPlant(): Plant {
             time = plant.timeToWater,
             days = plant.daysToWater,
             amount = plant.amountToWaterWith,
-            history = waterRecords.map { it.wateredAt }
+            history = waterRecords.map { it.wateredAt },
+            lastModifiedWateringDays = plant.createdAt,
         ),
         createdAt = plant.createdAt,
     )

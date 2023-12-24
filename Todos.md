@@ -19,6 +19,7 @@
 - [x] Override toolbar safe area
 - [ ] Improved scroll experience
 - [ ] Card tags alpha values
+- [ ] Tap system notification marks the domain one as read
 - [ ] Animation for recompositions
 - [x] Solution for empty list state shown just before list data appears
 

@@ -1,7 +1,6 @@
 package com.sunrisekcdeveloper.addEdit
 
 import com.sunrisekcdeveloper.addEdit.models.PlantSize
-import com.sunrisekcdeveloper.design.EventEmitter
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.plant.domain.Plant
@@ -128,7 +127,7 @@ interface AddEditViewModel {
                     amount = wateringAmount.value,
                     time = wateringTime.value,
                     history = plantToUpdate.wateringInfo.history,
-                    daysLastModified = if (waterDaysUpdated) LocalDateTime.now() else plantToUpdate.wateringInfo.daysLastModified
+                    lastModifiedWateringDays = if (waterDaysUpdated) LocalDateTime.now() else plantToUpdate.wateringInfo.lastModifiedWateringDays
                 )
             )
             plantRepository.save(updatedPlant)
