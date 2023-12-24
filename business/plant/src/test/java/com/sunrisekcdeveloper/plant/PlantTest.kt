@@ -214,9 +214,11 @@ class PlantTest {
         )
 
         // ACTION
-        val userUpdatedPlant = forgotToWaterPlant.copy(wateringInfo = forgotToWaterPlant.wateringInfo.copy(
-            lastModifiedWateringDays = today
-        ))
+        val userUpdatedPlant = forgotToWaterPlant.copy(
+            wateringInfo = forgotToWaterPlant.wateringInfo.copy(
+                lastModifiedWateringDays = today
+            )
+        )
 
         // ASSERTIONS
         assertThat(forgotToWaterPlant.missedLatestWateringDate(today)).isTrue()
@@ -319,7 +321,37 @@ class PlantTest {
 
         // ASSERTIONS
         assertThat(needsWater).isTrue()
+    }
 
+    // todo test for previous water day (cont fix for no date tag
+    @Test
+    fun `current watering date is not greater than today`() {
+        // SETUP
+        val plant = plantForgotten(today())
+
+        // ACTION
+        val wateringDate = plant.currentWateringDate(today())
+
+        // ASSERTIONS
+        assertThat(wateringDate.isAfter(today())).isFalse()
+    }
+
+    @Test
+    fun `current watering date is the nearest day to today that matches a weekday plant needs water`() {
+        // SETUP
+        val today = today()
+        val plant = plant(
+            waterDays = listOf(today.minusDays(2).dayOfWeek, today.minusDays(3).dayOfWeek),
+            atTime = today.toLocalTime(),
+            createdAt = today.minusDays(4),
+            modifiedWaterDaysAt = today.minusDays(4)
+        )
+
+        // ACTION
+        val wateringDate = plant.currentWateringDate(today())
+
+        // ASSERTIONS
+        assertThat(wateringDate.dayOfWeek).isEqualTo(today.minusDays(2).dayOfWeek)
     }
 
 }

@@ -124,7 +124,7 @@ private fun TopSection(
 
     val dateFormatter = remember { DateTimeFormatter.ofPattern("dd MMM") }
     val now = remember { LocalDateTime.now() }
-    val dateNeedsWater = remember { plant.previousWaterDay(now) }
+    val dateNeedsWater = remember { plant.currentWateringDate(now) }
 
     Box(
         modifier = modifier
@@ -159,11 +159,10 @@ private fun TopSection(
             )
             Tag(
                 // todo string resources
-                label = when (dateNeedsWater?.dayOfYear) {
-                    null -> "No date" // todo this scenario should not occur, see if you can move this calculation someplace else
+                label = when (dateNeedsWater.dayOfYear) {
                     now.dayOfYear -> "Today"
                     now.dayOfYear.minus(1) -> "Yesterday"
-                    else -> dateFormatter.format(plant.previousWaterDay(now))
+                    else -> dateFormatter.format(plant.currentWateringDate(now))
                 },
                 modifier = Modifier.padding(start = 12.dp, top = 4.dp)
             )

@@ -33,31 +33,24 @@ data class Plant(
 
     fun missedLatestWateringDate(today: LocalDateTime): Boolean {
         // 1. calculate the latest date the plant needed water
-        val dateNeededWater = previousWaterDay(today)
-        // 2. taht date needs to be after the date watering data was last modified
-        val isAfterCreatedDate = dateNeededWater?.isAfter(this.wateringInfo.lastModifiedWateringDays) ?: false
+        val dateNeededWater = currentWateringDate(today)
+        // 2. that date needs to be after the date watering data was last modified
+        val isAfterCreatedDate = dateNeededWater.isAfter(this.wateringInfo.lastModifiedWateringDays)
         // 3. that date needs to be before today
-        val isBeforeToday = dateNeededWater?.isBefore(today) ?: false
+        val isBeforeToday = dateNeededWater.isBefore(today)
         // 4. that date needs to be after the last watering date in history
-        val isAfterLatestWatering = if (dateLastWatered != null) dateNeededWater?.isAfter(dateLastWatered) ?: false else true
+        val isAfterLatestWatering = if (dateLastWatered != null) dateNeededWater.isAfter(dateLastWatered) else true
         return isAfterCreatedDate && isBeforeToday && isAfterLatestWatering
     }
 
-    fun previousWaterDay(today: LocalDateTime): LocalDateTime? {
-        val daysBetween = today.getDaysBetween(this.wateringInfo.lastModifiedWateringDays)
+    fun currentWateringDate(today: LocalDateTime): LocalDateTime {
+        var previousDay = today
 
-        return if (today.isAfter(this.wateringInfo.lastModifiedWateringDays)) {
-            when {
-                this.wateringInfo.days.contains(today.dayOfWeek) -> today
-                this.wateringInfo.days.contains(today.minusDays(1).dayOfWeek) && daysBetween >= 1 -> today.minusDays(1)
-                this.wateringInfo.days.contains(today.minusDays(2).dayOfWeek) && daysBetween >= 2 -> today.minusDays(2)
-                this.wateringInfo.days.contains(today.minusDays(3).dayOfWeek) && daysBetween >= 3 -> today.minusDays(3)
-                this.wateringInfo.days.contains(today.minusDays(4).dayOfWeek) && daysBetween >= 4 -> today.minusDays(4)
-                this.wateringInfo.days.contains(today.minusDays(5).dayOfWeek) && daysBetween >= 5 -> today.minusDays(5)
-                this.wateringInfo.days.contains(today.minusDays(6).dayOfWeek) && daysBetween >= 6 -> today.minusDays(6)
-                else -> null
-            }
-        } else null
+        while(!wateringInfo.days.contains(previousDay.dayOfWeek)) {
+            previousDay = previousDay.minusDays(1)
+        }
+
+        return previousDay
     }
 
     fun water(clock: Clock = Clock.systemDefaultZone()): Plant {

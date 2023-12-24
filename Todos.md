@@ -20,7 +20,7 @@
 - [ ] Improved scroll experience
 - [ ] Card tags alpha values
 - [ ] Tap system notification marks the domain one as read
-- [ ] Fix "no date" value in card tags
+- [x] Fix "no date" value in card tags
 - [ ] Animation for recompositions
 - [x] Solution for empty list state shown just before list data appears
 
