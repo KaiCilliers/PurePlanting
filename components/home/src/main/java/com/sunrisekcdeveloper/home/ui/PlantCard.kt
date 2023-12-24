@@ -184,7 +184,7 @@ private fun Tag(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        color = neutralus500,
+        color = neutralus500.copy(alpha = 0.7f),
         shape = RoundedCornerShape(5.dp),
         modifier = modifier.wrapContentSize()
     ) {

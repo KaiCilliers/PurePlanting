@@ -18,7 +18,7 @@
 - [x] Home with correct background
 - [x] Override toolbar safe area
 - [ ] Improved scroll experience
-- [ ] Card tags alpha values
+- [x] Card tags alpha values
 - [x] Tap system notification marks the domain one as read
 - [x] Fix "no date" value in card tags
 - [ ] Animation for recompositions
