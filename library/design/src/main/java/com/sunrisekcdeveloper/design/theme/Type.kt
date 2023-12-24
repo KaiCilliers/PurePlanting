@@ -20,7 +20,9 @@ val typography = Typography(
     displayLarge = TextStyle(
         fontFamily = Poppins,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 24.sp
+        fontSize = 24.sp,
+        lineHeight = 32.sp,
+        color = neutralus900
     ),
 
     displayMedium = TextStyle(

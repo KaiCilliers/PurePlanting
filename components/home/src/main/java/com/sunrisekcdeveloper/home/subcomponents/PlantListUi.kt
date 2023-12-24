@@ -40,7 +40,10 @@ import java.time.LocalDateTime
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun PlantListUi(viewModel: PlantListViewModel) {
+internal fun PlantListUi(
+    viewModel: PlantListViewModel,
+    modifier: Modifier = Modifier,
+) {
 
     val selectedFilter by viewModel.filter.collectAsState()
     val plants by viewModel.plants.collectAsState()
@@ -48,7 +51,7 @@ internal fun PlantListUi(viewModel: PlantListViewModel) {
 
     var requestToDelete: Plant? by remember { mutableStateOf(null) }
 
-    Box {
+    Box(modifier) {
         Column(
             modifier = Modifier.fillMaxHeight()
         ){

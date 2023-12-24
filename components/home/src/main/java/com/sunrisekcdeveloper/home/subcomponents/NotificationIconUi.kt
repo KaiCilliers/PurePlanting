@@ -57,7 +57,8 @@ fun NotificationIconUi(
             Badge(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .fillMaxSize(0.25f)
+                    .padding(2.dp)
+                    .fillMaxSize(0.20f)
             )
         }
     }

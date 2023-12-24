@@ -41,16 +41,16 @@ internal fun FilterBar(
     ) {
         Column(
             modifier = Modifier
+                .noRippleClickable { onClick() }
                 .width(IntrinsicSize.Min)
+                .padding(5.dp)
         ) {
             Text(
                 text = text,
                 color = if (selected) accent500 else neutralus300,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-                modifier = Modifier
-                    .width(IntrinsicSize.Max)
-                    .noRippleClickable { onClick() },
+                modifier = Modifier.width(IntrinsicSize.Max),
             )
             if (selected) {
                 Spacer(modifier = Modifier.height(2.dp))
