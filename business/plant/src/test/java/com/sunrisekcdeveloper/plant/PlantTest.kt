@@ -65,7 +65,7 @@ class PlantTest {
         val plant = plantNeedsWater(earlyMorning(), modifiedAt = earlyMorning().minusHours(1))
 
         // ASSERTIONS
-        assertThat(plant.needsWaterToday(today)).isTrue()
+        assertThat(plant.waterTimeIsUpcoming(today)).isTrue()
     }
 
     @Test
@@ -76,7 +76,7 @@ class PlantTest {
         val plant = plantNeedsWater(tomorrow)
 
         // ASSERTIONS
-        assertThat(plant.needsWaterToday(today)).isFalse()
+        assertThat(plant.waterTimeIsUpcoming(today)).isFalse()
     }
 
     @Test
@@ -89,7 +89,7 @@ class PlantTest {
         val wateredPlant = plant.water()
 
         // ASSERTIONS
-        assertThat(wateredPlant.needsWaterToday(today)).isFalse()
+        assertThat(wateredPlant.waterTimeIsUpcoming(today)).isFalse()
     }
 
     @Test
@@ -99,7 +99,7 @@ class PlantTest {
         val plant = plantNeedsWater(earlyMorning(), modifiedAt = earlyMorning().minusHours(1))
 
         // ASSERTIONS
-        assertThat(plant.needsWaterToday(today)).isTrue()
+        assertThat(plant.waterTimeIsUpcoming(today)).isTrue()
     }
 
     @Test
@@ -144,7 +144,7 @@ class PlantTest {
 
         // ACTION
         val forgotToWater = weekOldPlant.missedLatestWateringDate(today)
-        val needsWater = weekOldPlant.needsWaterToday(today)
+        val needsWater = weekOldPlant.waterTimeIsUpcoming(today)
 
         // ASSERTIONS
         assertThat(needsWater).isTrue()
@@ -289,7 +289,7 @@ class PlantTest {
         val wateredPlant = plant.water()
 
         // ASSERTIONS
-        assertThat(wateredPlant.needsWaterToday(today)).isFalse()
+        assertThat(wateredPlant.waterTimeIsUpcoming(today)).isFalse()
     }
 
     @Test
@@ -306,7 +306,7 @@ class PlantTest {
         val wateredTwoDaysAgoPlant = forgotToWaterPlant.water(mutableClock)
 
         // ASSERTIONS
-        assertThat(wateredTwoDaysAgoPlant.needsWaterToday(today)).isFalse()
+        assertThat(wateredTwoDaysAgoPlant.waterTimeIsUpcoming(today)).isFalse()
     }
 
     @Test
@@ -315,7 +315,7 @@ class PlantTest {
         val forgottenPlant = plantForgotten(today())
 
         // ACTION
-        val needsWater = forgottenPlant.needsWaterToday(today())
+        val needsWater = forgottenPlant.needsWater(today())
 
         // ASSERTIONS
         assertThat(needsWater).isTrue()

@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -125,7 +124,7 @@ private fun TopSection(
 
     val dateFormatter = remember { DateTimeFormatter.ofPattern("dd MMM") }
     val now = remember { LocalDateTime.now() }
-    val dateNeedsWater = remember { plant.dateNeededWaterBefore(now) }
+    val dateNeedsWater = remember { plant.previousWaterDay(now) }
 
     Box(
         modifier = modifier
@@ -164,7 +163,7 @@ private fun TopSection(
                     null -> "No date" // todo this scenario should not occur, see if you can move this calculation someplace else
                     now.dayOfYear -> "Today"
                     now.dayOfYear.minus(1) -> "Yesterday"
-                    else -> dateFormatter.format(plant.dateNeededWaterBefore(now))
+                    else -> dateFormatter.format(plant.previousWaterDay(now))
                 },
                 modifier = Modifier.padding(start = 12.dp, top = 4.dp)
             )
@@ -258,7 +257,7 @@ private fun PlantCard_Preview() {
     PurePlantingTheme {
         val plant = PlantListViewModel.Fake().plants.value.first()
         val now = remember { LocalDateTime.now() }
-        val needsWater = remember(now.dayOfYear) { plant.needsWaterToday(now) }
+        val needsWater = remember(now.dayOfYear) { plant.needsWater(now) }
 
         PlantCard(
             plant = plant,

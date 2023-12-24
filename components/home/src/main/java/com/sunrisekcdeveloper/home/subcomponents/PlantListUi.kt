@@ -79,7 +79,7 @@ internal fun PlantListUi(viewModel: PlantListViewModel) {
                             items(plants, key = { it.id }) { plant ->
                                 com.sunrisekcdeveloper.home.ui.PlantCard(
                                     plant = plant,
-                                    needsWater = plant.needsWaterToday(LocalDateTime.now()),
+                                    needsWater = plant.needsWater(LocalDateTime.now()),
                                     onWaterToggleClick = { needsWater ->
                                         if (needsWater) {
                                             viewModel.onWaterPlant(plant)

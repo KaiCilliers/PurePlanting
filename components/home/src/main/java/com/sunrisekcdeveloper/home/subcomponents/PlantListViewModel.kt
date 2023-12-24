@@ -161,7 +161,7 @@ interface PlantListViewModel {
             isLoading.value = false
             val filteredPlants = allPlants.filter {
                 when (selectedFilter) {
-                    PlantTabFilter.UPCOMING -> it.needsWaterToday(LocalDateTime.now(clock))
+                    PlantTabFilter.UPCOMING -> it.waterTimeIsUpcoming(LocalDateTime.now(clock))
                     PlantTabFilter.FORGOT_TO_WATER -> it.missedLatestWateringDate(LocalDateTime.now(clock))
                     PlantTabFilter.HISTORY -> it.dateLastWatered != null
                 }

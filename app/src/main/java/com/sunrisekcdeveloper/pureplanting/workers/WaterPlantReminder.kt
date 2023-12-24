@@ -28,7 +28,7 @@ class WaterPlantReminder(
             val now = LocalTime.now(clock)
             val plantsThatNeedsWatering = plantRepository
                 .all()
-                .filter { it.needsWaterToday(today) }
+                .filter { it.waterTimeIsUpcoming(today) }
                 .filter { it.wateringInfo.time.isBefore(now.plusMinutes(15)) }
                 .filter { it.wateringInfo.time.isAfter(now) }
 

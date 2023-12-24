@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -35,7 +34,7 @@ import java.time.LocalDateTime
 fun DetailUi(viewModel: DetailViewModel) {
 
     val plant by viewModel.plant.collectAsState()
-    val needsWaterToday = plant.needsWaterToday(LocalDateTime.now())
+    val needsWaterToday = plant.waterTimeIsUpcoming(LocalDateTime.now())
 
     PlantBox {
         Box(

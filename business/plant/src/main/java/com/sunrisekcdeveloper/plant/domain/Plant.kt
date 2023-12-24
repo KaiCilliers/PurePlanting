@@ -19,11 +19,7 @@ data class Plant(
     val dateLastWatered: LocalDateTime?
         get() = wateringInfo.history.lastOrNull()
 
-    fun needsWaterToday(today: LocalDateTime): Boolean {
-        // needs water if it was forgotten
-        if (missedLatestWateringDate(today)) {
-            return true
-        }
+    fun waterTimeIsUpcoming(today: LocalDateTime): Boolean {
         // 1. todays day of week matces one of the plants watering days
         val needsWater = wateringInfo.days.contains(today.dayOfWeek)
         // 2. plant has not bee watered today
@@ -31,9 +27,13 @@ data class Plant(
        return needsWater && !hasBeenWateredToday
     }
 
+    fun needsWater(today: LocalDateTime): Boolean {
+        return missedLatestWateringDate(today) || waterTimeIsUpcoming(today)
+    }
+
     fun missedLatestWateringDate(today: LocalDateTime): Boolean {
         // 1. calculate the latest date the plant needed water
-        val dateNeededWater = dateNeededWaterBefore(today)
+        val dateNeededWater = previousWaterDay(today)
         // 2. taht date needs to be after the date watering data was last modified
         val isAfterCreatedDate = dateNeededWater?.isAfter(this.wateringInfo.lastModifiedWateringDays) ?: false
         // 3. that date needs to be before today
@@ -43,7 +43,7 @@ data class Plant(
         return isAfterCreatedDate && isBeforeToday && isAfterLatestWatering
     }
 
-    fun dateNeededWaterBefore(today: LocalDateTime): LocalDateTime? {
+    fun previousWaterDay(today: LocalDateTime): LocalDateTime? {
         val daysBetween = today.getDaysBetween(this.wateringInfo.lastModifiedWateringDays)
 
         return if (today.isAfter(this.wateringInfo.lastModifiedWateringDays)) {
