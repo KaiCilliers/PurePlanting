@@ -36,7 +36,7 @@ class WaterPlantReminder(
 
             // on tap open app on plants screen
             if (plantsThatNeedsWatering.isNotEmpty()) {
-                val notification = Notification.createWaterSoon(plantsThatNeedsWatering.map { PlantTag(it.id, "name") })
+                val notification = Notification.createWaterSoon(plantsThatNeedsWatering.map { PlantTag(it.id, it.details.name) })
                 notificationRepository.save(notification)
                 systemNotification.send(notification)
                 notificationId = notification.id

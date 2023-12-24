@@ -37,7 +37,7 @@ class SystemNotification(
     @SuppressLint("MissingPermission")
     suspend fun send(domainNotification: DomainNotification) {
         ensureChannelExists(domainNotification.type)
-        val notification: Notification = createNotification(domainNotification.type)
+        val notification: Notification = createNotification(domainNotification)
         if (isNotificationPermissionGranted) {
             NotificationManagerCompat.from(ctx).notify(domainNotification.id.sumOf { if (it.isDigit()) it.digitToInt() else 0 }, notification)
         }
@@ -69,37 +69,37 @@ class SystemNotification(
         }
     }
 
-    private suspend fun createNotification(type: PlantNotificationType): Notification {
+    private suspend fun createNotification(domain: DomainNotification): Notification {
 
         val intent = Intent(ctx, MainActivity::class.java).apply {
-            putExtra(MainActivity.DEEPLINK_KEY, deeplinkDestinationFrom(type))
+            putExtra(MainActivity.DEEPLINK_KEY, deeplinkDestinationFrom(domain))
         }
 
         val pendingIntent = PendingIntent.getActivity(
             ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        return Notification.Builder(ctx, type.id)
+        return Notification.Builder(ctx, domain.type.id)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(type.title)
-            .setContentText(type.body)
+            .setContentTitle(domain.type.title)
+            .setContentText(domain.type.body)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
     }
 
-    private suspend fun deeplinkDestinationFrom(type: PlantNotificationType): DeeplinkDestination {
-        return if (type.targetPlants.size == 1) {
-            val plant = firstPlant(type)
+    private suspend fun deeplinkDestinationFrom(domain: DomainNotification): DeeplinkDestination {
+        return if (domain.type.targetPlants.size == 1) {
+            val plant = firstPlant(domain.type)
             if (plant != null) {
-                DeeplinkDestination.Detail(plant)
+                DeeplinkDestination.Detail(domain.id, plant)
             } else {
-                DeeplinkDestination.Home()
+                DeeplinkDestination.Home(domain.id)
             }
         } else {
-            when (type) {
-                is PlantNotificationType.ForgotToWater -> DeeplinkDestination.Home(PlantTabFilter.FORGOT_TO_WATER)
-                is PlantNotificationType.NeedsWater -> DeeplinkDestination.Home(PlantTabFilter.UPCOMING)
+            when (domain.type) {
+                is PlantNotificationType.ForgotToWater -> DeeplinkDestination.Home(domain.id, PlantTabFilter.FORGOT_TO_WATER)
+                is PlantNotificationType.NeedsWater -> DeeplinkDestination.Home(domain.id, PlantTabFilter.UPCOMING)
             }
         }
     }
@@ -111,11 +111,19 @@ class SystemNotification(
     }
 }
 
-sealed class DeeplinkDestination : Parcelable {
+sealed class DeeplinkDestination(
+    open val notificationId: String,
+) : Parcelable {
 
     @Parcelize
-    data class Detail(val plant: Plant) : DeeplinkDestination()
+    data class Detail(
+        override val notificationId: String,
+        val plant: Plant
+    ) : DeeplinkDestination(notificationId)
 
     @Parcelize
-    data class Home(val selectedFilter: PlantTabFilter = PlantTabFilter.UPCOMING) : DeeplinkDestination()
+    data class Home(
+        override val notificationId: String,
+        val selectedFilter: PlantTabFilter = PlantTabFilter.UPCOMING
+    ) : DeeplinkDestination(notificationId)
 }

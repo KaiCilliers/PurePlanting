@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -24,9 +22,9 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.design.ui.ObserveAsEvents
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
+import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.features.DetailKey
 import com.sunrisekcdeveloper.pureplanting.features.HomeKey
 import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
@@ -42,6 +40,7 @@ import com.zhuinden.simplestackcomposeintegration.core.ComposeStateChanger
 import com.zhuinden.simplestackextensions.lifecyclektx.observeAheadOfTimeWillHandleBackChanged
 import com.zhuinden.simplestackextensions.navigatorktx.androidContentFrame
 import com.zhuinden.simplestackextensions.servicesktx.get
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class MainActivity : FragmentActivity() {
@@ -62,9 +61,22 @@ class MainActivity : FragmentActivity() {
 
         onBackPressedDispatcher.addCallback(backPressedCallback)
 
+        // todo improvement by moving the logic to mark notification as seen outside Activity
         val initialBackstack = when(val deeplinkData = intent.getParcelableExtra<DeeplinkDestination>(DEEPLINK_KEY)) {
-            is DeeplinkDestination.Detail -> History.of(HomeKey(), DetailKey(deeplinkData.plant))
-            is DeeplinkDestination.Home -> History.of(HomeKey(deeplinkData.selectedFilter))
+            is DeeplinkDestination.Detail -> {
+                MainScope().launch {
+                    (application as PurePlantingApplication).globalServices.get<NotificationRepository>()
+                        .markAsSeen(deeplinkData.notificationId)
+                }
+                History.of(HomeKey(), DetailKey(deeplinkData.plant))
+            }
+            is DeeplinkDestination.Home -> {
+                MainScope().launch {
+                    (application as PurePlantingApplication).globalServices.get<NotificationRepository>()
+                        .markAsSeen(deeplinkData.notificationId)
+                }
+                History.of(HomeKey(deeplinkData.selectedFilter))
+            }
             null -> History.of(HomeKey())
         }
 

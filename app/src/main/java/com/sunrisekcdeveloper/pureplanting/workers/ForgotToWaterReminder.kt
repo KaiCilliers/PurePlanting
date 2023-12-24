@@ -36,7 +36,7 @@ class ForgotToWaterReminder(
 
             // on notification tap, open app on specific plant detail screen
             if (plantsForgotten.isNotEmpty()) {
-                val notification = Notification.createForgotToWater(plantsForgotten.map { PlantTag(it.id, "name") })
+                val notification = Notification.createForgotToWater(plantsForgotten.map { PlantTag(it.id, it.details.name) })
                 notificationRepository.save(notification)
                 systemNotification.send(notification)
                 notificationId = notification.id
