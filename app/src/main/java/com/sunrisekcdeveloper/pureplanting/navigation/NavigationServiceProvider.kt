@@ -20,7 +20,7 @@ class NavigationServiceProvider : DefaultServiceProvider() {
 
         with(serviceBinder) {
             when (scope) {
-                Scopes.NOTIFICATION -> {
+                Scopes.HOME -> {
                     val plantListRouter = object : PlantListViewModel.Router {
                         override fun goToAddPlant() {
                             backstack.goTo(AddEditKey())
@@ -45,6 +45,6 @@ class NavigationServiceProvider : DefaultServiceProvider() {
     }
 
     object Scopes {
-        const val NOTIFICATION = "notification" // todo rename to Home since plantList is being shared
+        const val HOME = "home"
     }
 }

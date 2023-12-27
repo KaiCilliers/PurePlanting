@@ -2,13 +2,8 @@ package com.sunrisekcdeveloper.pureplanting.features
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.fragment.app.Fragment
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.home.HomeUi
 import com.sunrisekcdeveloper.home.HomeViewModel
 import com.sunrisekcdeveloper.home.models.PlantTabFilter
@@ -22,12 +17,9 @@ import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
 import com.zhuinden.simplestack.ScopeKey
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackcomposeintegration.services.rememberService
-import com.zhuinden.simplestackextensions.fragmentsktx.lookup
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.lookup
 import com.zhuinden.simplestackextensions.servicesktx.rebind
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 @Immutable
@@ -42,7 +34,7 @@ data class HomeKey(
         HomeUi(viewModel)
     }
 
-    override fun getParentScopes() = listOf(NavigationServiceProvider.Scopes.NOTIFICATION)
+    override fun getParentScopes() = listOf(NavigationServiceProvider.Scopes.HOME)
 
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {

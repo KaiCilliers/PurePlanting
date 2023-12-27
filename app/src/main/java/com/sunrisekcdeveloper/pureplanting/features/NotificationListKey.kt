@@ -32,7 +32,7 @@ data object NotificationListKey : ComposeKey(), ScopeKey.Child {
         NotificationListUi(viewModel)
     }
 
-    override fun getParentScopes() = listOf(NavigationServiceProvider.Scopes.NOTIFICATION)
+    override fun getParentScopes() = listOf(NavigationServiceProvider.Scopes.HOME)
 
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
