@@ -35,12 +35,6 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-
-//        create("pureLogic") {
-//            initWith(getByName("debug"))
-//            manifestPlaceholders["appLabel"] = "PureLogic"
-//            applicationIdSuffix = ".logic"
-//        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

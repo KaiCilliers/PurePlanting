@@ -21,6 +21,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
@@ -62,21 +64,17 @@ class MainActivity : FragmentActivity() {
         onBackPressedDispatcher.addCallback(backPressedCallback)
 
         // todo improvement by moving the logic to mark notification as seen outside Activity
-        val initialBackstack = when(val deeplinkData = intent.getParcelableExtra<DeeplinkDestination>(DEEPLINK_KEY)) {
+        val initialBackstack = when (val deeplinkData = intent.getParcelableExtra<DeeplinkDestination>(DEEPLINK_KEY)) {
             is DeeplinkDestination.Detail -> {
-                MainScope().launch {
-                    (application as PurePlantingApplication).globalServices.get<NotificationRepository>()
-                        .markAsSeen(deeplinkData.notificationId)
-                }
+               markNotificationAsSeen(deeplinkData.notificationId)
                 History.of(HomeKey(), DetailKey(deeplinkData.plant))
             }
+
             is DeeplinkDestination.Home -> {
-                MainScope().launch {
-                    (application as PurePlantingApplication).globalServices.get<NotificationRepository>()
-                        .markAsSeen(deeplinkData.notificationId)
-                }
+                markNotificationAsSeen(deeplinkData.notificationId)
                 History.of(HomeKey(deeplinkData.selectedFilter))
             }
+
             null -> History.of(HomeKey())
         }
 
@@ -96,11 +94,11 @@ class MainActivity : FragmentActivity() {
         setContent {
             BackstackProvider(backstack) {
                 PurePlantingTheme {
-                    
+
                     val snackbarHostState = remember { SnackbarHostState() }
                     val scope = rememberCoroutineScope()
                     val context = LocalContext.current
-                    
+
                     Scaffold(
                         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                         containerColor = Color.Transparent
@@ -110,7 +108,7 @@ class MainActivity : FragmentActivity() {
                         LaunchedEffect(lifecycleOwner.lifecycle) {
                             globalServices.get<SnackbarEmitter>().snackbarEvents.observe(lifecycleOwner) { eventType ->
                                 scope.launch {
-                                    when(eventType) {
+                                    when (eventType) {
                                         is SnackbarEmitterType.Text -> snackbarHostState.showSnackbar(eventType.text)
                                         is SnackbarEmitterType.TextRes -> snackbarHostState.showSnackbar(context.getString(eventType.resId))
                                         is SnackbarEmitterType.Undo -> {
@@ -122,7 +120,7 @@ class MainActivity : FragmentActivity() {
 
                                             when (result) {
                                                 SnackbarResult.ActionPerformed -> eventType.undoAction()
-                                                SnackbarResult.Dismissed -> { }
+                                                SnackbarResult.Dismissed -> {}
                                             }
                                         }
                                     }
@@ -139,6 +137,15 @@ class MainActivity : FragmentActivity() {
                     }
 
                 }
+            }
+        }
+    }
+
+    private fun markNotificationAsSeen(notificationId: String) {
+        MainScope().launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                (application as PurePlantingApplication).globalServices.get<NotificationRepository>()
+                    .markAsSeen(notificationId)
             }
         }
     }

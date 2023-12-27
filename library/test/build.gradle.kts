@@ -9,8 +9,5 @@ java {
 }
 
 dependencies {
-    // TODO: remove app dependency and replace with a common-lib module depdendency
-    //  a module that all other module will depend on through which they will have access to
-    //  this module automatically by depending on the shared common lib
     implementation(libs.test.coroutines)
 }
