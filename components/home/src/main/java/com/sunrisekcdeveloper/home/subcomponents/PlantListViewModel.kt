@@ -47,11 +47,6 @@ interface PlantListViewModel {
 
     fun onAddPlantClick()
 
-    sealed class Event {
-        data object DeletedPlant : Event()
-        data object EditedPlant : Event()
-    }
-
     class Fake : PlantListViewModel {
         override val filter: StateFlow<PlantTabFilter> = MutableStateFlow(PlantTabFilter.UPCOMING)
 
