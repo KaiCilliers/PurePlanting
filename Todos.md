@@ -23,6 +23,8 @@
 - [x] Fix "no date" value in card tags
 - [ ] Animation for recompositions
 - [x] Solution for empty list state shown just before list data appears
+- [ ] Dismiss current snackbar when new one arrives
+- [x] App logo
 
 ## Not important
 
