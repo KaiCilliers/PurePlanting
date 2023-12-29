@@ -100,6 +100,7 @@ dependencies {
     implementation(libs.material)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
+    debugImplementation(libs.util.leakcanary)
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)

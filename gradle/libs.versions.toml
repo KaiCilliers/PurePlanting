@@ -72,6 +72,7 @@ util-coil = { module = "io.coil-kt:coil-compose", version.ref = "util-coil" }
 util-flow-combineTuple = { module = "com.github.Zhuinden:flow-combinetuple-kt", version.ref = "util-flow-combineTuple" }
 util-eventEmitter = { module = "com.github.Zhuinden:event-emitter", version = "1.4.0" }
 util-liveEvent = { module = "com.github.Zhuinden:live-event", version = "1.3.0" }
+util-leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.12" }
 
 # KOTLIN
 kotlin-stdLib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version = "1.9.20" }
