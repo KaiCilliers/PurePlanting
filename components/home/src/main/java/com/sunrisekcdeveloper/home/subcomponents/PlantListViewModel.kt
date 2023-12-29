@@ -3,8 +3,8 @@ package com.sunrisekcdeveloper.home.subcomponents
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.home.models.PlantTabFilter
-import com.sunrisekcdeveloper.plant.domain.Plant
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.plant.PlantRepository
 import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.statebundle.StateBundle
 import kotlinx.coroutines.CoroutineScope

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.plant.domain
+package com.sunrisekcdeveloper.plant
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

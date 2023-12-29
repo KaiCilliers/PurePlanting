@@ -81,6 +81,8 @@ dependencies {
     implementation(project(":components:notificationList"))
     implementation(project(":business:plant"))
     implementation(project(":business:notification"))
+    implementation(project(":library:database"))
+    implementation(project(":library:db_tables"))
 
     testImplementation(project(":library:test"))
     androidTestImplementation(project(":library:test"))

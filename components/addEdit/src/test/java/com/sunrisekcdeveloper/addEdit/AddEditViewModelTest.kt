@@ -7,7 +7,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isZero
 import com.sunrisekcdeveloper.addEdit.models.PlantSize
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.plant.PlantRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher

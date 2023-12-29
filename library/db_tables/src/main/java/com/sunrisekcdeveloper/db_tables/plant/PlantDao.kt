@@ -1,11 +1,10 @@
-package com.sunrisekcdeveloper.plant.data
+package com.sunrisekcdeveloper.db_tables.plant
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.sunrisekcdeveloper.plant.domain.Plant
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -18,11 +17,9 @@ interface PlantDao {
     suspend fun insert(vararg waterRecords: WateredRecordEntity)
 
     @Transaction
-    suspend fun insert(vararg plants: Plant) {
-        val entities = plants.map { it.toEntity() }
-        val waterEntities = plants.flatMap { it.toWaterRecordsEntity() }
-        insert(*entities.toTypedArray())
-        insert(*waterEntities.toTypedArray())
+    suspend fun insert(plant: Pair<PlantEntity, List<WateredRecordEntity>>) {
+        insert(plant.first)
+        insert(*plant.second.toTypedArray())
     }
 
     @Transaction

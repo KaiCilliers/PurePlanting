@@ -7,7 +7,7 @@ import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder
 import com.sunrisekcdeveloper.pureplanting.workers.SystemNotification
 import com.sunrisekcdeveloper.pureplanting.database.PurePlantingDatabase

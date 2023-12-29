@@ -7,8 +7,8 @@ import com.sunrisekcdeveloper.detail.DetailUi
 import com.sunrisekcdeveloper.detail.DetailViewModel
 import com.sunrisekcdeveloper.detail.Router
 import com.sunrisekcdeveloper.navigation.ComposeKey
-import com.sunrisekcdeveloper.plant.domain.Plant
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.plant.PlantRepository
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackcomposeintegration.services.rememberService
 import com.zhuinden.simplestackextensions.servicesktx.add

@@ -5,8 +5,8 @@ import com.sunrisekcdeveloper.notification.domain.Notification
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
 import com.sunrisekcdeveloper.notification.domain.PlantTag
-import com.sunrisekcdeveloper.plant.domain.Plant
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.plant.PlantRepository
 import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.simplestack.ScopedServices
 import com.zhuinden.statebundle.StateBundle

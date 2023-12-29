@@ -1,6 +1,6 @@
 package com.sunrisekcdeveloper.detail
 
-import com.sunrisekcdeveloper.plant.domain.Plant
+import com.sunrisekcdeveloper.plant.Plant
 
 interface Router {
     fun goToEditPlant(plant: Plant)

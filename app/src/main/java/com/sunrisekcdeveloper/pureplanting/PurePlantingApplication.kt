@@ -9,8 +9,7 @@ import androidx.work.WorkManager
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.notification.data.DefaultNotificationRepository
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
-import com.sunrisekcdeveloper.plant.data.DefaultPlantRepository
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.workers.CompositeWorkerFactory
 import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder
 import com.sunrisekcdeveloper.pureplanting.workers.SystemNotification
@@ -34,7 +33,7 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     // Create global dependencies
     private val defaultClock = Clock.systemDefaultZone()
     private val db by lazy { PurePlantingDatabase.getDatabase(this) }
-    private val plantRepository by lazy { DefaultPlantRepository(db.plantDao()) }
+    private val plantRepository by lazy { PlantRepository.Default(db.plantDao()) }
     private val systemNotification by lazy { SystemNotification(applicationContext, plantRepository) }
     private val notificationRepository by lazy { DefaultNotificationRepository(db.notificationDao()) }
     private val snackbarEmitter by lazy { SnackbarEmitter() }

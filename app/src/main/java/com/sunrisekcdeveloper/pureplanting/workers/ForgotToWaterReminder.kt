@@ -8,7 +8,7 @@ import androidx.work.WorkerParameters
 import com.sunrisekcdeveloper.notification.domain.Notification
 import com.sunrisekcdeveloper.notification.domain.NotificationRepository
 import com.sunrisekcdeveloper.notification.domain.PlantTag
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.plant.PlantRepository
 import java.time.Clock
 import java.time.LocalDateTime
 

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.plant.data
+package com.sunrisekcdeveloper.db_tables.plant
 
 import androidx.room.Embedded
 import androidx.room.Relation

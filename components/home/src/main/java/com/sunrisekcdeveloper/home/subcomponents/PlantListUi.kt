@@ -34,7 +34,7 @@ import com.sunrisekcdeveloper.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.home.ui.DeleteConfirmationDialog
 import com.sunrisekcdeveloper.home.ui.EmptyPlantList
 import com.sunrisekcdeveloper.home.ui.FilterBar
-import com.sunrisekcdeveloper.plant.domain.Plant
+import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import java.time.LocalDateTime
 

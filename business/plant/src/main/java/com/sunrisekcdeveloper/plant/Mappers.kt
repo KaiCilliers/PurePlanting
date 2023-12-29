@@ -1,8 +1,8 @@
-package com.sunrisekcdeveloper.plant.data
+package com.sunrisekcdeveloper.plant
 
-import com.sunrisekcdeveloper.plant.domain.Plant
-import com.sunrisekcdeveloper.plant.domain.PlantDetails
-import com.sunrisekcdeveloper.plant.domain.WateringInfo
+import com.sunrisekcdeveloper.db_tables.plant.PlantEntity
+import com.sunrisekcdeveloper.db_tables.plant.PlantWithWaterRecords
+import com.sunrisekcdeveloper.db_tables.plant.WateredRecordEntity
 
 fun Plant.toWaterRecordsEntity(): List<WateredRecordEntity> {
     return wateringInfo.history.map {

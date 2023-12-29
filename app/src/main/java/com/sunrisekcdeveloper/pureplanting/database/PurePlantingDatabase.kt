@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.sunrisekcdeveloper.db_tables.plant.PlantDao
+import com.sunrisekcdeveloper.db_tables.plant.PlantEntity
+import com.sunrisekcdeveloper.db_tables.plant.WateredRecordEntity
 import com.sunrisekcdeveloper.notification.data.NotificationDao
 import com.sunrisekcdeveloper.notification.data.NotificationEntity
-import com.sunrisekcdeveloper.plant.data.PlantDao
-import com.sunrisekcdeveloper.plant.data.PlantEntity
-import com.sunrisekcdeveloper.plant.data.WateredRecordEntity
 import com.sunrisekcdeveloper.pureplanting.workers.ForgotWaterWorkerResultStatusDao
 import com.sunrisekcdeveloper.pureplanting.workers.ForgotWaterWorkerResultStatusEntity
 import com.sunrisekcdeveloper.pureplanting.workers.WateringWorkerResultStatusDao
