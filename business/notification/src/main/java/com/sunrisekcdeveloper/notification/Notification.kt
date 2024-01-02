@@ -47,7 +47,3 @@ data class Notification(
     }
 }
 
-data class PlantTag(
-    val id: String,
-    val name: String,
-)

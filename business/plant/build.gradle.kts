@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     id("de.mannodermaus.android-junit5")
-    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
 }
 

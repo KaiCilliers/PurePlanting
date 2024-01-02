@@ -1,8 +1,7 @@
-package com.sunrisekcdeveloper.notification.data
+package com.sunrisekcdeveloper.db_tables.notification
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.sunrisekcdeveloper.notification.NotificationEntityType
 import java.time.LocalDateTime
 
 @Entity

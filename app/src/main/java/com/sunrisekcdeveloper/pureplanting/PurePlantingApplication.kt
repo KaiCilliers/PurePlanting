@@ -7,14 +7,13 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.notification.data.DefaultNotificationRepository
 import com.sunrisekcdeveloper.notification.NotificationRepository
 import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.database.PurePlantingDatabase
 import com.sunrisekcdeveloper.pureplanting.workers.CompositeWorkerFactory
 import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder
 import com.sunrisekcdeveloper.pureplanting.workers.SystemNotification
 import com.sunrisekcdeveloper.pureplanting.workers.WaterPlantReminder
-import com.sunrisekcdeveloper.pureplanting.database.PurePlantingDatabase
 import com.zhuinden.simplestack.GlobalServices
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.rebind
@@ -35,7 +34,7 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     private val db by lazy { PurePlantingDatabase.getDatabase(this) }
     private val plantRepository by lazy { PlantRepository.Default(db.plantDao()) }
     private val systemNotification by lazy { SystemNotification(applicationContext, plantRepository) }
-    private val notificationRepository by lazy { DefaultNotificationRepository(db.notificationDao()) }
+    private val notificationRepository by lazy { NotificationRepository.Default(db.notificationDao()) }
     private val snackbarEmitter by lazy { SnackbarEmitter() }
 
     private val waterFactory by lazy {

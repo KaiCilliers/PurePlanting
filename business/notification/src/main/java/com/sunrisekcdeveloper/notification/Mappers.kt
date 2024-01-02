@@ -1,8 +1,7 @@
-package com.sunrisekcdeveloper.notification.data
+package com.sunrisekcdeveloper.notification
 
-import com.sunrisekcdeveloper.notification.Notification
-import com.sunrisekcdeveloper.notification.NotificationEntityType
-import com.sunrisekcdeveloper.notification.PlantNotificationType
+import com.sunrisekcdeveloper.db_tables.notification.NotificationEntity
+import com.sunrisekcdeveloper.db_tables.notification.NotificationEntityType
 
 fun Notification.toEntity(): NotificationEntity {
     return NotificationEntity(
@@ -13,8 +12,8 @@ fun Notification.toEntity(): NotificationEntity {
         title = type.title,
         content = type.body,
         type = when (type) {
-            is PlantNotificationType.ForgotToWater -> com.sunrisekcdeveloper.notification.NotificationEntityType.FORGOT_TO_WATER
-            is PlantNotificationType.NeedsWater -> com.sunrisekcdeveloper.notification.NotificationEntityType.NEEDS_WATER
+            is PlantNotificationType.ForgotToWater -> NotificationEntityType.FORGOT_TO_WATER
+            is PlantNotificationType.NeedsWater -> NotificationEntityType.NEEDS_WATER
         }
     )
 }
