@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.notification.domain
+package com.sunrisekcdeveloper.notification
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

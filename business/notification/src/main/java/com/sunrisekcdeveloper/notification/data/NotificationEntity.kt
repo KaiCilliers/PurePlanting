@@ -2,7 +2,7 @@ package com.sunrisekcdeveloper.notification.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.sunrisekcdeveloper.notification.domain.NotificationEntityType
+import com.sunrisekcdeveloper.notification.NotificationEntityType
 import java.time.LocalDateTime
 
 @Entity

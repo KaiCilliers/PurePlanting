@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
 import com.sunrisekcdeveloper.navigation.ComposeKey
-import com.sunrisekcdeveloper.notification.domain.NotificationRepository
-import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
+import com.sunrisekcdeveloper.notification.NotificationRepository
+import com.sunrisekcdeveloper.notification.PlantNotificationType
 import com.sunrisekcdeveloper.notificationList.NotificationListUi
 import com.sunrisekcdeveloper.notificationList.NotificationListViewModel
 import com.sunrisekcdeveloper.plant.Plant

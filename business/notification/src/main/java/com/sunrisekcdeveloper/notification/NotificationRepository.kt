@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.notification.domain
+package com.sunrisekcdeveloper.notification
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -8,7 +8,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.notification.data.DefaultNotificationRepository
-import com.sunrisekcdeveloper.notification.domain.NotificationRepository
+import com.sunrisekcdeveloper.notification.NotificationRepository
 import com.sunrisekcdeveloper.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.workers.CompositeWorkerFactory
 import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder

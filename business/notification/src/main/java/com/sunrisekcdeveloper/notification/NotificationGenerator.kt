@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.notification.domain
+package com.sunrisekcdeveloper.notification
 
 import java.time.LocalDateTime
 import java.util.UUID

@@ -5,9 +5,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import com.sunrisekcdeveloper.notification.domain.Notification
-import com.sunrisekcdeveloper.notification.domain.NotificationRepository
-import com.sunrisekcdeveloper.notification.domain.PlantTag
+import com.sunrisekcdeveloper.notification.Notification
+import com.sunrisekcdeveloper.notification.NotificationRepository
+import com.sunrisekcdeveloper.notification.PlantTag
 import com.sunrisekcdeveloper.plant.PlantRepository
 import java.time.Clock
 import java.time.LocalDateTime

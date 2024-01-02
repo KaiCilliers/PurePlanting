@@ -1,6 +1,6 @@
 package com.sunrisekcdeveloper.home.subcomponents
 
-import com.sunrisekcdeveloper.notification.domain.NotificationRepository
+import com.sunrisekcdeveloper.notification.NotificationRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

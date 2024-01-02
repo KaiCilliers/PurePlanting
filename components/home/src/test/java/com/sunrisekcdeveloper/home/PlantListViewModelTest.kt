@@ -6,7 +6,7 @@ import assertk.assertions.containsExactly
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.notification.domain.NotificationRepository
+import com.sunrisekcdeveloper.notification.NotificationRepository
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.plant.PlantRepository
 import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel

@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.notification.data
 
-import com.sunrisekcdeveloper.notification.domain.Notification
-import com.sunrisekcdeveloper.notification.domain.NotificationRepository
+import com.sunrisekcdeveloper.notification.Notification
+import com.sunrisekcdeveloper.notification.NotificationRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
