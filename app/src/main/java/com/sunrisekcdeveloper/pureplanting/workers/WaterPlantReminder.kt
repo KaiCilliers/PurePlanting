@@ -5,6 +5,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
+import com.sunrisekcdeveloper.db_tables.WateringWorkerResultStatusDao
+import com.sunrisekcdeveloper.db_tables.WateringWorkerResultStatusEntity
 import com.sunrisekcdeveloper.notification.Notification
 import com.sunrisekcdeveloper.notification.NotificationRepository
 import com.sunrisekcdeveloper.notification.PlantTag

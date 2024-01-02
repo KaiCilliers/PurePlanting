@@ -1,19 +1,19 @@
-package com.sunrisekcdeveloper.pureplanting.database
+package com.sunrisekcdeveloper.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.sunrisekcdeveloper.db_tables.ForgotWaterWorkerResultStatusDao
+import com.sunrisekcdeveloper.db_tables.ForgotWaterWorkerResultStatusEntity
+import com.sunrisekcdeveloper.db_tables.WateringWorkerResultStatusDao
+import com.sunrisekcdeveloper.db_tables.WateringWorkerResultStatusEntity
 import com.sunrisekcdeveloper.db_tables.notification.NotificationDao
 import com.sunrisekcdeveloper.db_tables.notification.NotificationEntity
 import com.sunrisekcdeveloper.db_tables.plant.PlantDao
 import com.sunrisekcdeveloper.db_tables.plant.PlantEntity
 import com.sunrisekcdeveloper.db_tables.plant.WateredRecordEntity
-import com.sunrisekcdeveloper.pureplanting.workers.ForgotWaterWorkerResultStatusDao
-import com.sunrisekcdeveloper.pureplanting.workers.ForgotWaterWorkerResultStatusEntity
-import com.sunrisekcdeveloper.pureplanting.workers.WateringWorkerResultStatusDao
-import com.sunrisekcdeveloper.pureplanting.workers.WateringWorkerResultStatusEntity
 
 @Database(
     entities = [
