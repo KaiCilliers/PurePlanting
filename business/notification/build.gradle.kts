@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
 }
 
@@ -41,11 +40,10 @@ kotlin.sourceSets.all() {
 }
 
 dependencies {
+    implementation(project(":library:database"))
+    implementation(project(":library:db_tables"))
+
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlin.coroutines.core)
-
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
 }

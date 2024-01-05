@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     id("de.mannodermaus.android-junit5")
-    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
 }
 
@@ -43,13 +42,12 @@ android {
 //}
 
 dependencies {
+    implementation(project(":library:database"))
+    implementation(project(":library:db_tables"))
+
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlin.coroutines.core)
-
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
 
     testImplementation(project(":library:test"))
     testImplementation(libs.test.assertk)

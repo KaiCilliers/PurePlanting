@@ -14,13 +14,13 @@ import android.os.Parcelable
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import com.sunrisekcdeveloper.home.models.PlantTabFilter
-import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
-import com.sunrisekcdeveloper.plant.domain.Plant
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.notification.PlantNotificationType
+import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.MainActivity
 import com.sunrisekcdeveloper.pureplanting.R
 import kotlinx.parcelize.Parcelize
-import com.sunrisekcdeveloper.notification.domain.Notification as DomainNotification
+import com.sunrisekcdeveloper.notification.Notification as DomainNotification
 
 class SystemNotification(
     private val ctx: Context,

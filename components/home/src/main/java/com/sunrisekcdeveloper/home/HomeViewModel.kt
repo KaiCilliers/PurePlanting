@@ -3,8 +3,8 @@ package com.sunrisekcdeveloper.home
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.home.subcomponents.NotificationIconViewModel
 import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
-import com.sunrisekcdeveloper.notification.domain.NotificationRepository
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.notification.NotificationRepository
+import com.sunrisekcdeveloper.plant.PlantRepository
 import java.time.Clock
 
 interface HomeViewModel {

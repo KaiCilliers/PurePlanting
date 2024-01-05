@@ -1,12 +1,12 @@
 package com.sunrisekcdeveloper.notificationList
 
 import com.sunrisekcdeveloper.models.NotificationFilter
-import com.sunrisekcdeveloper.notification.domain.Notification
-import com.sunrisekcdeveloper.notification.domain.NotificationRepository
-import com.sunrisekcdeveloper.notification.domain.PlantNotificationType
-import com.sunrisekcdeveloper.notification.domain.PlantTag
-import com.sunrisekcdeveloper.plant.domain.Plant
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.notification.Notification
+import com.sunrisekcdeveloper.notification.NotificationRepository
+import com.sunrisekcdeveloper.notification.PlantNotificationType
+import com.sunrisekcdeveloper.notification.PlantTag
+import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.plant.PlantRepository
 import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.simplestack.ScopedServices
 import com.zhuinden.statebundle.StateBundle
@@ -48,20 +48,24 @@ interface NotificationListViewModel {
         override val isLoading: StateFlow<Boolean> = MutableStateFlow(false)
         override val notifications: StateFlow<NotificationGroupedByDay> = MutableStateFlow(
             mapOf(
-                (10 to 2023) to listOf(Notification.createWaterSoon(listOf(
+                (10 to 2023) to listOf(
+                    Notification.createWaterSoon(listOf(
                     PlantTag("1", "plant"),
                     PlantTag("2", "plant"),
                     PlantTag("3", "plant"),
                 ))),
-                (10 to 2023) to listOf(Notification.createWaterSoon(listOf(
+                (10 to 2023) to listOf(
+                    Notification.createWaterSoon(listOf(
                     PlantTag("4", "plant")
                 ))),
-                (11 to 2023) to listOf(Notification.createForgotToWater(listOf(
+                (11 to 2023) to listOf(
+                    Notification.createForgotToWater(listOf(
                     PlantTag("1", "plant"),
                     PlantTag("2", "plant"),
                     PlantTag("3", "plant"),
                 ))),
-                (12 to 2023) to listOf(Notification.createWaterSoon(listOf(
+                (12 to 2023) to listOf(
+                    Notification.createWaterSoon(listOf(
                     PlantTag("1", "plant"),
                     PlantTag("2", "plant")
                 ))),

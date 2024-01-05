@@ -47,7 +47,7 @@ import com.sunrisekcdeveloper.design.theme.neutralus300
 import com.sunrisekcdeveloper.design.theme.neutralus500
 import com.sunrisekcdeveloper.design.theme.otherOlive500
 import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
-import com.sunrisekcdeveloper.plant.domain.Plant
+import com.sunrisekcdeveloper.plant.Plant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.sunrisekcdeveloper.library.design.R as designR

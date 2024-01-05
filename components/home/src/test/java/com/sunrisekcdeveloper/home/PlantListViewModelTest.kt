@@ -5,9 +5,10 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
-import com.sunrisekcdeveloper.notification.domain.NotificationRepository
-import com.sunrisekcdeveloper.plant.domain.Plant
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.notification.NotificationRepository
+import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.plant.PlantRepository
 import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
 import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.home.plant
@@ -38,18 +39,20 @@ class PlantListViewModelTest {
     private lateinit var mutableClock: MutableClock
     private lateinit var notificationRepositoryFake: NotificationRepository.Fake
     private lateinit var router: PlantListViewModel.Router
+    private lateinit var eventEmitter: SnackbarEmitter
 
     @BeforeEach
     fun setup() {
         Dispatchers.setMain(StandardTestDispatcher())
         mutableClock = MutableClock(Clock.systemDefaultZone())
+        eventEmitter = SnackbarEmitter()
         plantRepositoryFake = PlantRepository.Fake()
         notificationRepositoryFake = NotificationRepository.Fake()
         router = object : PlantListViewModel.Router {
             override fun goToAddPlant() {}
             override fun goToPlantDetail(plant: Plant) {}
         }
-        viewModel = PlantListViewModel.Default(plantRepositoryFake, router, mutableClock)
+        viewModel = PlantListViewModel.Default(plantRepositoryFake, router, eventEmitter, mutableClock)
     }
 
     @AfterEach

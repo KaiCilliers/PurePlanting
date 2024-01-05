@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import com.sunrisekcdeveloper.addEdit.AddEditUi
 import com.sunrisekcdeveloper.addEdit.AddEditViewModel
 import com.sunrisekcdeveloper.navigation.ComposeKey
-import com.sunrisekcdeveloper.plant.domain.Plant
+import com.sunrisekcdeveloper.plant.Plant
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackcomposeintegration.services.rememberService
 import com.zhuinden.simplestackextensions.servicesktx.add

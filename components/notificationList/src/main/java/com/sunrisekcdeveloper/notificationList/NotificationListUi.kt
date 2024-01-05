@@ -50,14 +50,13 @@ import com.sunrisekcdeveloper.design.theme.neutralus100
 import com.sunrisekcdeveloper.design.theme.neutralus300
 import com.sunrisekcdeveloper.design.theme.neutralus500
 import com.sunrisekcdeveloper.design.theme.otherOlive500
-import com.sunrisekcdeveloper.design.topStartIconPadding
 import com.sunrisekcdeveloper.design.ui.BackIcon
 import com.sunrisekcdeveloper.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.models.NotificationFilter
 import com.sunrisekcdeveloper.models.NotificationFilter.ALL
 import com.sunrisekcdeveloper.models.NotificationFilter.FORGOT_TO_WATER
 import com.sunrisekcdeveloper.models.NotificationFilter.NEEDS_WATER
-import com.sunrisekcdeveloper.notification.domain.Notification
+import com.sunrisekcdeveloper.notification.Notification
 import com.sunrisekcdeveloper.notificationList.ui.NotificationListItem
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import java.time.LocalDate

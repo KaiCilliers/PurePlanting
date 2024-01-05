@@ -5,9 +5,9 @@ import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.sunrisekcdeveloper.home.subcomponents.NotificationIconViewModel
-import com.sunrisekcdeveloper.notification.domain.NotificationRepository
-import com.sunrisekcdeveloper.notification.domain.unreadNotification
-import com.sunrisekcdeveloper.plant.domain.PlantRepository
+import com.sunrisekcdeveloper.notification.NotificationRepository
+import com.sunrisekcdeveloper.notification.unreadNotification
+import com.sunrisekcdeveloper.plant.PlantRepository
 import com.sunrisekcdeveloper.shared_test.MutableClock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

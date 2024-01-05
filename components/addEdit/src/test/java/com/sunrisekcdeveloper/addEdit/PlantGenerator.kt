@@ -1,8 +1,8 @@
 package com.sunrisekcdeveloper.addEdit
 
-import com.sunrisekcdeveloper.plant.domain.Plant
-import com.sunrisekcdeveloper.plant.domain.PlantDetails
-import com.sunrisekcdeveloper.plant.domain.WateringInfo
+import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.plant.PlantDetails
+import com.sunrisekcdeveloper.plant.WateringInfo
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime

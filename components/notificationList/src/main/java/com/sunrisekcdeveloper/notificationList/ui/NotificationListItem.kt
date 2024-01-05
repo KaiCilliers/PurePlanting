@@ -30,8 +30,8 @@ import com.sunrisekcdeveloper.design.theme.neutralus500
 import com.sunrisekcdeveloper.design.theme.neutralus900
 import com.sunrisekcdeveloper.design.theme.otherOlive500
 import com.sunrisekcdeveloper.library.design.R
-import com.sunrisekcdeveloper.notification.domain.Notification
-import com.sunrisekcdeveloper.notification.domain.PlantTag
+import com.sunrisekcdeveloper.notification.Notification
+import com.sunrisekcdeveloper.notification.PlantTag
 import java.time.format.DateTimeFormatter
 
 @Composable
