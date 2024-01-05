@@ -5,7 +5,7 @@ import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-class RoomTypeConverters {
+internal class RoomTypeConverters {
     @TypeConverter
     fun fromTimeStampToDate(value: String?): LocalDateTime? {
         return value?.let { LocalDateTime.parse(it) }
