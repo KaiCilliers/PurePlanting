@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.navigation
+package com.sunrisekcdeveloper.pureplanting.navigation
 
 import android.os.Parcelable
 import com.zhuinden.simplestack.ServiceBinder
