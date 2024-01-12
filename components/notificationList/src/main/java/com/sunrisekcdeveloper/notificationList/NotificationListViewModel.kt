@@ -1,6 +1,6 @@
 package com.sunrisekcdeveloper.notificationList
 
-import com.sunrisekcdeveloper.models.NotificationFilter
+import com.sunrisekcdeveloper.notificationList.models.NotificationFilter
 import com.sunrisekcdeveloper.notification.Notification
 import com.sunrisekcdeveloper.notification.NotificationRepository
 import com.sunrisekcdeveloper.notification.PlantNotificationType
@@ -18,8 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-
-typealias NotificationGroupedByDay = Map<Pair<Int, Int>, List<Notification>>
 
 interface NotificationListViewModel {
 

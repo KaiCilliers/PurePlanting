@@ -35,7 +35,7 @@ import com.sunrisekcdeveloper.notification.PlantTag
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun NotificationListItem(
+internal fun NotificationListItem(
     notification: Notification,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,

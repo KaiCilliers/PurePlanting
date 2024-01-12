@@ -6,9 +6,9 @@ import androidx.compose.ui.Modifier
 import com.sunrisekcdeveloper.detail.DetailUi
 import com.sunrisekcdeveloper.detail.DetailViewModel
 import com.sunrisekcdeveloper.detail.Router
-import com.sunrisekcdeveloper.navigation.ComposeKey
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.navigation.ComposeKey
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackcomposeintegration.services.rememberService
 import com.zhuinden.simplestackextensions.servicesktx.add
