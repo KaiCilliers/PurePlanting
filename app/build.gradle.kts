@@ -35,7 +35,9 @@ android {
 
     buildTypes {
         debug {
-            manifestPlaceholders["appLabel"] = "PurePlanting - Debug"
+            manifestPlaceholders["appLabel"] = "DEBUG-PurePlanting"
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-DEBUG"
             isDebuggable = true
         }
         release {

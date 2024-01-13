@@ -39,7 +39,7 @@ internal fun Context.openAppSettings() {
     ).also(::startActivity)
 }
 
-internal fun Context.createTempFileUri(): Uri {
+internal fun Context.createTempFileUri(context: Context): Uri {
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     val imageFileName = "PNG_" + timeStamp + "_"
     val image = File.createTempFile(
@@ -49,7 +49,7 @@ internal fun Context.createTempFileUri(): Uri {
     )
     return FileProvider.getUriForFile(
         this,
-        "com.sunrisekcdeveloper.pureplanting" + ".provider", image
+        context.packageName + ".provider", image
     )
 }
 

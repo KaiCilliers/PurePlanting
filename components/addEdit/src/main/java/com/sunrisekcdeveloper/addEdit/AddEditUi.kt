@@ -100,7 +100,7 @@ fun AddEditUi(viewModel: AddEditViewModel) {
         onResult = { isGranted ->
             hasAskedCameraPermissionBefore = true
             if (isGranted) {
-                capturedImageUri = context.createTempFileUri()
+                capturedImageUri = context.createTempFileUri(context)
                 cameraLauncher.launch(capturedImageUri)
             }
         }
@@ -128,7 +128,7 @@ fun AddEditUi(viewModel: AddEditViewModel) {
             PrimarySmallButton(
                 onClick = {
                     if (context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                        capturedImageUri = context.createTempFileUri()
+                        capturedImageUri = context.createTempFileUri(context)
                         cameraLauncher.launch(capturedImageUri)
                     } else {
                         showCameraPermissionRationale = true
