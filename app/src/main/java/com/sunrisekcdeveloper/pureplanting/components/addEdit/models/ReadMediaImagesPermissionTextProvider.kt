@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.addEdit
+package com.sunrisekcdeveloper.pureplanting.components.addEdit.models
 
 class ReadMediaImagesPermissionTextProvider: PermissionTextProvider {
     override fun getDescription(isPermanentlyDeclined: Boolean): String {

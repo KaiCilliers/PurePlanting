@@ -8,4 +8,10 @@
     <string name="forgot_to_water_plant_list_empty_body">No plants have been forgotten to water, keep it up!</string>
     <string name="history_plant_list_empty_title">Just started?</string>
     <string name="history_plant_list_empty_body">Any plants that you have watered will appear here, so get to watering those plants!</string>
+
+    <!-- AddEdit -->
+    <string name="label_plant_size_small">Small</string>
+    <string name="label_plant_size_medium">Medium</string>
+    <string name="label_plant_size_large">Large</string>
+    <string name="label_plant_size_xlarge">Extra Large</string>
 </resources>

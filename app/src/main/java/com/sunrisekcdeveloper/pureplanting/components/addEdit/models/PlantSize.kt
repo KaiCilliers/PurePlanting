@@ -1,7 +1,7 @@
-package com.sunrisekcdeveloper.addEdit.models
+package com.sunrisekcdeveloper.pureplanting.components.addEdit.models
 
 import androidx.annotation.StringRes
-import com.sunrisekcdeveloper.components.addEdit.R
+import com.sunrisekcdeveloper.pureplanting.R
 
 enum class PlantSize(
     @StringRes open val textResId: Int

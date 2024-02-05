@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.addEdit
+package com.sunrisekcdeveloper.pureplanting.components.addEdit
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.sunrisekcdeveloper.pureplanting.components.addEdit.models.PermissionTextProvider
 
 @Composable
 fun PermissionDialog(

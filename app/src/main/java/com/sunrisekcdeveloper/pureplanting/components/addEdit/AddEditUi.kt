@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.addEdit
+package com.sunrisekcdeveloper.pureplanting.components.addEdit
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -7,10 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -54,23 +51,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.sunrisekcdeveloper.addEdit.ui.InputText
-import com.sunrisekcdeveloper.addEdit.ui.PPTimePickerDialog
-import com.sunrisekcdeveloper.addEdit.ui.PlantSizeSelectionDialog
-import com.sunrisekcdeveloper.addEdit.ui.WateringDaySelectionDialog
-import com.sunrisekcdeveloper.components.addEdit.R
 import com.sunrisekcdeveloper.design.noRippleClickable
 import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.theme.neutralus0
 import com.sunrisekcdeveloper.design.theme.neutralus100
-import com.sunrisekcdeveloper.design.theme.otherOlive500
 import com.sunrisekcdeveloper.design.ui.BackIcon
 import com.sunrisekcdeveloper.design.ui.PlantBox
 import com.sunrisekcdeveloper.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.design.ui.PrimarySmallButton
-import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.components.addEdit.models.CameraPermissionTextProvider
+import com.sunrisekcdeveloper.pureplanting.components.addEdit.ui.InputText
+import com.sunrisekcdeveloper.pureplanting.components.addEdit.ui.PPTimePickerDialog
+import com.sunrisekcdeveloper.pureplanting.components.addEdit.ui.PlantSizeSelectionDialog
+import com.sunrisekcdeveloper.pureplanting.components.addEdit.ui.WateringDaySelectionDialog
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import com.sunrisekcdeveloper.library.design.R as designR
 
 @Composable
@@ -250,7 +247,7 @@ private fun InputSheet(
                         value = when (wateringDays.size) {
                             1 -> {
                                 wateringDays.first().name.lowercase()
-                                    .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
+                                    .replaceFirstChar { it.titlecase(Locale.getDefault()) }
                             }
 
                             7 -> {
@@ -262,7 +259,7 @@ private fun InputSheet(
                                     it.name
                                         .take(3)
                                         .lowercase()
-                                        .replaceFirstChar { it.titlecase(java.util.Locale.getDefault()) }
+                                        .replaceFirstChar { it.titlecase(Locale.getDefault()) }
                                 }
                             }
                         },

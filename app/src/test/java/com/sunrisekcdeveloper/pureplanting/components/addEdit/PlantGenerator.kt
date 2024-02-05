@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.addEdit
+package com.sunrisekcdeveloper.home.com.sunrisekcdeveloper.pureplanting.components.addEdit
 
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.plant.PlantDetails

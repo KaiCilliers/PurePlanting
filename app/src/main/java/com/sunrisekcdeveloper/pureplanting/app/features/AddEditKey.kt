@@ -3,8 +3,8 @@ package com.sunrisekcdeveloper.pureplanting.app.features
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import com.sunrisekcdeveloper.addEdit.AddEditUi
-import com.sunrisekcdeveloper.addEdit.AddEditViewModel
+import com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditUi
+import com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.app.navigation.ComposeKey
 import com.zhuinden.simplestack.ServiceBinder

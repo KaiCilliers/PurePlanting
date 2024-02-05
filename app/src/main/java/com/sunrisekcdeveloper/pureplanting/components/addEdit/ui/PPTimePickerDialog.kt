@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.addEdit.ui
+package com.sunrisekcdeveloper.pureplanting.components.addEdit.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

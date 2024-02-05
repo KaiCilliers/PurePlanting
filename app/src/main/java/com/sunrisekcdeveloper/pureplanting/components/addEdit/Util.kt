@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.addEdit
+package com.sunrisekcdeveloper.pureplanting.components.addEdit
 
 import android.annotation.SuppressLint
 import android.app.Activity

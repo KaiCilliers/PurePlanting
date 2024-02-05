@@ -1,6 +1,6 @@
-package com.sunrisekcdeveloper.addEdit
+package com.sunrisekcdeveloper.pureplanting.components.addEdit
 
-import com.sunrisekcdeveloper.addEdit.models.PlantSize
+import com.sunrisekcdeveloper.pureplanting.components.addEdit.models.PlantSize
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.plant.Plant

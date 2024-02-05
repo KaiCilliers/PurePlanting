@@ -1,7 +1,6 @@
-package com.sunrisekcdeveloper.addEdit.ui
+package com.sunrisekcdeveloper.pureplanting.components.addEdit.ui
 
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.TextField
@@ -17,7 +16,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.design.theme.neutralus100
-import com.sunrisekcdeveloper.design.theme.neutralus500
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
 @Composable
