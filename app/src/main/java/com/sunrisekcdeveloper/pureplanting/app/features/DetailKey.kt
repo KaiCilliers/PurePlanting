@@ -1,12 +1,14 @@
-package com.sunrisekcdeveloper.pureplanting.features
+package com.sunrisekcdeveloper.pureplanting.app.features
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import com.sunrisekcdeveloper.addEdit.AddEditUi
-import com.sunrisekcdeveloper.addEdit.AddEditViewModel
+import com.sunrisekcdeveloper.detail.DetailUi
+import com.sunrisekcdeveloper.detail.DetailViewModel
+import com.sunrisekcdeveloper.detail.Router
 import com.sunrisekcdeveloper.plant.Plant
-import com.sunrisekcdeveloper.pureplanting.navigation.ComposeKey
+import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.app.navigation.ComposeKey
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackcomposeintegration.services.rememberService
 import com.zhuinden.simplestackextensions.servicesktx.add
@@ -16,34 +18,34 @@ import kotlinx.parcelize.Parcelize
 
 @Immutable
 @Parcelize
-data class AddEditKey(
-    val plant: Plant? = null
+data class DetailKey(
+    val plant: Plant
 ) : ComposeKey() {
 
     @Composable
     override fun ScreenComposable(modifier: Modifier) {
-        val viewModel = rememberService<AddEditViewModel>()
-        AddEditUi(viewModel)
+        val viewModel = rememberService<DetailViewModel>()
+
+        DetailUi(viewModel)
     }
 
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
-            AddEditViewModel.Default(
-                plantRepository = lookup(),
-                router = object : AddEditViewModel.Router {
-                    override fun jumpToRoot() {
-                        backstack.jumpToRoot()
+            DetailViewModel.Default(
+                plant,
+                lookup<PlantRepository>(),
+                router = object : Router {
+                    override fun goToEditPlant(plant: Plant) {
+                        backstack.goTo(AddEditKey(plant))
                     }
 
                     override fun goBack() {
                         backstack.goBack()
                     }
-                },
-                eventEmitter = lookup(),
-                plant = plant
-            ).let {  viewModel ->
+                }
+            ).let { viewModel ->
                 add(viewModel)
-                rebind<AddEditViewModel>(viewModel)
+                rebind<DetailViewModel>(viewModel)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting
+package com.sunrisekcdeveloper.pureplanting.app
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -27,10 +27,10 @@ import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.notification.NotificationRepository
-import com.sunrisekcdeveloper.pureplanting.features.DetailKey
-import com.sunrisekcdeveloper.pureplanting.features.HomeKey
-import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
-import com.sunrisekcdeveloper.pureplanting.workers.DeeplinkDestination
+import com.sunrisekcdeveloper.pureplanting.app.features.DetailKey
+import com.sunrisekcdeveloper.pureplanting.app.features.HomeKey
+import com.sunrisekcdeveloper.pureplanting.app.navigation.NavigationServiceProvider
+import com.sunrisekcdeveloper.pureplanting.app.workers.DeeplinkDestination
 import com.zhuinden.liveevent.observe
 import com.zhuinden.simplestack.AsyncStateChanger
 import com.zhuinden.simplestack.BackHandlingModel

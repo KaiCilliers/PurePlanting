@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.workers
+package com.sunrisekcdeveloper.pureplanting.app.workers
 
 import android.content.Context
 import androidx.work.CoroutineWorker

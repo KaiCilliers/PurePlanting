@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.workers
+package com.sunrisekcdeveloper.pureplanting.app.workers
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -17,7 +17,7 @@ import com.sunrisekcdeveloper.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.notification.PlantNotificationType
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.plant.PlantRepository
-import com.sunrisekcdeveloper.pureplanting.MainActivity
+import com.sunrisekcdeveloper.pureplanting.app.MainActivity
 import com.sunrisekcdeveloper.pureplanting.R
 import kotlinx.parcelize.Parcelize
 import com.sunrisekcdeveloper.notification.Notification as DomainNotification

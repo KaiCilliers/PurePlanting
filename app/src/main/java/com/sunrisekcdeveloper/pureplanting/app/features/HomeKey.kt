@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.features
+package com.sunrisekcdeveloper.pureplanting.app.features
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -12,8 +12,8 @@ import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
 import com.sunrisekcdeveloper.notification.NotificationRepository
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.plant.PlantRepository
-import com.sunrisekcdeveloper.pureplanting.navigation.ComposeKey
-import com.sunrisekcdeveloper.pureplanting.navigation.NavigationServiceProvider
+import com.sunrisekcdeveloper.pureplanting.app.navigation.ComposeKey
+import com.sunrisekcdeveloper.pureplanting.app.navigation.NavigationServiceProvider
 import com.zhuinden.simplestack.ScopeKey
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackcomposeintegration.services.rememberService
