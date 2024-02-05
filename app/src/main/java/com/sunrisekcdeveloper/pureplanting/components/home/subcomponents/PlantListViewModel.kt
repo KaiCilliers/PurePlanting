@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.components.home.subcomponents
 
-import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
@@ -191,7 +191,8 @@ interface PlantListViewModel {
             viewModelScope.launch {
                 plantRepository.remove(plant.id)
                 recentlyDeletedPlant = plant
-                eventEmitter.emit(SnackbarEmitterType.Undo(
+                eventEmitter.emit(
+                    SnackbarEmitterType.Undo(
                     text = "Deleted plant \"${plant.details.name}\"",
                     undoAction = ::onUndoDelete
                 ))

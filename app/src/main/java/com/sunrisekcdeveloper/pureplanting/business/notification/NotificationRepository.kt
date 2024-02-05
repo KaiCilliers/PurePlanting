@@ -1,6 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.business.notification
 
-import com.sunrisekcdeveloper.db_tables.notification.NotificationDao
+import com.sunrisekcdeveloper.pureplanting.library.db_tables.notification.NotificationDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map

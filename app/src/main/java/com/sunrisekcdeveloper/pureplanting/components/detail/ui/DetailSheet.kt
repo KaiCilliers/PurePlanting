@@ -18,10 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import com.sunrisekcdeveloper.design.theme.neutralus0
-import com.sunrisekcdeveloper.design.theme.neutralus500
-import com.sunrisekcdeveloper.design.theme.neutralus900
-import com.sunrisekcdeveloper.design.ui.PrimaryButton
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus0
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus500
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus900
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
 
 @Composable
 internal fun DetailSheet(

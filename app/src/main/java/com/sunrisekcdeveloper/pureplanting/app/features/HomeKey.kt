@@ -3,7 +3,7 @@ package com.sunrisekcdeveloper.pureplanting.app.features
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository

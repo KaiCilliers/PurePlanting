@@ -23,12 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.sunrisekcdeveloper.design.noRippleClickable
-import com.sunrisekcdeveloper.design.theme.accent500
-import com.sunrisekcdeveloper.design.theme.neutralus300
-import com.sunrisekcdeveloper.design.theme.neutralus900
-import com.sunrisekcdeveloper.design.ui.PrimaryButton
-import com.sunrisekcdeveloper.design.ui.SecondaryButton
+import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus300
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus900
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.SecondaryButton
 import java.time.DayOfWeek
 import java.util.Locale
 

@@ -17,11 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.design.noRippleClickable
-import com.sunrisekcdeveloper.design.topEndIconPadding
-import com.sunrisekcdeveloper.design.topStartIconPadding
-import com.sunrisekcdeveloper.design.ui.BackIcon
-import com.sunrisekcdeveloper.design.ui.PlantBox
+import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
+import com.sunrisekcdeveloper.pureplanting.library.design.topEndIconPadding
+import com.sunrisekcdeveloper.pureplanting.library.design.topStartIconPadding
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.BackIcon
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.PlantBox
 import com.sunrisekcdeveloper.pureplanting.components.detail.models.DetailItem
 import com.sunrisekcdeveloper.pureplanting.components.detail.ui.BannerDetails
 import com.sunrisekcdeveloper.pureplanting.components.detail.ui.DetailSheet

@@ -75,14 +75,6 @@ kotlin.sourceSets.all() {
 }
 
 dependencies {
-    implementation(project(":library:design"))
-    implementation(project(":library:navigation"))
-    implementation(project(":library:database"))
-    implementation(project(":library:db_tables"))
-
-    testImplementation(project(":library:test"))
-    androidTestImplementation(project(":library:test"))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.lifecycle.runtimeKtx)
     implementation(libs.androidx.activity.compose)
@@ -96,9 +88,12 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons)
     implementation(libs.material)
+    androidTestImplementation(project(mapOf("path" to ":app")))
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
     debugImplementation(libs.util.leakcanary)
+
+    implementation(libs.bundles.simplestack)
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
@@ -114,7 +109,6 @@ dependencies {
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.work.testing)
 
-    testImplementation(project(":library:test"))
     testImplementation(libs.test.assertk)
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.test.coroutines)

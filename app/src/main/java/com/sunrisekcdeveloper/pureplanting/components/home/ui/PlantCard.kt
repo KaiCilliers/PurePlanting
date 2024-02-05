@@ -41,16 +41,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.design.theme.neutralus300
-import com.sunrisekcdeveloper.design.theme.neutralus500
-import com.sunrisekcdeveloper.design.theme.otherOlive500
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus300
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus500
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.otherOlive500
 import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import com.sunrisekcdeveloper.library.design.R as designR
 
 // todo add leakcanary to project
 // todo image size reduction before saving and using
@@ -142,7 +141,7 @@ private fun TopSection(
             )
         } else {
             Image(
-                painter = painterResource(id = designR.drawable.single_plant_placeholder),
+                painter = painterResource(id = R.drawable.single_plant_placeholder),
                 contentDescription = "",
                 modifier = Modifier
                     .align(Alignment.Center)

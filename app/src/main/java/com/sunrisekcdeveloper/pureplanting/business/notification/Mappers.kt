@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.business.notification
 
-import com.sunrisekcdeveloper.db_tables.notification.NotificationEntity
-import com.sunrisekcdeveloper.db_tables.notification.NotificationEntityType
+import com.sunrisekcdeveloper.pureplanting.library.db_tables.notification.NotificationEntity
+import com.sunrisekcdeveloper.pureplanting.library.db_tables.notification.NotificationEntityType
 
 fun Notification.toEntity(): NotificationEntity {
     return NotificationEntity(

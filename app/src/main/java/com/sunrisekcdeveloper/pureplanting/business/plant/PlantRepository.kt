@@ -1,6 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.business.plant
 
-import com.sunrisekcdeveloper.db_tables.plant.PlantDao
+import com.sunrisekcdeveloper.pureplanting.library.db_tables.plant.PlantDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map

@@ -51,14 +51,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.sunrisekcdeveloper.design.noRippleClickable
-import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.design.theme.neutralus0
-import com.sunrisekcdeveloper.design.theme.neutralus100
-import com.sunrisekcdeveloper.design.ui.BackIcon
-import com.sunrisekcdeveloper.design.ui.PlantBox
-import com.sunrisekcdeveloper.design.ui.PrimaryButton
-import com.sunrisekcdeveloper.design.ui.PrimarySmallButton
+import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus0
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus100
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.BackIcon
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.PlantBox
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimarySmallButton
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.components.addEdit.models.CameraPermissionTextProvider
 import com.sunrisekcdeveloper.pureplanting.components.addEdit.ui.InputText
@@ -68,7 +68,6 @@ import com.sunrisekcdeveloper.pureplanting.components.addEdit.ui.WateringDaySele
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-import com.sunrisekcdeveloper.library.design.R as designR
 
 @Composable
 fun AddEditUi(viewModel: AddEditViewModel) {
@@ -421,7 +420,7 @@ fun Header(
 private fun PlantPlaceholderImage(modifier: Modifier = Modifier) {
     Image(
         modifier = modifier,
-        painter = painterResource(id = designR.drawable.single_plant_placeholder),
+        painter = painterResource(id = R.drawable.single_plant_placeholder),
         contentDescription = "",
     )
 }

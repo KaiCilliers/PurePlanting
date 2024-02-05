@@ -27,15 +27,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.design.theme.accent500
-import com.sunrisekcdeveloper.design.theme.neutralus100
-import com.sunrisekcdeveloper.design.theme.otherOlive500
-import com.sunrisekcdeveloper.design.ui.BackIcon
-import com.sunrisekcdeveloper.design.ui.BoxWithBottomFade
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus100
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.otherOlive500
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.BackIcon
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.pureplanting.components.notificationList.ui.Header
 import com.sunrisekcdeveloper.notificationList.ui.NotificationList
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
-import com.sunrisekcdeveloper.library.design.R as designR
+import com.sunrisekcdeveloper.pureplanting.R
 
 @Composable
 fun NotificationListUi(
@@ -50,7 +50,7 @@ fun NotificationListUi(
         Modifier.background(otherOlive500.copy(alpha = 0.7f)) // todo uniform background color for screens, ie MaterialTheme :)
     ) {
         Image(
-            painter = painterResource(id = designR.drawable.banner_plant),
+            painter = painterResource(id = R.drawable.banner_plant),
             contentDescription = ""
         )
         Box(
@@ -82,7 +82,7 @@ fun NotificationListUi(
                             Spacer(modifier = Modifier.weight(1f))
 
                             Image(
-                                painter = painterResource(id = designR.drawable.three_plants),
+                                painter = painterResource(id = R.drawable.three_plants),
                                 contentDescription = ""
                             )
                             Spacer(modifier = Modifier.weight(0.1f))

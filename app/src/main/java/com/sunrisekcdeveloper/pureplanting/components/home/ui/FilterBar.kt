@@ -20,10 +20,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.design.noRippleClickable
-import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.design.theme.accent500
-import com.sunrisekcdeveloper.design.theme.neutralus300
+import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus300
 import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
 
 @Composable

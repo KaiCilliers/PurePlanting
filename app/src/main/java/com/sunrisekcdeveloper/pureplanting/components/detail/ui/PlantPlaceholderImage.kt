@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import com.sunrisekcdeveloper.library.design.R
+import com.sunrisekcdeveloper.pureplanting.R
 
 @Composable
 internal fun PlantPlaceholderImage(modifier: Modifier = Modifier) {

@@ -1,8 +1,8 @@
 package com.sunrisekcdeveloper.pureplanting.business.plant
 
-import com.sunrisekcdeveloper.db_tables.plant.PlantEntity
-import com.sunrisekcdeveloper.db_tables.plant.PlantWithWaterRecords
-import com.sunrisekcdeveloper.db_tables.plant.WateredRecordEntity
+import com.sunrisekcdeveloper.pureplanting.library.db_tables.plant.PlantEntity
+import com.sunrisekcdeveloper.pureplanting.library.db_tables.plant.PlantWithWaterRecords
+import com.sunrisekcdeveloper.pureplanting.library.db_tables.plant.WateredRecordEntity
 
 fun Plant.toWaterRecordsEntity(): List<WateredRecordEntity> {
     return wateringInfo.history.map {

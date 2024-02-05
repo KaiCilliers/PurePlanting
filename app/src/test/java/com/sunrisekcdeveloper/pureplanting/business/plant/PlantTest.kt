@@ -7,9 +7,9 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
-import com.sunrisekcdeveloper.shared_test.MutableClock
-import com.sunrisekcdeveloper.shared_test.earlyMorning
-import com.sunrisekcdeveloper.shared_test.today
+import com.sunrisekcdeveloper.pureplanting.MutableClock
+import com.sunrisekcdeveloper.pureplanting.earlyMorning
+import com.sunrisekcdeveloper.pureplanting.today
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.Clock

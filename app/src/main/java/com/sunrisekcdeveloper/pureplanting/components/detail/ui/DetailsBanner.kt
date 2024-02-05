@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.design.theme.accent500
-import com.sunrisekcdeveloper.design.theme.neutralus0
-import com.sunrisekcdeveloper.design.theme.neutralus500
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus0
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus500
 import com.sunrisekcdeveloper.pureplanting.components.detail.models.DetailItem
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 

@@ -23,9 +23,9 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.app.features.DetailKey
 import com.sunrisekcdeveloper.pureplanting.app.features.HomeKey

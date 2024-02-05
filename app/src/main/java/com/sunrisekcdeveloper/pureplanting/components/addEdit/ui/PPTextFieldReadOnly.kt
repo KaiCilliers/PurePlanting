@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.design.noRippleClickable
-import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

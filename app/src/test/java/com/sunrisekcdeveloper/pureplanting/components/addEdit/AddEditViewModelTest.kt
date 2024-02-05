@@ -5,7 +5,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotNull
 import assertk.assertions.isZero
-import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -25,9 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.sunrisekcdeveloper.pureplanting.components.addEdit.models.PlantSize
-import com.sunrisekcdeveloper.design.theme.accent500
-import com.sunrisekcdeveloper.design.ui.PrimaryButton
-import com.sunrisekcdeveloper.design.ui.SecondaryButton
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
+import com.sunrisekcdeveloper.pureplanting.library.design.ui.SecondaryButton
 
 @Composable
 fun PlantSizeSelectionDialog(
