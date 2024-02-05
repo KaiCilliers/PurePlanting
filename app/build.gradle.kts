@@ -77,7 +77,6 @@ kotlin.sourceSets.all() {
 dependencies {
     implementation(project(":library:design"))
     implementation(project(":library:navigation"))
-    implementation(project(":components:home"))
     implementation(project(":components:addEdit"))
     implementation(project(":components:detail"))
     implementation(project(":components:notificationList"))
@@ -120,6 +119,7 @@ dependencies {
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.work.testing)
 
+    testImplementation(project(":library:test"))
     testImplementation(libs.test.assertk)
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.test.coroutines)

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.home.subcomponents
+package com.sunrisekcdeveloper.pureplanting.components.home.subcomponents
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -28,13 +28,14 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.components.home.R
 import com.sunrisekcdeveloper.design.theme.accent500
 import com.sunrisekcdeveloper.design.ui.BoxWithBottomFade
-import com.sunrisekcdeveloper.home.ui.DeleteConfirmationDialog
-import com.sunrisekcdeveloper.home.ui.EmptyPlantList
-import com.sunrisekcdeveloper.home.ui.FilterBar
 import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.components.home.ui.DeleteConfirmationDialog
+import com.sunrisekcdeveloper.pureplanting.components.home.ui.EmptyPlantList
+import com.sunrisekcdeveloper.pureplanting.components.home.ui.FilterBar
+import com.sunrisekcdeveloper.pureplanting.components.home.ui.PlantCard
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import java.time.LocalDateTime
 
@@ -80,7 +81,7 @@ internal fun PlantListUi(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                         ) {
                             items(plants, key = { it.id }) { plant ->
-                                com.sunrisekcdeveloper.home.ui.PlantCard(
+                                PlantCard(
                                     plant = plant,
                                     needsWater = plant.needsWater(LocalDateTime.now()),
                                     onWaterToggleClick = { needsWater ->

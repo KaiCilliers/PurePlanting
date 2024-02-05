@@ -1,13 +1,13 @@
-package com.sunrisekcdeveloper.home
+package com.sunrisekcdeveloper.home.com.sunrisekcdeveloper.pureplanting.components.home.subcomponents
 
 import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import com.sunrisekcdeveloper.home.subcomponents.NotificationIconViewModel
 import com.sunrisekcdeveloper.notification.NotificationRepository
 import com.sunrisekcdeveloper.notification.unreadNotification
 import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.NotificationIconViewModel
 import com.sunrisekcdeveloper.shared_test.MutableClock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

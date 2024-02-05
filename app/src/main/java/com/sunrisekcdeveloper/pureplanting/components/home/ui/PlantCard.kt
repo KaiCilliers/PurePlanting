@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.home.ui
+package com.sunrisekcdeveloper.pureplanting.components.home.ui
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -41,13 +41,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.sunrisekcdeveloper.components.home.R
 import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.theme.neutralus300
 import com.sunrisekcdeveloper.design.theme.neutralus500
 import com.sunrisekcdeveloper.design.theme.otherOlive500
-import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
 import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.sunrisekcdeveloper.library.design.R as designR

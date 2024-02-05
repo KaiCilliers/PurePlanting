@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">PurePlanting</string>
+
+    <!-- Home -->
+    <string name="upcoming_plant_list_empty_title">Great.</string>
+    <string name="upcoming_plant_list_empty_body">There are no plants to water, make sure you\'ve added all your plants!</string>
+    <string name="forgot_to_water_plant_list_empty_title">Nice Job!</string>
+    <string name="forgot_to_water_plant_list_empty_body">No plants have been forgotten to water, keep it up!</string>
+    <string name="history_plant_list_empty_title">Just started?</string>
+    <string name="history_plant_list_empty_body">Any plants that you have watered will appear here, so get to watering those plants!</string>
 </resources>

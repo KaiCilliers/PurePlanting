@@ -3,9 +3,9 @@ package com.sunrisekcdeveloper.pureplanting.app.navigation
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.plant.PlantRepository
-import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
 import com.sunrisekcdeveloper.pureplanting.app.features.AddEditKey
 import com.sunrisekcdeveloper.pureplanting.app.features.DetailKey
+import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListViewModel
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackextensions.services.DefaultServiceProvider
 import com.zhuinden.simplestackextensions.servicesktx.add

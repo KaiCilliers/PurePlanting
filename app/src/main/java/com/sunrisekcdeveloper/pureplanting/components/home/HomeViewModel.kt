@@ -1,10 +1,10 @@
-package com.sunrisekcdeveloper.home
+package com.sunrisekcdeveloper.pureplanting.components.home
 
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.home.subcomponents.NotificationIconViewModel
-import com.sunrisekcdeveloper.home.subcomponents.PlantListViewModel
 import com.sunrisekcdeveloper.notification.NotificationRepository
 import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.NotificationIconViewModel
+import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListViewModel
 import java.time.Clock
 
 interface HomeViewModel {

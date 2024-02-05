@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.home.subcomponents
+package com.sunrisekcdeveloper.pureplanting.components.home.subcomponents
 
 import com.sunrisekcdeveloper.notification.NotificationRepository
 import kotlinx.coroutines.CoroutineScope

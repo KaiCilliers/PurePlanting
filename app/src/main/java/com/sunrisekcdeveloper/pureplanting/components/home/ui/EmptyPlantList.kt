@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.home.ui
+package com.sunrisekcdeveloper.pureplanting.components.home.ui
 
 
 import androidx.annotation.StringRes
@@ -20,12 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.components.home.R
 import com.sunrisekcdeveloper.design.ui.BoxWithBottomFade
-import com.sunrisekcdeveloper.home.models.PlantTabFilter
-import com.sunrisekcdeveloper.home.models.PlantTabFilter.FORGOT_TO_WATER
-import com.sunrisekcdeveloper.home.models.PlantTabFilter.HISTORY
-import com.sunrisekcdeveloper.home.models.PlantTabFilter.UPCOMING
+import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
+import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter.*
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import com.sunrisekcdeveloper.library.design.R as designR
 

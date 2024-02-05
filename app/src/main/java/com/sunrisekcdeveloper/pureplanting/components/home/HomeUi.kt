@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.home
+package com.sunrisekcdeveloper.pureplanting.components.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.design.ui.PlantBox
-import com.sunrisekcdeveloper.home.subcomponents.NotificationIconUi
-import com.sunrisekcdeveloper.home.subcomponents.PlantListUi
+import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.NotificationIconUi
+import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListUi
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
 @Composable

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.home.ui
+package com.sunrisekcdeveloper.pureplanting.components.home.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,7 +24,7 @@ import com.sunrisekcdeveloper.design.noRippleClickable
 import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.theme.accent500
 import com.sunrisekcdeveloper.design.theme.neutralus300
-import com.sunrisekcdeveloper.home.models.PlantTabFilter
+import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
 
 @Composable
 internal fun FilterBar(

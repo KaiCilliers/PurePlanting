@@ -16,7 +16,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "PurePlanting"
 include(":app")
-include(":components:home")
 include(":components:detail")
 include(":components:addEdit")
 include(":components:notificationList")
