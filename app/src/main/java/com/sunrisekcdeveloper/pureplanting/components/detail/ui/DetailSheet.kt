@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.detail.ui
+package com.sunrisekcdeveloper.pureplanting.components.detail.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets

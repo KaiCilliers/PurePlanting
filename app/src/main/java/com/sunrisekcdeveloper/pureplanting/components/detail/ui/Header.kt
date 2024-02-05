@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.detail.ui
+package com.sunrisekcdeveloper.pureplanting.components.detail.ui
 
 import android.net.Uri
 import androidx.compose.foundation.Image

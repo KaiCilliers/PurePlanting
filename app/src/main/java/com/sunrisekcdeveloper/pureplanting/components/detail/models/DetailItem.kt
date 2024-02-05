@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.detail.models
+package com.sunrisekcdeveloper.pureplanting.components.detail.models
 
 internal data class DetailItem(
     val label: String,

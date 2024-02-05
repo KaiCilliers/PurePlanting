@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.detail
+package com.sunrisekcdeveloper.pureplanting.components.detail
 
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.plant.PlantRepository

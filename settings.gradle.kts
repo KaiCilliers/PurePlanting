@@ -16,7 +16,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "PurePlanting"
 include(":app")
-include(":components:detail")
 include(":components:notificationList")
 include(":business:plant")
 include(":business:notification")

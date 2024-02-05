@@ -1,6 +1,6 @@
 @file:Suppress("SameParameterValue")
 
-package com.sunrisekcdeveloper.detail
+package com.sunrisekcdeveloper.pureplanting.components.detail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,11 +22,11 @@ import com.sunrisekcdeveloper.design.topEndIconPadding
 import com.sunrisekcdeveloper.design.topStartIconPadding
 import com.sunrisekcdeveloper.design.ui.BackIcon
 import com.sunrisekcdeveloper.design.ui.PlantBox
-import com.sunrisekcdeveloper.detail.models.DetailItem
-import com.sunrisekcdeveloper.detail.ui.BannerDetails
-import com.sunrisekcdeveloper.detail.ui.DetailSheet
-import com.sunrisekcdeveloper.detail.ui.EditIcon
-import com.sunrisekcdeveloper.detail.ui.Header
+import com.sunrisekcdeveloper.pureplanting.components.detail.models.DetailItem
+import com.sunrisekcdeveloper.pureplanting.components.detail.ui.BannerDetails
+import com.sunrisekcdeveloper.pureplanting.components.detail.ui.DetailSheet
+import com.sunrisekcdeveloper.pureplanting.components.detail.ui.EditIcon
+import com.sunrisekcdeveloper.pureplanting.components.detail.ui.Header
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 import java.time.LocalDateTime
 

@@ -3,9 +3,9 @@ package com.sunrisekcdeveloper.pureplanting.app.features
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import com.sunrisekcdeveloper.detail.DetailUi
-import com.sunrisekcdeveloper.detail.DetailViewModel
-import com.sunrisekcdeveloper.detail.Router
+import com.sunrisekcdeveloper.pureplanting.components.detail.DetailUi
+import com.sunrisekcdeveloper.pureplanting.components.detail.DetailViewModel
+import com.sunrisekcdeveloper.pureplanting.components.detail.Router
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.app.navigation.ComposeKey

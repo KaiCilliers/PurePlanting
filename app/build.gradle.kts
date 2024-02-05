@@ -77,7 +77,6 @@ kotlin.sourceSets.all() {
 dependencies {
     implementation(project(":library:design"))
     implementation(project(":library:navigation"))
-    implementation(project(":components:detail"))
     implementation(project(":components:notificationList"))
     implementation(project(":business:plant"))
     implementation(project(":business:notification"))

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.detail.ui
+package com.sunrisekcdeveloper.pureplanting.components.detail.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.design.theme.accent500
 import com.sunrisekcdeveloper.design.theme.neutralus0
 import com.sunrisekcdeveloper.design.theme.neutralus500
-import com.sunrisekcdeveloper.detail.models.DetailItem
+import com.sunrisekcdeveloper.pureplanting.components.detail.models.DetailItem
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
 @Composable
