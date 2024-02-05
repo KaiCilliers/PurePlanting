@@ -1,8 +1,5 @@
-package com.sunrisekcdeveloper.pureplanting.app
+package com.sunrisekcdeveloper.home.com.sunrisekcdeveloper.pureplanting.business.plant
 
-import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
-import com.sunrisekcdeveloper.pureplanting.business.plant.PlantDetails
-import com.sunrisekcdeveloper.pureplanting.business.plant.WateringInfo
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -14,16 +11,16 @@ fun plant(
     atTime: LocalTime = LocalTime.now(),
     createdAt: LocalDateTime = LocalDateTime.now(),
     modifiedWaterDaysAt: LocalDateTime = LocalDateTime.now(),
-): Plant {
-    return Plant(
+): com.sunrisekcdeveloper.pureplanting.business.plant.Plant {
+    return com.sunrisekcdeveloper.pureplanting.business.plant.Plant(
         id = id.toString(),
-        details = PlantDetails(
+        details = com.sunrisekcdeveloper.pureplanting.business.plant.PlantDetails(
             name = "Mitchel Cortez",
             size = "Medium",
             description = "fermentum",
             imageSrcUri = "",
         ),
-        wateringInfo = WateringInfo(
+        wateringInfo = com.sunrisekcdeveloper.pureplanting.business.plant.WateringInfo(
             time = atTime,
             days = waterDays,
             amount = "240ml",
@@ -34,7 +31,7 @@ fun plant(
     )
 }
 
-fun plantForgotten(date: LocalDateTime = LocalDateTime.now()): Plant {
+fun plantForgotten(date: LocalDateTime = LocalDateTime.now()): com.sunrisekcdeveloper.pureplanting.business.plant.Plant {
     return plant(
         waterDays = listOf(date.minusDays(1).dayOfWeek),
         atTime = LocalTime.of(date.hour, date.minute, 0),
@@ -43,7 +40,7 @@ fun plantForgotten(date: LocalDateTime = LocalDateTime.now()): Plant {
     )
 }
 
-fun plantNeedsWater(date: LocalDateTime, modifiedAt: LocalDateTime = LocalDateTime.now()): Plant {
+fun plantNeedsWater(date: LocalDateTime, modifiedAt: LocalDateTime = LocalDateTime.now()): com.sunrisekcdeveloper.pureplanting.business.plant.Plant {
     return plant(
         waterDays = listOf(date.dayOfWeek),
         atTime = LocalTime.of(date.hour, date.minute, 0),
@@ -51,7 +48,7 @@ fun plantNeedsWater(date: LocalDateTime, modifiedAt: LocalDateTime = LocalDateTi
     )
 }
 
-fun plantNeedsWaterNow(date: LocalDateTime = LocalDateTime.now()): Plant {
+fun plantNeedsWaterNow(date: LocalDateTime = LocalDateTime.now()): com.sunrisekcdeveloper.pureplanting.business.plant.Plant {
     return plant(
         waterDays = listOf(date.dayOfWeek),
         atTime = date.toLocalTime(),

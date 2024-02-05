@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.components.detail
 
-import com.sunrisekcdeveloper.plant.Plant
-import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
 import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.statebundle.StateBundle
 import kotlinx.coroutines.CoroutineScope

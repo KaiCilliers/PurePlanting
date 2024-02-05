@@ -45,7 +45,7 @@ import com.sunrisekcdeveloper.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.design.theme.neutralus300
 import com.sunrisekcdeveloper.design.theme.neutralus500
 import com.sunrisekcdeveloper.design.theme.otherOlive500
-import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListViewModel
 import java.time.LocalDateTime

@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.design.theme.accent500
 import com.sunrisekcdeveloper.design.ui.BoxWithBottomFade
-import com.sunrisekcdeveloper.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.components.home.ui.DeleteConfirmationDialog
 import com.sunrisekcdeveloper.pureplanting.components.home.ui.EmptyPlantList

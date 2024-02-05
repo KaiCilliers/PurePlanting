@@ -10,9 +10,9 @@ import com.sunrisekcdeveloper.home.plant
 import com.sunrisekcdeveloper.home.plantForgotten
 import com.sunrisekcdeveloper.home.plantNeedsWater
 import com.sunrisekcdeveloper.home.plantNeedsWaterNow
-import com.sunrisekcdeveloper.notification.NotificationRepository
-import com.sunrisekcdeveloper.plant.Plant
-import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListViewModel
 import com.sunrisekcdeveloper.shared_test.MutableClock

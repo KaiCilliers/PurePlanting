@@ -3,8 +3,8 @@ package com.sunrisekcdeveloper.pureplanting.components.addEdit
 import com.sunrisekcdeveloper.pureplanting.components.addEdit.models.PlantSize
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
-import com.sunrisekcdeveloper.plant.Plant
-import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
 import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.statebundle.StateBundle
 import kotlinx.coroutines.CoroutineScope

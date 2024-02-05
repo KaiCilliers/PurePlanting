@@ -1,8 +1,8 @@
 package com.sunrisekcdeveloper.pureplanting.components.home
 
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.notification.NotificationRepository
-import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.NotificationIconViewModel
 import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListViewModel
 import java.time.Clock

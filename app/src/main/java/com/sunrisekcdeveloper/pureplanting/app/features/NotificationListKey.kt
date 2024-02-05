@@ -3,12 +3,12 @@ package com.sunrisekcdeveloper.pureplanting.app.features
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import com.sunrisekcdeveloper.notification.NotificationRepository
-import com.sunrisekcdeveloper.notification.PlantNotificationType
+import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.business.notification.PlantNotificationType
 import com.sunrisekcdeveloper.notificationList.NotificationListUi
 import com.sunrisekcdeveloper.notificationList.NotificationListViewModel
-import com.sunrisekcdeveloper.plant.Plant
-import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.app.navigation.ComposeKey
 import com.sunrisekcdeveloper.pureplanting.app.navigation.NavigationServiceProvider
 import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
