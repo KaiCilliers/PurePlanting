@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import com.sunrisekcdeveloper.addEdit.AddEditUi
 import com.sunrisekcdeveloper.addEdit.AddEditViewModel
+import com.sunrisekcdeveloper.alarm.AlarmScheduler
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.navigation.ComposeKey
 import com.zhuinden.simplestack.ServiceBinder
@@ -40,7 +41,8 @@ data class AddEditKey(
                     }
                 },
                 eventEmitter = lookup(),
-                plant = plant
+                plant = plant,
+                alarmScheduler = lookup<AlarmScheduler>()
             ).let {  viewModel ->
                 add(viewModel)
                 rebind<AddEditViewModel>(viewModel)

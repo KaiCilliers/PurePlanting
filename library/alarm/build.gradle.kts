@@ -1,11 +1,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("de.mannodermaus.android-junit5")
+    id("kotlin-parcelize")
 }
 
 android {
-    namespace = "com.sunrisekcdeveloper.components.addEdit"
+    namespace = "com.sunrisekcdeveloper.library.alarm"
     compileSdk = 34
 
     defaultConfig {
@@ -36,14 +36,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":library:db_tables"))
     implementation(project(":business:plant"))
-    testImplementation(project(":library:test"))
-    implementation(project(":library:design"))
-    implementation(project(":library:navigation"))
-    implementation(project(":library:alarm"))
+    implementation(project(":business:notification"))
 
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.work.runtimeKtx)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.livedata)
     implementation(libs.compose.ui)
@@ -52,15 +51,8 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons)
 
-    implementation(libs.util.coil)
+    implementation(libs.util.eventEmitter)
 
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
-
-    testImplementation(libs.test.assertk)
-    testImplementation(libs.bundles.junit5)
-    testImplementation(libs.test.coroutines)
-    testImplementation(libs.test.turbine)
-    testImplementation(libs.junit4)
-    testRuntimeOnly(libs.junit.jupiter.engine)
 }

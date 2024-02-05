@@ -5,6 +5,10 @@ import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.plant.Plant
 import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.alarm.AlarmInfoRepository
+import com.sunrisekcdeveloper.alarm.AlarmScheduler
+import com.sunrisekcdeveloper.alarm.models.AlarmInfo
+import com.sunrisekcdeveloper.alarm.models.AlarmType
 import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.statebundle.StateBundle
 import kotlinx.coroutines.CoroutineScope
@@ -13,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -80,6 +85,7 @@ interface AddEditViewModel {
 
     class Default(
         private val plantRepository: PlantRepository,
+        private val alarmScheduler: AlarmScheduler,
         private val router: Router,
         private val eventEmitter: SnackbarEmitter,
         private val plant: Plant?,
@@ -108,6 +114,12 @@ interface AddEditViewModel {
             )
             // validation can be placed here or enforced in the UI OR both
             plantRepository.save(newPlant)
+            alarmScheduler.schedule(
+                AlarmInfo(
+                    time = LocalDateTime.of(LocalDate.now(), newPlant.wateringInfo.time),
+                    type = AlarmType.NeedsWater()
+                )
+            )
             eventEmitter.emit(SnackbarEmitterType.Text("Created new plant \"${newPlant.details.name}\"!"))
             router.jumpToRoot()
         }
@@ -131,6 +143,7 @@ interface AddEditViewModel {
                 )
             )
             plantRepository.save(updatedPlant)
+            // todo update alarm here && logic to remove alarm once plant is deleted
             eventEmitter.emit(SnackbarEmitterType.Text("Updated \"${updatedPlant.details.name}\"!"))
             router.jumpToRoot()
         }

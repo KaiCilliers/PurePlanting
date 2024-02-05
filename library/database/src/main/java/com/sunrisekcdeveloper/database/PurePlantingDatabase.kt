@@ -9,6 +9,8 @@ import com.sunrisekcdeveloper.db_tables.ForgotWaterWorkerResultStatusDao
 import com.sunrisekcdeveloper.db_tables.ForgotWaterWorkerResultStatusEntity
 import com.sunrisekcdeveloper.db_tables.WateringWorkerResultStatusDao
 import com.sunrisekcdeveloper.db_tables.WateringWorkerResultStatusEntity
+import com.sunrisekcdeveloper.db_tables.alarm.AlarmInfoDao
+import com.sunrisekcdeveloper.db_tables.alarm.AlarmInfoEntity
 import com.sunrisekcdeveloper.db_tables.notification.NotificationDao
 import com.sunrisekcdeveloper.db_tables.notification.NotificationEntity
 import com.sunrisekcdeveloper.db_tables.plant.PlantDao
@@ -22,6 +24,7 @@ import com.sunrisekcdeveloper.db_tables.plant.WateredRecordEntity
         NotificationEntity::class,
         WateringWorkerResultStatusEntity::class,
         ForgotWaterWorkerResultStatusEntity::class,
+        AlarmInfoEntity::class,
     ],
     version = 1
 )
@@ -31,6 +34,7 @@ abstract class PurePlantingDatabase : RoomDatabase() {
     abstract fun notificationDao(): NotificationDao
     abstract fun waterWorkerDao(): WateringWorkerResultStatusDao
     abstract fun forgotWaterWorkerDao(): ForgotWaterWorkerResultStatusDao
+    abstract fun alarmInfoDao(): AlarmInfoDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

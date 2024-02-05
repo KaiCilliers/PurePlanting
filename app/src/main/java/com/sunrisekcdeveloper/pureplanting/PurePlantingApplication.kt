@@ -3,13 +3,14 @@ package com.sunrisekcdeveloper.pureplanting
 import android.app.Application
 import android.util.Log
 import androidx.work.Configuration
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.sunrisekcdeveloper.database.PurePlantingDatabase
 import com.sunrisekcdeveloper.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.notification.NotificationRepository
 import com.sunrisekcdeveloper.plant.PlantRepository
+import com.sunrisekcdeveloper.alarm.models.AlarmInfo
+import com.sunrisekcdeveloper.alarm.AlarmInfoRepository
+import com.sunrisekcdeveloper.alarm.AlarmScheduler
+import com.sunrisekcdeveloper.alarm.models.AlarmType
 import com.sunrisekcdeveloper.pureplanting.workers.CompositeWorkerFactory
 import com.sunrisekcdeveloper.pureplanting.workers.ForgotToWaterReminder
 import com.sunrisekcdeveloper.pureplanting.workers.SystemNotification
@@ -20,10 +21,8 @@ import com.zhuinden.simplestackextensions.servicesktx.rebind
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.time.Clock
-import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.util.concurrent.TimeUnit
 
 class PurePlantingApplication : Application(), Configuration.Provider {
     lateinit var globalServices: GlobalServices
@@ -36,6 +35,8 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     private val systemNotification by lazy { SystemNotification(applicationContext, plantRepository) }
     private val notificationRepository by lazy { NotificationRepository.Default(db.notificationDao()) }
     private val snackbarEmitter by lazy { SnackbarEmitter() }
+    private val alarmInfoRepo by lazy { AlarmInfoRepository.Default(db.alarmInfoDao()) }
+    private val alarmScheduler by lazy { AlarmScheduler.Default(applicationContext, alarmInfoRepo) }
 
     private val waterFactory by lazy {
         WaterPlantReminder.Factory(
@@ -71,47 +72,16 @@ class PurePlantingApplication : Application(), Configuration.Provider {
             .add(notificationRepository)
             .rebind<NotificationRepository>(notificationRepository)
             .add(snackbarEmitter)
+            .add(alarmScheduler)
+            .rebind<AlarmScheduler>(alarmScheduler)
             .build()
 
         MainScope().launch {
-            schedulePlantWateringWorker()
-            scheduleForgotToWaterReminder()
+            val midnight = LocalDateTime.of(LocalDateTime.now().toLocalDate().plusDays(1), LocalTime.MIDNIGHT)
+            alarmScheduler.schedule(
+                AlarmInfo(time = midnight, type = AlarmType.ForgotToWater())
+            )
         }
-    }
-
-    private fun schedulePlantWateringWorker() {
-        val request = PeriodicWorkRequestBuilder<WaterPlantReminder>(
-            repeatInterval = 15,
-            repeatIntervalTimeUnit = TimeUnit.MINUTES,
-        )
-            .build()
-
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
-                WaterPlantReminder.TAG,
-                ExistingPeriodicWorkPolicy.KEEP,
-                request
-            )
-    }
-
-    private fun scheduleForgotToWaterReminder() {
-        val today = LocalDateTime.now()
-        val tomorrow = LocalDateTime.of(today.toLocalDate().plusDays(1), LocalTime.MIDNIGHT)
-        val millisToTomorrow = Duration.between(today, tomorrow.plusHours(2)).toMillis()
-
-        val request = PeriodicWorkRequestBuilder<ForgotToWaterReminder>(
-            repeatInterval = 24,
-            repeatIntervalTimeUnit = TimeUnit.HOURS
-        )
-            .setInitialDelay(millisToTomorrow, TimeUnit.MILLISECONDS)
-            .build()
-
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
-                ForgotToWaterReminder.TAG,
-                ExistingPeriodicWorkPolicy.KEEP,
-                request
-            )
     }
 }
 

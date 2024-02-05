@@ -85,6 +85,7 @@ dependencies {
     implementation(project(":business:notification"))
     implementation(project(":library:database"))
     implementation(project(":library:db_tables"))
+    implementation(project(":library:alarm"))
 
     testImplementation(project(":library:test"))
     androidTestImplementation(project(":library:test"))
