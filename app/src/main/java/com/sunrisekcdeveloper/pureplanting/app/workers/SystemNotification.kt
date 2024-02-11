@@ -18,7 +18,7 @@ import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.app.MainActivity
 import com.sunrisekcdeveloper.pureplanting.R
-import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
+import com.sunrisekcdeveloper.pureplanting.features.home.models.PlantTabFilter
 import kotlinx.parcelize.Parcelize
 import com.sunrisekcdeveloper.pureplanting.domain.notification.Notification as DomainNotification
 

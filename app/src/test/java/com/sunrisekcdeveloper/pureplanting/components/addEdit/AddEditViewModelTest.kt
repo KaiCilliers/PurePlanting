@@ -7,6 +7,8 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isZero
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.features.addEdit.AddEditViewModel
+import com.sunrisekcdeveloper.pureplanting.features.addEdit.models.PlantSize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -24,7 +26,7 @@ import java.time.LocalTime
 class AddEditViewModelTest {
 
     private lateinit var plantRepositoryFake: PlantRepository.Fake
-    private lateinit var router: com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Router
+    private lateinit var router: AddEditViewModel.Router
     private lateinit var eventEmitter: SnackbarEmitter
 
     @BeforeEach
@@ -32,7 +34,7 @@ class AddEditViewModelTest {
         Dispatchers.setMain(StandardTestDispatcher())
         eventEmitter = SnackbarEmitter()
         plantRepositoryFake = PlantRepository.Fake()
-        router = object : com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Router {
+        router = object : AddEditViewModel.Router {
             override fun jumpToRoot() { }
             override fun goBack() { }
         }
@@ -47,7 +49,7 @@ class AddEditViewModelTest {
     @Test
     fun `adding a new plant sets all input fields to their default values`() = runTest {
         // SETUP
-        val viewModel = com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default(
+        val viewModel = AddEditViewModel.Default(
             plantRepository = plantRepositoryFake,
             plant = null,
             router = router,
@@ -58,18 +60,18 @@ class AddEditViewModelTest {
         assertThat(viewModel.image.value).isEqualTo("")
         assertThat(viewModel.name.value).isEqualTo("")
         assertThat(viewModel.description.value).isEqualTo("")
-        assertThat(viewModel.size.value).isEqualTo(com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default.DEFAULT_PLANT_SIZE)
-        assertThat(viewModel.wateringDays.value).isEqualTo(listOf(com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default.DEFAULT_WATERING_DAY))
-        assertThat(viewModel.wateringTime.value.hour).isEqualTo(com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default.DEFAULT_WATERING_TIME.hour)
-        assertThat(viewModel.wateringTime.value.minute).isEqualTo(com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default.DEFAULT_WATERING_TIME.minute)
-        assertThat(viewModel.wateringAmount.value).isEqualTo(com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default.DEFAULT_WATERING_AMOUNT)
+        assertThat(viewModel.size.value).isEqualTo(AddEditViewModel.Default.DEFAULT_PLANT_SIZE)
+        assertThat(viewModel.wateringDays.value).isEqualTo(listOf(AddEditViewModel.Default.DEFAULT_WATERING_DAY))
+        assertThat(viewModel.wateringTime.value.hour).isEqualTo(AddEditViewModel.Default.DEFAULT_WATERING_TIME.hour)
+        assertThat(viewModel.wateringTime.value.minute).isEqualTo(AddEditViewModel.Default.DEFAULT_WATERING_TIME.minute)
+        assertThat(viewModel.wateringAmount.value).isEqualTo(AddEditViewModel.Default.DEFAULT_WATERING_AMOUNT)
     }
 
     @Test
     fun `editing and existing plant sets input fields to plant's values`() = runTest {
         // SETUP
         val initialPlant = plant()
-        val viewModel = com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
 
         // ASSERTIONS
         assertThat(viewModel.image.value).isEqualTo(initialPlant.details.imageSrcUri)
@@ -85,13 +87,13 @@ class AddEditViewModelTest {
     @Test
     fun `save changes without an initial plant creates a new plant`() = runTest {
         // SETUP
-        val viewModel = com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, null)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, null)
 
         // ACTION
         viewModel.image.value = "img"
         viewModel.name.value = "test 1"
         viewModel.description.value = "test 1 desc"
-        viewModel.size.value = com.sunrisekcdeveloper.pureplanting.components.addEdit.models.PlantSize.Medium
+        viewModel.size.value = PlantSize.Medium
         viewModel.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
         viewModel.wateringTime.value = LocalTime.of(14, 0)
         viewModel.wateringAmount.value = "400ml"
@@ -109,13 +111,13 @@ class AddEditViewModelTest {
         // SETUP
         val initialPlant = plant()
         plantRepositoryFake.save(initialPlant)
-        val viewModel = com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
 
         // ACTION
         viewModel.image.value = "img"
         viewModel.name.value = "test 1"
         viewModel.description.value = "test 1 desc"
-        viewModel.size.value = com.sunrisekcdeveloper.pureplanting.components.addEdit.models.PlantSize.Medium
+        viewModel.size.value = PlantSize.Medium
         viewModel.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
         viewModel.wateringTime.value = LocalTime.of(14, 0)
         viewModel.wateringAmount.value = "400ml"
@@ -146,7 +148,7 @@ class AddEditViewModelTest {
             waterDays = listOf(DayOfWeek.MONDAY)
         )
         plantRepositoryFake.save(initialPlant)
-        val viewModel = com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
 
         // ACTION
         viewModel.wateringDays.value = listOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
@@ -170,13 +172,13 @@ class AddEditViewModelTest {
             waterDays = listOf(DayOfWeek.MONDAY)
         )
         plantRepositoryFake.save(initialPlant)
-        val viewModel = com.sunrisekcdeveloper.pureplanting.components.addEdit.AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
+        val viewModel = AddEditViewModel.Default(plantRepositoryFake, router, eventEmitter, initialPlant)
 
         // ACTION
         viewModel.image.value = "img"
         viewModel.name.value = "test 1"
         viewModel.description.value = "test 1 desc"
-        viewModel.size.value = com.sunrisekcdeveloper.pureplanting.components.addEdit.models.PlantSize.Medium
+        viewModel.size.value = PlantSize.Medium
         viewModel.wateringTime.value = LocalTime.of(14, 0)
         viewModel.wateringAmount.value = "400ml"
 

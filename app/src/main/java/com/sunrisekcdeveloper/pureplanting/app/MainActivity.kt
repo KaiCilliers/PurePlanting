@@ -27,9 +27,9 @@ import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
-import com.sunrisekcdeveloper.pureplanting.app.features.DetailKey
-import com.sunrisekcdeveloper.pureplanting.app.features.HomeKey
-import com.sunrisekcdeveloper.pureplanting.app.navigation.NavigationServiceProvider
+import com.sunrisekcdeveloper.pureplanting.features.detail.DetailKey
+import com.sunrisekcdeveloper.pureplanting.features.home.HomeKey
+import com.sunrisekcdeveloper.pureplanting.core.navigation.NavigationServiceProvider
 import com.sunrisekcdeveloper.pureplanting.app.workers.DeeplinkDestination
 import com.zhuinden.liveevent.observe
 import com.zhuinden.simplestack.AsyncStateChanger

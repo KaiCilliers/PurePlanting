@@ -13,8 +13,8 @@ import com.sunrisekcdeveloper.home.com.sunrisekcdeveloper.pureplanting.plantNeed
 import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
-import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
-import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListViewModel
+import com.sunrisekcdeveloper.pureplanting.features.home.models.PlantTabFilter
+import com.sunrisekcdeveloper.pureplanting.features.home.subcomponents.PlantListViewModel
 import com.sunrisekcdeveloper.pureplanting.MutableClock
 import com.sunrisekcdeveloper.pureplanting.now
 import com.sunrisekcdeveloper.pureplanting.today
