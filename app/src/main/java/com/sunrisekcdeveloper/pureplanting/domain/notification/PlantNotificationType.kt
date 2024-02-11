@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.business.notification
+package com.sunrisekcdeveloper.pureplanting.domain.notification
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

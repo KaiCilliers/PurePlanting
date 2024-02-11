@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.business.plant
+package com.sunrisekcdeveloper.pureplanting.domain.plant
 
 import com.sunrisekcdeveloper.pureplanting.library.db_tables.plant.PlantEntity
 import com.sunrisekcdeveloper.pureplanting.library.db_tables.plant.PlantWithWaterRecords

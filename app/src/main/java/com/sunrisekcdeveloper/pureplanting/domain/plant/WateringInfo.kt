@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.business.plant
+package com.sunrisekcdeveloper.pureplanting.domain.plant
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

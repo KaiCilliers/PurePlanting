@@ -8,8 +8,8 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.sunrisekcdeveloper.pureplanting.core.database.PurePlantingDatabase
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
-import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.app.workers.CompositeWorkerFactory
 import com.sunrisekcdeveloper.pureplanting.app.workers.ForgotToWaterReminder
 import com.sunrisekcdeveloper.pureplanting.app.workers.SystemNotification

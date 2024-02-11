@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.business.plant
+package com.sunrisekcdeveloper.pureplanting.domain.plant
 
 import com.sunrisekcdeveloper.pureplanting.library.db_tables.plant.PlantDao
 import kotlinx.coroutines.flow.Flow

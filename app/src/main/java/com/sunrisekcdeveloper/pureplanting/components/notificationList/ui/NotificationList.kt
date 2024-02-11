@@ -20,7 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.business.notification.Notification
+import com.sunrisekcdeveloper.pureplanting.domain.notification.Notification
 import com.sunrisekcdeveloper.notificationList.NotificationGroupedByDay
 import java.time.LocalDate
 import java.time.LocalDateTime

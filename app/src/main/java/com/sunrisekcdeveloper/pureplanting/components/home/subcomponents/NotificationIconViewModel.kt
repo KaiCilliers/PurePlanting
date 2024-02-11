@@ -1,6 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.components.home.subcomponents
 
-import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
-import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
-import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.app.navigation.ComposeKey
 import com.sunrisekcdeveloper.pureplanting.app.navigation.NavigationServiceProvider
 import com.sunrisekcdeveloper.pureplanting.components.home.HomeUi

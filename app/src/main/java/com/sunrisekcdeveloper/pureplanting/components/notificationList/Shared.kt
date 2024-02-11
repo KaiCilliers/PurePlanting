@@ -2,7 +2,7 @@ package com.sunrisekcdeveloper.notificationList
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.business.notification.Notification
+import com.sunrisekcdeveloper.pureplanting.domain.notification.Notification
 
 internal typealias NotificationGroupedByDay = Map<Pair<Int, Int>, List<Notification>>
 

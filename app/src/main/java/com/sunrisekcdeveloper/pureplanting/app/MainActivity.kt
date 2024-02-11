@@ -26,7 +26,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitterType
-import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.app.features.DetailKey
 import com.sunrisekcdeveloper.pureplanting.app.features.HomeKey
 import com.sunrisekcdeveloper.pureplanting.app.navigation.NavigationServiceProvider

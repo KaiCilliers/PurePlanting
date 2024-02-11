@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.business.notification
+package com.sunrisekcdeveloper.pureplanting.domain.notification
 
 import com.sunrisekcdeveloper.pureplanting.library.db_tables.notification.NotificationEntity
 import com.sunrisekcdeveloper.pureplanting.library.db_tables.notification.NotificationEntityType

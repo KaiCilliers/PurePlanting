@@ -1,8 +1,8 @@
 package com.sunrisekcdeveloper.pureplanting.app
 
-import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
-import com.sunrisekcdeveloper.pureplanting.business.plant.PlantDetails
-import com.sunrisekcdeveloper.pureplanting.business.plant.WateringInfo
+import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantDetails
+import com.sunrisekcdeveloper.pureplanting.domain.plant.WateringInfo
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime

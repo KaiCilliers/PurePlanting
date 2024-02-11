@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.core.design.noRippleClickable
 import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.pureplanting.R
-import com.sunrisekcdeveloper.pureplanting.business.notification.Notification
-import com.sunrisekcdeveloper.pureplanting.business.notification.PlantTag
+import com.sunrisekcdeveloper.pureplanting.domain.notification.Notification
+import com.sunrisekcdeveloper.pureplanting.domain.notification.PlantTag
 import java.time.format.DateTimeFormatter
 
 @Composable

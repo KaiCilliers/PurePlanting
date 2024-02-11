@@ -1,8 +1,8 @@
 package com.sunrisekcdeveloper.pureplanting.app.navigation
 
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
-import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.app.features.AddEditKey
 import com.sunrisekcdeveloper.pureplanting.app.features.DetailKey
 import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListViewModel

@@ -4,9 +4,9 @@ import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
-import com.sunrisekcdeveloper.pureplanting.business.notification.unreadNotification
-import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.unreadNotification
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.NotificationIconViewModel
 import com.sunrisekcdeveloper.pureplanting.MutableClock
 import kotlinx.coroutines.Dispatchers

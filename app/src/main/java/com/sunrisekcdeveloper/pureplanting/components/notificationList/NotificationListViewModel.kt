@@ -1,12 +1,12 @@
 package com.sunrisekcdeveloper.notificationList
 
 import com.sunrisekcdeveloper.pureplanting.components.notificationList.models.NotificationFilter
-import com.sunrisekcdeveloper.pureplanting.business.notification.Notification
-import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
-import com.sunrisekcdeveloper.pureplanting.business.notification.PlantNotificationType
-import com.sunrisekcdeveloper.pureplanting.business.notification.PlantTag
-import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
-import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.Notification
+import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.PlantNotificationType
+import com.sunrisekcdeveloper.pureplanting.domain.notification.PlantTag
+import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.simplestack.ScopedServices
 import com.zhuinden.statebundle.StateBundle

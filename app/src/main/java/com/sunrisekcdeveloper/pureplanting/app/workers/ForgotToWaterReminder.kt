@@ -7,10 +7,10 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.sunrisekcdeveloper.pureplanting.core.database.ForgotWaterWorkerResultStatusDao
 import com.sunrisekcdeveloper.pureplanting.core.database.ForgotWaterWorkerResultStatusEntity
-import com.sunrisekcdeveloper.pureplanting.business.notification.Notification
-import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
-import com.sunrisekcdeveloper.pureplanting.business.notification.PlantTag
-import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.Notification
+import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.PlantTag
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import java.time.Clock
 import java.time.LocalDateTime
 

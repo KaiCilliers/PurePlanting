@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import com.sunrisekcdeveloper.pureplanting.components.detail.DetailUi
 import com.sunrisekcdeveloper.pureplanting.components.detail.DetailViewModel
 import com.sunrisekcdeveloper.pureplanting.components.detail.Router
-import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
-import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.app.navigation.ComposeKey
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackcomposeintegration.services.rememberService

@@ -7,9 +7,9 @@ import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 import com.sunrisekcdeveloper.pureplanting.MutableClock
 import com.sunrisekcdeveloper.pureplanting.core.database.PurePlantingDatabase
-import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
-import com.sunrisekcdeveloper.pureplanting.business.notification.PlantNotificationType
-import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.PlantNotificationType
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.app.workers.SystemNotification
 import com.sunrisekcdeveloper.pureplanting.app.workers.WaterPlantReminder
 import com.sunrisekcdeveloper.pureplanting.now
