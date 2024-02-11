@@ -37,29 +37,10 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     private val notificationRepository by lazy { NotificationRepository.Default(db.notificationDao()) }
     private val snackbarEmitter by lazy { SnackbarEmitter() }
 
-    private val waterFactory by lazy {
-        WaterPlantReminder.Factory(
-            plantRepository = plantRepository,
-            notificationRepository = notificationRepository,
-            systemNotification = systemNotification,
-            dao = db.waterWorkerDao(),
-            clock = defaultClock,
-        )
-    }
-    private val forgotFactory by lazy {
-        ForgotToWaterReminder.Factory(
-            plantRepository = plantRepository,
-            notificationRepository = notificationRepository,
-            systemNotification = systemNotification,
-            dao = db.forgotWaterWorkerDao(),
-            clock = defaultClock,
-        )
-    }
-
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setMinimumLoggingLevel(Log.DEBUG)
-            .setWorkerFactory(CompositeWorkerFactory(forgotFactory, waterFactory))
+            .setWorkerFactory(createCompositeWorkerFactory())
             .build()
 
     override fun onCreate() {
@@ -72,46 +53,26 @@ class PurePlantingApplication : Application(), Configuration.Provider {
             .rebind<NotificationRepository>(notificationRepository)
             .add(snackbarEmitter)
             .build()
-
-        MainScope().launch {
-            schedulePlantWateringWorker()
-            scheduleForgotToWaterReminder()
-        }
     }
 
-    private fun schedulePlantWateringWorker() {
-        val request = PeriodicWorkRequestBuilder<WaterPlantReminder>(
-            repeatInterval = 15,
-            repeatIntervalTimeUnit = TimeUnit.MINUTES,
+    private fun createCompositeWorkerFactory(): CompositeWorkerFactory {
+        val waterFactory = WaterPlantReminder.Factory(
+            plantRepository = plantRepository,
+            notificationRepository = notificationRepository,
+            systemNotification = systemNotification,
+            dao = db.waterWorkerDao(),
+            clock = defaultClock,
         )
-            .build()
 
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
-                WaterPlantReminder.TAG,
-                ExistingPeriodicWorkPolicy.KEEP,
-                request
-            )
-    }
-
-    private fun scheduleForgotToWaterReminder() {
-        val today = LocalDateTime.now()
-        val tomorrow = LocalDateTime.of(today.toLocalDate().plusDays(1), LocalTime.MIDNIGHT)
-        val millisToTomorrow = Duration.between(today, tomorrow.plusHours(2)).toMillis()
-
-        val request = PeriodicWorkRequestBuilder<ForgotToWaterReminder>(
-            repeatInterval = 24,
-            repeatIntervalTimeUnit = TimeUnit.HOURS
+        val forgotFactory = ForgotToWaterReminder.Factory(
+            plantRepository = plantRepository,
+            notificationRepository = notificationRepository,
+            systemNotification = systemNotification,
+            dao = db.forgotWaterWorkerDao(),
+            clock = defaultClock,
         )
-            .setInitialDelay(millisToTomorrow, TimeUnit.MILLISECONDS)
-            .build()
 
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
-                ForgotToWaterReminder.TAG,
-                ExistingPeriodicWorkPolicy.KEEP,
-                request
-            )
+        return CompositeWorkerFactory(forgotFactory, waterFactory)
     }
 }
 
