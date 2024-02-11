@@ -12,8 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus100
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus500
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
 @Composable
@@ -34,12 +32,12 @@ fun SecondaryButton(
         ),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = neutralus100 // todo with MaterialTheme color
+//            containerColor = neutralus100 // todo with MaterialTheme color
         )
     ) {
         Text(
             text = label,
-            color = neutralus500,
+//            color = neutralus500,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier

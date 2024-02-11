@@ -17,9 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
 import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
 
 @Composable
 fun PrimarySmallButton(
@@ -40,7 +39,7 @@ fun PrimarySmallButton(
         ),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = accent500 // todo with MaterialTheme color
+//            containerColor = accent500 // todo with MaterialTheme color
         )
     ) {
         Row(

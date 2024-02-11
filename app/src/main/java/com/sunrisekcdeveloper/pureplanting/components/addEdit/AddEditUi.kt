@@ -31,6 +31,7 @@ import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimeInput
@@ -53,8 +54,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
 import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus0
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus100
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.BackIcon
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.PlantBox
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
@@ -219,7 +218,7 @@ private fun InputSheet(
 
     Column(modifier) {
         Surface(
-            color = neutralus0,
+            color = MaterialTheme.colorScheme.secondaryContainer,
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
             modifier = Modifier.weight(1f),
         ) {
@@ -312,7 +311,7 @@ private fun InputSheet(
             }
         }
         Surface(
-            color = neutralus0
+            color = MaterialTheme.colorScheme.secondaryContainer
         ) {
             PrimaryButton(
                 onClick = { viewModel.onSavePlant() },
@@ -364,7 +363,7 @@ private fun DialogInput(
                 .noRippleClickable { onClick() }
                 .fillMaxSize(),
             shape = RoundedCornerShape(16.dp),
-            color = neutralus100
+            color = MaterialTheme.colorScheme.secondaryContainer
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

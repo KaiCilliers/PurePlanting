@@ -18,9 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus0
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus500
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus900
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
 
 @Composable
@@ -33,7 +30,7 @@ internal fun DetailSheet(
 ) {
     Column(modifier) {
         Surface(
-            color = neutralus0,
+//            color = MaterialTheme.colorScheme.secondaryContainer,
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
             modifier = Modifier
                 .weight(1f)
@@ -48,20 +45,20 @@ internal fun DetailSheet(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.displayLarge,
-                    color = neutralus900,
+//                    color = neutralus900,
                 )
 
                 Text(
                     text = description,
                     style = MaterialTheme.typography.displaySmall,
-                    color = neutralus500,
+//                    color = neutralus500,
                     modifier = Modifier.wrapContentHeight().fillMaxWidth(),
                     lineHeight = 1.5.em,
                 )
             }
         }
         Surface(
-            color = neutralus0,
+//            color = MaterialTheme.colorScheme.secondaryContainer,
         ) {
             PrimaryButton(
                 onClick = { onButtonClick() },

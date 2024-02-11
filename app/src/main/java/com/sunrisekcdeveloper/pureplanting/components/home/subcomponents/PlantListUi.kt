@@ -28,7 +28,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
@@ -64,7 +63,7 @@ internal fun PlantListUi(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(4.dp),
-                        color = accent500
+//                        color = accent500
                     )
                 }
 
@@ -108,7 +107,7 @@ internal fun PlantListUi(
         if(!isLoading) {
             FloatingActionButton(
                 onClick = viewModel::onAddPlantClick,
-                containerColor = accent500, // todo use MaterialTheme color
+//                containerColor = accent500, // todo use MaterialTheme color
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(bottom = 60.dp)

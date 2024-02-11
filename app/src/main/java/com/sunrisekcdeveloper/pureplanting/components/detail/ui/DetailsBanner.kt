@@ -21,9 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus0
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus500
 import com.sunrisekcdeveloper.pureplanting.components.detail.models.DetailItem
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
@@ -36,7 +33,7 @@ internal fun BannerDetails(
         shape = RoundedCornerShape(8.dp),
         modifier = modifier,
         tonalElevation = 5.dp,
-        color = neutralus0
+//        color = neutralus0
     ) {
         Row(
             modifier = Modifier
@@ -76,7 +73,7 @@ private fun PPDetailsItem(
         Text(
             text = smallLabel,
             textAlign = TextAlign.Left,
-            color = neutralus500,
+//            color = neutralus500,
             style = MaterialTheme.typography.titleMedium,
 
             )
@@ -84,7 +81,7 @@ private fun PPDetailsItem(
         Text(
             text = bigLabel,
             textAlign = TextAlign.Left,
-            color = accent500,
+//            color = accent500,
             style = MaterialTheme.typography.bodyMedium,
 
             )

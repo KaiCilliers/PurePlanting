@@ -24,11 +24,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
 import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent600
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus100
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus500
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus900
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.otherOlive500
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.business.notification.Notification
 import com.sunrisekcdeveloper.pureplanting.business.notification.PlantTag
@@ -41,7 +36,7 @@ internal fun NotificationListItem(
     modifier: Modifier = Modifier,
 ) {
     Surface (
-        color = neutralus100,
+//        color = neutralus100,
         modifier = modifier
             .fillMaxWidth()
             .noRippleClickable { onClick() }
@@ -50,7 +45,7 @@ internal fun NotificationListItem(
             modifier = Modifier
                 .padding(horizontal = 20.dp)
                 .padding(vertical = 12.dp)
-                .background(color = neutralus100)
+//                .background(color = neutralus100)
         ){
             TopSection(
                 title = notification.type.title,
@@ -80,13 +75,13 @@ private fun TopSection(
         Column {
             Text(
                 text = title,
-                color = neutralus900,
+//                color = neutralus900,
                 style = MaterialTheme.typography.bodyMedium
             )
 
             Text(
                 text = time,
-                color = neutralus500,
+//                color = neutralus500,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -116,12 +111,12 @@ private fun BottomSection(
 
     Text(
         text = body,
-        color = neutralus500,
+//        color = neutralus500,
         style = MaterialTheme.typography.bodyMedium
     )
     Text(
         text = if (targetPlants.isOfSizeOne()) "Go to Plant" else "Click here to view information", // todo string resource
-        color = accent600,
+//        color = accent600,
         style = MaterialTheme.typography.displaySmall
     )
 }
@@ -131,7 +126,7 @@ private fun PlantIcon (
     modifier: Modifier = Modifier
 ){
     Surface (
-        color = otherOlive500.copy(alpha = 0.3f),
+//        color = otherOlive500.copy(alpha = 0.3f),
         shape = RoundedCornerShape(10.dp),
         modifier = modifier.size(40.dp) // todo make dynamic scalable based on height of other elements in a row
     ){

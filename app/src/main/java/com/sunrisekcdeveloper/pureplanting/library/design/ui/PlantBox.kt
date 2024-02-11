@@ -10,7 +10,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.otherOlive500
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
@@ -23,7 +22,7 @@ fun PlantBox(
     Box(
         contentAlignment = contentAlignment,
         modifier = modifier
-            .background(otherOlive500.copy(alpha = 0.5f)) // todo uniform background color for screens, ie MaterialTheme :)
+//            .background(otherOlive500.copy(alpha = 0.5f)) // todo uniform background color for screens, ie MaterialTheme :)
             .fillMaxSize()
     ) {
         Image(

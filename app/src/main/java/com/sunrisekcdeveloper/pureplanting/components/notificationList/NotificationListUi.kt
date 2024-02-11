@@ -27,9 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus100
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.otherOlive500
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.BackIcon
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.pureplanting.components.notificationList.ui.Header
@@ -47,7 +44,7 @@ fun NotificationListUi(
     val isLoading by viewModel.isLoading.collectAsState()
 
     BoxWithBottomFade(
-        Modifier.background(otherOlive500.copy(alpha = 0.7f)) // todo uniform background color for screens, ie MaterialTheme :)
+//        Modifier.background(otherOlive500.copy(alpha = 0.7f)) // todo uniform background color for screens, ie MaterialTheme :)
     ) {
         Image(
             painter = painterResource(id = R.drawable.banner_plant),
@@ -70,7 +67,7 @@ fun NotificationListUi(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(4.dp),
-                            color = accent500
+//                            color = accent500
                         )
                     }
                     notifications.isEmpty() -> {
@@ -104,7 +101,7 @@ fun NotificationListUi(
                     }
                     else -> {
                         Surface(
-                            color = neutralus100,
+//                            color = neutralus100,
                             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
                         ) {
                             NotificationList(

@@ -22,7 +22,7 @@ val typography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
         lineHeight = 32.sp,
-        color = neutralus900
+//        color = neutralus900
     ),
 
     displayMedium = TextStyle(

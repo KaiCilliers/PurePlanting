@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus100
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.SecondaryButton
 import com.sunrisekcdeveloper.pureplanting.R
@@ -37,7 +36,7 @@ fun DeleteConfirmationDialog(
         text = {
             Text(text = "Do you really want to delete your plant \"$plantName\"?")
         },
-        containerColor = neutralus100,
+//        containerColor = neutralus100,
         onDismissRequest = { onDismiss() },
         confirmButton = {
             PrimaryButton(

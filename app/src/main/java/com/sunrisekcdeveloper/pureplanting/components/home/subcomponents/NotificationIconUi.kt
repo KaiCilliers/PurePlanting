@@ -22,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus100
 import com.sunrisekcdeveloper.pureplanting.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +41,7 @@ fun NotificationIconUi(
         Surface(
             modifier = Modifier
                 .clickable { viewModel.onIconClick() },
-            color = neutralus100,
+//            color = neutralus100,
             shape = RoundedCornerShape(percent = 50)
         ) {
             Image(

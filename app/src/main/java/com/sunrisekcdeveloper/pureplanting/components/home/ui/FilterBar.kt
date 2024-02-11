@@ -22,8 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
 import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus300
 import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
 
 @Composable
@@ -47,7 +45,7 @@ internal fun FilterBar(
         ) {
             Text(
                 text = text,
-                color = if (selected) accent500 else neutralus300,
+//                color = if (selected) accent500 else neutralus300,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
                 modifier = Modifier.width(IntrinsicSize.Max),
@@ -59,7 +57,7 @@ internal fun FilterBar(
                         .height(2.dp)
                         .fillMaxWidth(0.5f)
                         .clip(CircleShape)
-                        .background(accent500)
+//                        .background(accent500)
                 )
             }
         }

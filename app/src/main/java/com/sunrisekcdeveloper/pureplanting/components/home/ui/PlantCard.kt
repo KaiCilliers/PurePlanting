@@ -42,9 +42,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus300
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus500
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.otherOlive500
 import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.PlantListViewModel
@@ -74,10 +71,10 @@ fun PlantCard(
                 onLongClick = { showOptionsMenu = true }
             ),
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = neutralus300.copy(alpha = 0.2f)
-        )
+//        border = BorderStroke(
+//            width = 1.dp,
+//            color = neutralus300.copy(alpha = 0.2f)
+//        )
     ) {
         Column(
             Modifier.fillMaxWidth()
@@ -127,7 +124,7 @@ private fun TopSection(
 
     Box(
         modifier = modifier
-            .background(otherOlive500.copy(alpha = 0.3f))
+//            .background(otherOlive500.copy(alpha = 0.3f))
             .aspectRatio(1f)
     ) {
         val imageSrc = plant.details.imageSrcUri
@@ -183,7 +180,7 @@ private fun Tag(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        color = neutralus500.copy(alpha = 0.7f),
+//        color = neutralus500.copy(alpha = 0.7f),
         shape = RoundedCornerShape(5.dp),
         modifier = modifier.wrapContentSize()
     ) {
@@ -223,7 +220,7 @@ private fun BottomSection(
             Text(
                 text = description,
                 style = MaterialTheme.typography.titleMedium,
-                color = neutralus500, // todo use MaterialTheme color
+//                color = neutralus500, // todo use MaterialTheme color
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

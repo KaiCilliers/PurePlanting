@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus0
 
 @Composable
 fun BoxWithBottomFade(
@@ -34,7 +33,7 @@ fun BoxWithBottomFade(
                        brush = Brush.verticalGradient(
                            colors = listOf(
                                Color.Transparent,
-                               neutralus0
+//                               neutralus0
                            )
                        )
                    )

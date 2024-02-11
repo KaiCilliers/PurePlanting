@@ -24,9 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.accent500
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus300
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus900
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.pureplanting.library.design.ui.SecondaryButton
 import java.time.DayOfWeek
@@ -77,15 +74,15 @@ fun WateringDaySelectionDialog(
                                 }
                             }
                         },
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = accent500,
-                            uncheckedColor = neutralus300
-                        )
+//                        colors = CheckboxDefaults.colors(
+//                            checkedColor = accent500,
+//                            uncheckedColor = neutralus300
+//                        )
                     )
 
                     Text(
                         text = "Everyday",
-                        color = if (!everyDayChecked) neutralus900.copy(alpha = 0.8f) else neutralus900,
+//                        color = if (!everyDayChecked) neutralus900.copy(alpha = 0.8f) else neutralus900,
                         modifier = Modifier
                             .padding(start = 2.dp)
                             .noRippleClickable {
@@ -115,16 +112,16 @@ fun WateringDaySelectionDialog(
                                     currentSelection = this
                                 }
                             },
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = accent500,
-                                uncheckedColor = neutralus300
-                            )
+//                            colors = CheckboxDefaults.colors(
+//                                checkedColor = accent500,
+//                                uncheckedColor = neutralus300
+//                            )
                         )
 
                         Text(
                             text = day.name.lowercase()
                                 .replaceFirstChar { it.titlecase(Locale.getDefault()) },
-                            color = if (!everyDayChecked) neutralus900.copy(alpha = 0.8f) else neutralus900,
+//                            color = if (!everyDayChecked) neutralus900.copy(alpha = 0.8f) else neutralus900,
                             modifier = Modifier
                                 .padding(start = 2.dp)
                                 .noRippleClickable {

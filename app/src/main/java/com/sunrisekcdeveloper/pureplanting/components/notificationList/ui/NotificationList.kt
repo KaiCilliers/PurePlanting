@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.neutralus500
 import com.sunrisekcdeveloper.pureplanting.business.notification.Notification
 import com.sunrisekcdeveloper.notificationList.NotificationGroupedByDay
 import java.time.LocalDate
@@ -56,7 +55,7 @@ internal fun NotificationList(
                         entry.key.first == today.minusDays(1).dayOfYear && entry.key.second == today.minusDays(1).year -> "Yesterday"
                         else -> LocalDate.ofYearDay(entry.key.second, entry.key.first).format(DateTimeFormatter.ofPattern("dd MMMM"))
                     },
-                    color = neutralus500,
+//                    color = neutralus500,
                     style = MaterialTheme.typography.displaySmall,
                     modifier = titleListItemPadding.animateItemPlacement()
                 )
