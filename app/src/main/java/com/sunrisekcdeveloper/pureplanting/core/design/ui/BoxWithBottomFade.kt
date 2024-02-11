@@ -20,26 +20,26 @@ fun BoxWithBottomFade(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-   Box(modifier) {
-       content()
-       Column {
-           Spacer(modifier = Modifier.weight(0.8f))
-           Box(
-               modifier = Modifier
-                   .weight(0.2f)
-                   .fillMaxSize()
-                   .clip(RectangleShape)
-                   .background(
-                       brush = Brush.verticalGradient(
-                           colors = listOf(
-                               Color.Transparent,
-//                               neutralus0
-                           )
-                       )
-                   )
-           )
-       }
-   }
+    Box(modifier) {
+        content()
+        Column {
+            Spacer(modifier = Modifier.weight(0.8f))
+            Box(
+                modifier = Modifier
+                    .weight(0.2f)
+                    .fillMaxSize()
+                    .clip(RectangleShape)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.White,
+                            )
+                        )
+                    )
+            )
+        }
+    }
 }
 
 @Preview
@@ -50,7 +50,7 @@ private fun BottomGradient_Preview() {
             Surface(
                 color = Color.Red.copy(alpha = 0.3f),
                 modifier = Modifier.fillMaxSize()
-            ){}
+            ) {}
         }
     }
 }

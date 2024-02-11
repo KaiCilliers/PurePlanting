@@ -3,10 +3,10 @@ package com.sunrisekcdeveloper.pureplanting.features.detail
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
+import com.sunrisekcdeveloper.pureplanting.core.navigation.ComposeKey
 import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.features.addEdit.AddEditKey
-import com.sunrisekcdeveloper.pureplanting.core.navigation.ComposeKey
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackcomposeintegration.services.rememberService
 import com.zhuinden.simplestackextensions.servicesktx.add
