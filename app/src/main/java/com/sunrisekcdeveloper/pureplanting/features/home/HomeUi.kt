@@ -19,6 +19,8 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -32,8 +34,8 @@ import com.sunrisekcdeveloper.pureplanting.core.design.ui.PlantBox
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
-import com.sunrisekcdeveloper.pureplanting.features.home.subcomponents.NotificationIconUi
-import com.sunrisekcdeveloper.pureplanting.features.home.subcomponents.PlantListUi
+import com.sunrisekcdeveloper.pureplanting.features.home.ui.NotificationIconUi
+import com.sunrisekcdeveloper.pureplanting.features.home.ui.PlantListUi
 import com.zhuinden.liveevent.observe
 import com.zhuinden.simplestackcomposeintegration.core.LocalBackstack
 import com.zhuinden.simplestackextensions.servicesktx.lookup
@@ -43,7 +45,10 @@ import kotlinx.coroutines.launch
 fun HomeUi(
     viewModel: HomeViewModel
 ) {
+
     val backstack = LocalBackstack.current
+
+    val isNotificationBadgeVisible by viewModel.isNotificationBadgeVisible.collectAsState()
 
     SnackbarWrapper(backstack.lookup<SnackbarEmitter>()) {
         PlantBox {
@@ -66,11 +71,12 @@ fun HomeUi(
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .size(42.dp), // todo update notification icon to scale predictably (try to set size smaller)
-                        viewModel = viewModel.notificationIconViewModel
+                        isBadgeVisible = isNotificationBadgeVisible,
+                        onClick = { viewModel.onNotificationIconClick() }
                     )
                 }
                 PlantListUi(
-                    viewModel = viewModel.plantListViewModel,
+                    viewModel = viewModel,
                     modifier = Modifier.padding(top = 20.dp)
                 )
             }

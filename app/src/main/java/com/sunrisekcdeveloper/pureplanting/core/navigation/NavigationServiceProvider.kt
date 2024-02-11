@@ -5,7 +5,8 @@ import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.features.addEdit.AddEditKey
 import com.sunrisekcdeveloper.pureplanting.features.detail.DetailKey
-import com.sunrisekcdeveloper.pureplanting.features.home.subcomponents.PlantListViewModel
+import com.sunrisekcdeveloper.pureplanting.features.home.HomeViewModel
+import com.sunrisekcdeveloper.pureplanting.features.notificationList.NotificationListKey
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackextensions.services.DefaultServiceProvider
 import com.zhuinden.simplestackextensions.servicesktx.add
@@ -21,7 +22,7 @@ class NavigationServiceProvider : DefaultServiceProvider() {
         with(serviceBinder) {
             when (scope) {
                 Scopes.HOME -> {
-                    val plantListRouter = object : PlantListViewModel.Router {
+                    val plantListRouter = object : HomeViewModel.Router {
                         override fun goToAddPlant() {
                             backstack.goTo(AddEditKey())
                         }
@@ -30,14 +31,19 @@ class NavigationServiceProvider : DefaultServiceProvider() {
                             backstack.goTo(DetailKey(plant))
                         }
 
+                        override fun goToNotificationList() {
+                            backstack.goTo(NotificationListKey)
+                        }
+
                     }
-                    PlantListViewModel.Default(
+                    HomeViewModel.Default(
                         plantRepository = lookup<PlantRepository>(),
                         router = plantListRouter,
-                        eventEmitter = lookup<SnackbarEmitter>()
+                        notificationRepository = lookup(),
+                        eventEmitter = lookup<SnackbarEmitter>(),
                     ).run {
                         add(this)
-                        rebind<PlantListViewModel>(this)
+                        rebind<HomeViewModel>(this)
                     }
                 }
             }

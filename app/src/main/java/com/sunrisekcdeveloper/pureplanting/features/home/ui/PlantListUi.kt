@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.features.home.subcomponents
+package com.sunrisekcdeveloper.pureplanting.features.home.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -31,17 +31,14 @@ import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
-import com.sunrisekcdeveloper.pureplanting.features.home.ui.DeleteConfirmationDialog
-import com.sunrisekcdeveloper.pureplanting.features.home.ui.EmptyPlantList
-import com.sunrisekcdeveloper.pureplanting.features.home.ui.FilterBar
-import com.sunrisekcdeveloper.pureplanting.features.home.ui.PlantCard
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.pureplanting.features.home.HomeViewModel
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun PlantListUi(
-    viewModel: PlantListViewModel,
+    viewModel: HomeViewModel,
     modifier: Modifier = Modifier,
 ) {
 
@@ -54,7 +51,7 @@ internal fun PlantListUi(
     Box(modifier) {
         Column(
             modifier = Modifier.fillMaxHeight()
-        ){
+        ) {
             FilterBar(selectedFilter = selectedFilter, onSelection = viewModel::onFilterChange)
             when {
                 isLoading -> {
@@ -104,7 +101,7 @@ internal fun PlantListUi(
             }
         }
 
-        if(!isLoading) {
+        if (!isLoading) {
             FloatingActionButton(
                 onClick = viewModel::onAddPlantClick,
 //                containerColor = accent500, // todo use MaterialTheme color
@@ -140,6 +137,6 @@ internal fun PlantListUi(
 @Composable
 private fun PlantListUi_Preview() {
     ThemeSurfaceWrapper {
-        PlantListUi(PlantListViewModel.Fake())
+        PlantListUi(HomeViewModel.Fake())
     }
 }

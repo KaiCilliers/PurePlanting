@@ -7,7 +7,6 @@ import assertk.assertions.isTrue
 import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.domain.notification.unreadNotification
 import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
-import com.sunrisekcdeveloper.pureplanting.features.home.subcomponents.NotificationIconViewModel
 import com.sunrisekcdeveloper.pureplanting.MutableClock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

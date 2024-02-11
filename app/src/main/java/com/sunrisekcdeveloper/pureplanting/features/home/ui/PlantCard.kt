@@ -43,7 +43,7 @@ import coil.compose.AsyncImage
 import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
-import com.sunrisekcdeveloper.pureplanting.features.home.subcomponents.PlantListViewModel
+import com.sunrisekcdeveloper.pureplanting.features.home.HomeViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -249,7 +249,7 @@ private fun BottomSection(
 @Composable
 private fun PlantCard_Preview() {
     PurePlantingTheme {
-        val plant = PlantListViewModel.Fake().plants.value.first()
+        val plant = HomeViewModel.Fake().plants.value.first()
         val now = remember { LocalDateTime.now() }
         val needsWater = remember(now.dayOfYear) { plant.needsWater(now) }
 

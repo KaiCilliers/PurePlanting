@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.features.home.subcomponents
+package com.sunrisekcdeveloper.pureplanting.features.home.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -14,8 +14,6 @@ import androidx.compose.material3.Badge
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,12 +25,10 @@ import com.sunrisekcdeveloper.pureplanting.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationIconUi(
-    viewModel: NotificationIconViewModel,
+    isBadgeVisible: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
-    val isBadgeVisible by viewModel.isNotificationBadgeVisible.collectAsState()
-
     Box(
         modifier
             .height(IntrinsicSize.Min)
@@ -40,7 +36,7 @@ fun NotificationIconUi(
     ) {
         Surface(
             modifier = Modifier
-                .clickable { viewModel.onIconClick() },
+                .clickable { onClick() },
 //            color = neutralus100,
             shape = RoundedCornerShape(percent = 50)
         ) {
@@ -68,7 +64,8 @@ fun NotificationIconUi(
 private fun NotificationIconUi_Preview() {
     PurePlantingTheme {
         NotificationIconUi(
-            NotificationIconViewModel.Fake(),
+            isBadgeVisible = true,
+            onClick = { },
             modifier = Modifier.size(100.dp)
         )
     }

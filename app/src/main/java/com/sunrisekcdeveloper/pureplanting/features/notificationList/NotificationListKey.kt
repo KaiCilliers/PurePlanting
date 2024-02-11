@@ -10,8 +10,8 @@ import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.core.navigation.ComposeKey
 import com.sunrisekcdeveloper.pureplanting.core.navigation.NavigationServiceProvider
 import com.sunrisekcdeveloper.pureplanting.features.home.models.PlantTabFilter
-import com.sunrisekcdeveloper.pureplanting.features.home.subcomponents.PlantListViewModel
 import com.sunrisekcdeveloper.pureplanting.features.detail.DetailKey
+import com.sunrisekcdeveloper.pureplanting.features.home.HomeViewModel
 import com.zhuinden.simplestack.ScopeKey
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestack.StateChange
@@ -35,7 +35,7 @@ data object NotificationListKey : ComposeKey(), ScopeKey.Child {
 
     override fun bindServices(serviceBinder: ServiceBinder) {
         with(serviceBinder) {
-            val plantListViewModel = lookup<PlantListViewModel>()
+            val homeViewModel = lookup<HomeViewModel>()
             val notificationIconViewModel = NotificationListViewModel.Default(
                 notificationRepository = lookup<NotificationRepository>(),
                 plantRepository = lookup<PlantRepository>(),
@@ -45,7 +45,7 @@ data object NotificationListKey : ComposeKey(), ScopeKey.Child {
                     }
 
                     override fun goToMain(notificationType: PlantNotificationType) {
-                        plantListViewModel.onFilterChange(
+                        homeViewModel.onFilterChange(
                             when (notificationType) {
                                 is PlantNotificationType.NeedsWater -> PlantTabFilter.UPCOMING
                                 is PlantNotificationType.ForgotToWater -> PlantTabFilter.FORGOT_TO_WATER
