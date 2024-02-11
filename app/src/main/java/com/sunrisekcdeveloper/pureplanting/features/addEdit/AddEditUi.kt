@@ -64,6 +64,7 @@ import com.sunrisekcdeveloper.pureplanting.features.addEdit.ui.InputText
 import com.sunrisekcdeveloper.pureplanting.features.addEdit.ui.PPTimePickerDialog
 import com.sunrisekcdeveloper.pureplanting.features.addEdit.ui.PlantSizeSelectionDialog
 import com.sunrisekcdeveloper.pureplanting.features.addEdit.ui.WateringDaySelectionDialog
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.neutralus100
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -363,7 +364,7 @@ private fun DialogInput(
                 .noRippleClickable { onClick() }
                 .fillMaxSize(),
             shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.secondaryContainer
+            color = neutralus100
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

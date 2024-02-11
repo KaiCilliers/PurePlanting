@@ -66,7 +66,7 @@ fun NotificationListUi(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(4.dp),
-//                            color = accent500
+//                            color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500
                         )
                     }
                     notifications.isEmpty() -> {
@@ -100,7 +100,7 @@ fun NotificationListUi(
                     }
                     else -> {
                         Surface(
-//                            color = neutralus100,
+//                            color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus100,
                             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
                         ) {
                             NotificationList(

@@ -35,7 +35,7 @@ internal fun NotificationListItem(
     modifier: Modifier = Modifier,
 ) {
     Surface (
-//        color = neutralus100,
+//        color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus100,
         modifier = modifier
             .fillMaxWidth()
             .noRippleClickable { onClick() }
@@ -44,7 +44,7 @@ internal fun NotificationListItem(
             modifier = Modifier
                 .padding(horizontal = 20.dp)
                 .padding(vertical = 12.dp)
-//                .background(color = neutralus100)
+//                .background(color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus100)
         ){
             TopSection(
                 title = notification.type.title,
@@ -74,13 +74,13 @@ private fun TopSection(
         Column {
             Text(
                 text = title,
-//                color = neutralus900,
+//                color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus900,
                 style = MaterialTheme.typography.bodyMedium
             )
 
             Text(
                 text = time,
-//                color = neutralus500,
+//                color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus500,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -110,12 +110,12 @@ private fun BottomSection(
 
     Text(
         text = body,
-//        color = neutralus500,
+//        color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus500,
         style = MaterialTheme.typography.bodyMedium
     )
     Text(
         text = if (targetPlants.isOfSizeOne()) "Go to Plant" else "Click here to view information", // todo string resource
-//        color = accent600,
+//        color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent600,
         style = MaterialTheme.typography.displaySmall
     )
 }
@@ -125,7 +125,7 @@ private fun PlantIcon (
     modifier: Modifier = Modifier
 ){
     Surface (
-//        color = otherOlive500.copy(alpha = 0.3f),
+//        color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getOtherOlive500.copy(alpha = 0.3f),
         shape = RoundedCornerShape(10.dp),
         modifier = modifier.size(40.dp) // todo make dynamic scalable based on height of other elements in a row
     ){

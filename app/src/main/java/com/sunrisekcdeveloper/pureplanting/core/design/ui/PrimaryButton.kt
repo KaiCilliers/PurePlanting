@@ -30,13 +30,13 @@ fun PrimaryButton(
         ),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-//            containerColor = accent500 // todo with MaterialTheme color
+            containerColor = MaterialTheme.colorScheme.primary
         )
     ) {
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.background,
-            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onPrimary,
+            style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(vertical = 5.dp)

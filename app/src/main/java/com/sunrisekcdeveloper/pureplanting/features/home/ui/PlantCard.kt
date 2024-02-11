@@ -3,6 +3,7 @@ package com.sunrisekcdeveloper.pureplanting.features.home.ui
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,6 +37,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +45,8 @@ import coil.compose.AsyncImage
 import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.neutralus300
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
 import com.sunrisekcdeveloper.pureplanting.features.home.HomeViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -70,10 +74,10 @@ fun PlantCard(
                 onLongClick = { showOptionsMenu = true }
             ),
         shape = RoundedCornerShape(8.dp),
-//        border = BorderStroke(
-//            width = 1.dp,
-//            color = neutralus300.copy(alpha = 0.2f)
-//        )
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.2f)
+        )
     ) {
         Column(
             Modifier.fillMaxWidth()
@@ -100,7 +104,6 @@ fun PlantCard(
                         imageVector = Icons.Filled.Delete,
                         contentDescription = "",
                     )
-
                 },
                 onClick = {
                     showOptionsMenu = false
@@ -123,7 +126,7 @@ private fun TopSection(
 
     Box(
         modifier = modifier
-//            .background(otherOlive500.copy(alpha = 0.3f))
+            .background(MaterialTheme.ppColors.plantCardBackground)
             .aspectRatio(1f)
     ) {
         val imageSrc = plant.details.imageSrcUri
@@ -179,14 +182,14 @@ private fun Tag(
     modifier: Modifier = Modifier
 ) {
     Surface(
-//        color = neutralus500.copy(alpha = 0.7f),
+        color = MaterialTheme.ppColors.tag,
         shape = RoundedCornerShape(5.dp),
         modifier = modifier.wrapContentSize()
     ) {
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.background,
-            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.surface,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp)
         )
     }
@@ -202,7 +205,7 @@ private fun BottomSection(
 ) {
     Row(
         modifier = modifier
-            .background(color = MaterialTheme.colorScheme.background)
+            .background(color = MaterialTheme.colorScheme.surface)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -211,15 +214,17 @@ private fun BottomSection(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Bold
+                ),
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = description,
-                style = MaterialTheme.typography.titleMedium,
-//                color = neutralus500, // todo use MaterialTheme color
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

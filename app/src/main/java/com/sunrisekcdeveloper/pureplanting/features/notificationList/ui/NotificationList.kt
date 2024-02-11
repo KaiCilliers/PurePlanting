@@ -55,7 +55,7 @@ internal fun NotificationList(
                         entry.key.first == today.minusDays(1).dayOfYear && entry.key.second == today.minusDays(1).year -> "Yesterday"
                         else -> LocalDate.ofYearDay(entry.key.second, entry.key.first).format(DateTimeFormatter.ofPattern("dd MMMM"))
                     },
-//                    color = neutralus500,
+//                    color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus500,
                     style = MaterialTheme.typography.displaySmall,
                     modifier = titleListItemPadding.animateItemPlacement()
                 )

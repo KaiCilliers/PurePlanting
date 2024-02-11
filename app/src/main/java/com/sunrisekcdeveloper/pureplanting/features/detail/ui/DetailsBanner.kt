@@ -33,7 +33,7 @@ internal fun BannerDetails(
         shape = RoundedCornerShape(8.dp),
         modifier = modifier,
         tonalElevation = 5.dp,
-//        color = neutralus0
+//        color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus0
     ) {
         Row(
             modifier = Modifier
@@ -73,7 +73,7 @@ private fun PPDetailsItem(
         Text(
             text = smallLabel,
             textAlign = TextAlign.Left,
-//            color = neutralus500,
+//            color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus500,
             style = MaterialTheme.typography.titleMedium,
 
             )
@@ -81,7 +81,7 @@ private fun PPDetailsItem(
         Text(
             text = bigLabel,
             textAlign = TextAlign.Left,
-//            color = accent500,
+//            color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500,
             style = MaterialTheme.typography.bodyMedium,
 
             )

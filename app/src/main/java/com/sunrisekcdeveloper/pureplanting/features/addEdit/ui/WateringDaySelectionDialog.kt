@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.addEdit.ui
 
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.accent500
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,6 +27,7 @@ import androidx.compose.ui.window.Dialog
 import com.sunrisekcdeveloper.pureplanting.core.design.noRippleClickable
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SecondaryButton
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.neutralus300
 import java.time.DayOfWeek
 import java.util.Locale
 
@@ -73,15 +76,15 @@ fun WateringDaySelectionDialog(
                                 }
                             }
                         },
-//                        colors = CheckboxDefaults.colors(
-//                            checkedColor = accent500,
-//                            uncheckedColor = neutralus300
-//                        )
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = accent500,
+                            uncheckedColor = neutralus300
+                        )
                     )
 
                     Text(
                         text = "Everyday",
-//                        color = if (!everyDayChecked) neutralus900.copy(alpha = 0.8f) else neutralus900,
+//                        color = if (!everyDayChecked) com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus900.copy(alpha = 0.8f) else com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus900,
                         modifier = Modifier
                             .padding(start = 2.dp)
                             .noRippleClickable {
@@ -112,15 +115,15 @@ fun WateringDaySelectionDialog(
                                 }
                             },
 //                            colors = CheckboxDefaults.colors(
-//                                checkedColor = accent500,
-//                                uncheckedColor = neutralus300
+//                                checkedColor = com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500,
+//                                uncheckedColor = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus300
 //                            )
                         )
 
                         Text(
                             text = day.name.lowercase()
                                 .replaceFirstChar { it.titlecase(Locale.getDefault()) },
-//                            color = if (!everyDayChecked) neutralus900.copy(alpha = 0.8f) else neutralus900,
+//                            color = if (!everyDayChecked) com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus900.copy(alpha = 0.8f) else com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus900,
                             modifier = Modifier
                                 .padding(start = 2.dp)
                                 .noRippleClickable {

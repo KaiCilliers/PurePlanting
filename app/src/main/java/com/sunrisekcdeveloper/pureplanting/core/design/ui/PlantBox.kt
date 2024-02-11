@@ -20,7 +20,7 @@ fun PlantBox(
     Box(
         contentAlignment = contentAlignment,
         modifier = modifier
-//            .background(otherOlive500.copy(alpha = 0.5f)) // todo uniform background color for screens, ie MaterialTheme :)
+//            .background(com.sunrisekcdeveloper.pureplanting.core.design.theme.getOtherOlive500.copy(alpha = 0.5f)) // todo uniform background color for screens, ie MaterialTheme :)
             .fillMaxSize()
     ) {
         Image(

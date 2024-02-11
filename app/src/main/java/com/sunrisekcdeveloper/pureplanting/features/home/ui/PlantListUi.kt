@@ -60,7 +60,7 @@ internal fun PlantListUi(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(4.dp),
-//                        color = accent500
+//                        color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500
                     )
                 }
 
@@ -104,7 +104,7 @@ internal fun PlantListUi(
         if (!isLoading) {
             FloatingActionButton(
                 onClick = viewModel::onAddPlantClick,
-//                containerColor = accent500, // todo use MaterialTheme color
+//                containerColor = com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500, // todo use MaterialTheme color
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(bottom = 60.dp)

@@ -40,7 +40,7 @@ internal fun FilterBar(
         ) {
             Text(
                 text = text,
-//                color = if (selected) accent500 else neutralus300,
+//                color = if (selected) com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500 else com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus300,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
                 modifier = Modifier
@@ -54,7 +54,7 @@ internal fun FilterBar(
                         .height(2.dp)
                         .fillMaxWidth(0.5f)
                         .clip(CircleShape)
-//                        .background(accent500)
+//                        .background(com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500)
                 )
             }
         }

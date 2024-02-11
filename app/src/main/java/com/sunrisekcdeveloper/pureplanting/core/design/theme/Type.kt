@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.core.design.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -22,36 +23,26 @@ val typography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
         lineHeight = 32.sp,
-//        color = neutralus900
     ),
 
-    displayMedium = TextStyle(
+    bodyLarge = TextStyle(
         fontFamily = Poppins,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp
-    ),
-
-    displaySmall = TextStyle(
-        fontFamily = Poppins,
-        fontWeight = FontWeight.Bold,
-        fontSize = 14.sp
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        lineHeight = 24.sp
     ),
 
     bodyMedium = TextStyle(
         fontFamily = Poppins,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 14.sp
+        fontSize = 14.sp,
+        lineHeight = 20.sp
     ),
 
-    titleMedium = TextStyle(
+    bodySmall = TextStyle(
         fontFamily = Poppins,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
-    ),
-
-    titleSmall = TextStyle(
-        fontFamily = Poppins,
-        fontWeight = FontWeight.Bold,
-        fontSize = 10.sp
-    ),
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 20.sp
+    )
 )

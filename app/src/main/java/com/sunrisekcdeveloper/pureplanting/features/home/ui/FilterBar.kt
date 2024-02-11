@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.home.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -21,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.core.design.noRippleClickable
 import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
 import com.sunrisekcdeveloper.pureplanting.features.home.models.PlantTabFilter
 
 @Composable
@@ -44,8 +46,8 @@ internal fun FilterBar(
         ) {
             Text(
                 text = text,
-//                color = if (selected) accent500 else neutralus300,
-                style = MaterialTheme.typography.bodyLarge,
+                color = if (selected) MaterialTheme.ppColors.focused else MaterialTheme.ppColors.unfocused,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
                 modifier = Modifier.width(IntrinsicSize.Max),
             )
@@ -56,7 +58,7 @@ internal fun FilterBar(
                         .height(2.dp)
                         .fillMaxWidth(0.5f)
                         .clip(CircleShape)
-//                        .background(accent500)
+                        .background(MaterialTheme.ppColors.focused)
                 )
             }
         }
@@ -90,7 +92,7 @@ internal fun FilterBar(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun FilterBar_Preview() {
     PurePlantingTheme {

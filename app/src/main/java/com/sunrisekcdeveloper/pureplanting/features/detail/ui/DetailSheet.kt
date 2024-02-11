@@ -45,13 +45,13 @@ internal fun DetailSheet(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.displayLarge,
-//                    color = neutralus900,
+//                    color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus900,
                 )
 
                 Text(
                     text = description,
                     style = MaterialTheme.typography.displaySmall,
-//                    color = neutralus500,
+//                    color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus500,
                     modifier = Modifier.wrapContentHeight().fillMaxWidth(),
                     lineHeight = 1.5.em,
                 )

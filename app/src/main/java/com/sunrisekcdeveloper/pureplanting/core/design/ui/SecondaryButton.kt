@@ -31,13 +31,13 @@ fun SecondaryButton(
         ),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-//            containerColor = neutralus100 // todo with MaterialTheme color
+            containerColor = MaterialTheme.colorScheme.tertiary
         )
     ) {
         Text(
             text = label,
-//            color = neutralus500,
-            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onTertiary,
+            style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(vertical = 5.dp)

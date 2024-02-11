@@ -3,6 +3,7 @@ package com.sunrisekcdeveloper.pureplanting.features.home.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -40,7 +41,8 @@ internal fun EmptyPlantList(
     BoxWithBottomFade {
         Column(
             modifier = Modifier
-                .fillMaxHeight(),
+                .fillMaxHeight()
+                .background(MaterialTheme.colorScheme.tertiary),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -54,14 +56,14 @@ internal fun EmptyPlantList(
 
             Text(
                 text = stringResource(id = text.title),
-                style = MaterialTheme.typography.displayLarge,
+                style = MaterialTheme.typography.bodyLarge,
             )
             Spacer(modifier = Modifier.weight(0.05f))
 
             Text(
                 text = stringResource(id = text.description),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
             Spacer(modifier = Modifier.weight(1f))

@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.addEdit.ui
 
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.accent500
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,9 +56,9 @@ fun PlantSizeSelectionDialog(
                         RadioButton(
                             selected = currentSelection == plantSize,
                             onClick = { currentSelection = plantSize },
-//                            colors = RadioButtonDefaults.colors(
-//                                selectedColor = accent500
-//                            )
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = accent500
+                            )
                         )
                         Text(
                             text = stringResource(plantSize.textResId),
