@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.sunrisekcdeveloper.pureplanting.library.design.theme
+package com.sunrisekcdeveloper.pureplanting.core.design.theme
 
 import android.app.Activity
 import androidx.compose.foundation.ExperimentalFoundationApi

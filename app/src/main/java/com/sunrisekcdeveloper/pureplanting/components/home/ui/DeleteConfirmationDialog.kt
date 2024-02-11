@@ -10,10 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.SecondaryButton
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.PrimaryButton
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.SecondaryButton
 import com.sunrisekcdeveloper.pureplanting.R
-import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 
 @Composable
 fun DeleteConfirmationDialog(

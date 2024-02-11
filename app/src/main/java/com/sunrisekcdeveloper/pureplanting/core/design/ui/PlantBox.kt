@@ -1,7 +1,6 @@
-package com.sunrisekcdeveloper.pureplanting.library.design.ui
+package com.sunrisekcdeveloper.pureplanting.core.design.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.sunrisekcdeveloper.pureplanting.R
-import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
 
 @Composable
 fun PlantBox(

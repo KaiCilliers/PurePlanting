@@ -5,7 +5,7 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.home.com.sunrisekcdeveloper.pureplanting.plant
 import com.sunrisekcdeveloper.home.com.sunrisekcdeveloper.pureplanting.plantForgotten
 import com.sunrisekcdeveloper.home.com.sunrisekcdeveloper.pureplanting.plantNeedsWater

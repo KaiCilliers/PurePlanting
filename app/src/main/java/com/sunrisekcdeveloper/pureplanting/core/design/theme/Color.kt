@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.library.design.theme
+package com.sunrisekcdeveloper.pureplanting.core.design.theme
 
 import androidx.compose.ui.graphics.Color
 

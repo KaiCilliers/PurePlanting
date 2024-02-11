@@ -1,6 +1,5 @@
 package com.sunrisekcdeveloper.pureplanting.components.home.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -20,8 +19,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.core.design.noRippleClickable
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
 
 @Composable

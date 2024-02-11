@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.ui
+package com.sunrisekcdeveloper.pureplanting.core.design.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.library.design.ui
+package com.sunrisekcdeveloper.pureplanting.core.design.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 
 @Composable
 fun BoxWithBottomFade(

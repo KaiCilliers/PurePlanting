@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.library.database
+package com.sunrisekcdeveloper.pureplanting.core.database
 
 import androidx.room.TypeConverter
 import java.time.DayOfWeek

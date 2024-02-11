@@ -6,8 +6,8 @@ import androidx.work.Configuration
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.sunrisekcdeveloper.pureplanting.library.database.PurePlantingDatabase
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.pureplanting.core.database.PurePlantingDatabase
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.app.workers.CompositeWorkerFactory

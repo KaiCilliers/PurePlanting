@@ -17,17 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
-import com.sunrisekcdeveloper.pureplanting.library.design.topEndIconPadding
-import com.sunrisekcdeveloper.pureplanting.library.design.topStartIconPadding
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.BackIcon
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.PlantBox
+import com.sunrisekcdeveloper.pureplanting.core.design.noRippleClickable
+import com.sunrisekcdeveloper.pureplanting.core.design.topEndIconPadding
+import com.sunrisekcdeveloper.pureplanting.core.design.topStartIconPadding
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.BackIcon
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.PlantBox
 import com.sunrisekcdeveloper.pureplanting.components.detail.models.DetailItem
 import com.sunrisekcdeveloper.pureplanting.components.detail.ui.BannerDetails
 import com.sunrisekcdeveloper.pureplanting.components.detail.ui.DetailSheet
 import com.sunrisekcdeveloper.pureplanting.components.detail.ui.EditIcon
 import com.sunrisekcdeveloper.pureplanting.components.detail.ui.Header
-import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 import java.time.LocalDateTime
 
 @Composable

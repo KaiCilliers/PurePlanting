@@ -1,6 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.components.home
 
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.components.home.subcomponents.NotificationIconViewModel

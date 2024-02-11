@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.PrimaryButton
 
 @Composable
 internal fun DetailSheet(

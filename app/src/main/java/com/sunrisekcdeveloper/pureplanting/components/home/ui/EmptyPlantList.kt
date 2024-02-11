@@ -20,11 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.BoxWithBottomFade
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter.*
-import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 
 @Composable
 internal fun EmptyPlantList(

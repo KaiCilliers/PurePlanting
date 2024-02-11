@@ -11,7 +11,7 @@ import com.sunrisekcdeveloper.pureplanting.app.workers.SystemNotification
 import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.business.notification.PlantNotificationType
 import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
-import com.sunrisekcdeveloper.pureplanting.library.database.PurePlantingDatabase
+import com.sunrisekcdeveloper.pureplanting.core.database.PurePlantingDatabase
 import com.sunrisekcdeveloper.pureplanting.now
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.instanceOf

@@ -1,7 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.components.home.subcomponents
 
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitter
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.SnackbarEmitterType
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository
 import com.sunrisekcdeveloper.pureplanting.components.home.models.PlantTabFilter

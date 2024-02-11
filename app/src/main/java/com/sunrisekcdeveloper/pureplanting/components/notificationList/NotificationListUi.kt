@@ -1,7 +1,6 @@
 package com.sunrisekcdeveloper.notificationList
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,11 +26,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.BackIcon
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.BoxWithBottomFade
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.BackIcon
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.pureplanting.components.notificationList.ui.Header
 import com.sunrisekcdeveloper.notificationList.ui.NotificationList
-import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 import com.sunrisekcdeveloper.pureplanting.R
 
 @Composable

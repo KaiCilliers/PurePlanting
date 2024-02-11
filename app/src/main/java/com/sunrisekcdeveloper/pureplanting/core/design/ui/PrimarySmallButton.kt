@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.library.design.ui
+package com.sunrisekcdeveloper.pureplanting.core.design.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.R
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 
 @Composable
 fun PrimarySmallButton(

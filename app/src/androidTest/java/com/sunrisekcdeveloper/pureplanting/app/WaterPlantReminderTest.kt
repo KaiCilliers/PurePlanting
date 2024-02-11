@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 import com.sunrisekcdeveloper.pureplanting.MutableClock
-import com.sunrisekcdeveloper.pureplanting.library.database.PurePlantingDatabase
+import com.sunrisekcdeveloper.pureplanting.core.database.PurePlantingDatabase
 import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.business.notification.PlantNotificationType
 import com.sunrisekcdeveloper.pureplanting.business.plant.PlantRepository

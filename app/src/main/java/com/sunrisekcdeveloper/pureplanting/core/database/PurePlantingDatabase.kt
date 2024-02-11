@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.library.database
+package com.sunrisekcdeveloper.pureplanting.core.database
 
 import android.content.Context
 import androidx.room.Database
@@ -11,8 +11,8 @@ import androidx.room.TypeConverters
         com.sunrisekcdeveloper.pureplanting.library.db_tables.plant.PlantEntity::class,
         com.sunrisekcdeveloper.pureplanting.library.db_tables.plant.WateredRecordEntity::class,
         com.sunrisekcdeveloper.pureplanting.library.db_tables.notification.NotificationEntity::class,
-        com.sunrisekcdeveloper.pureplanting.library.db_tables.WateringWorkerResultStatusEntity::class,
-        com.sunrisekcdeveloper.pureplanting.library.db_tables.ForgotWaterWorkerResultStatusEntity::class,
+        WateringWorkerResultStatusEntity::class,
+        ForgotWaterWorkerResultStatusEntity::class,
     ],
     version = 1
 )
@@ -20,8 +20,8 @@ import androidx.room.TypeConverters
 abstract class PurePlantingDatabase : RoomDatabase() {
     abstract fun plantDao(): com.sunrisekcdeveloper.pureplanting.library.db_tables.plant.PlantDao
     abstract fun notificationDao(): com.sunrisekcdeveloper.pureplanting.library.db_tables.notification.NotificationDao
-    abstract fun waterWorkerDao(): com.sunrisekcdeveloper.pureplanting.library.db_tables.WateringWorkerResultStatusDao
-    abstract fun forgotWaterWorkerDao(): com.sunrisekcdeveloper.pureplanting.library.db_tables.ForgotWaterWorkerResultStatusDao
+    abstract fun waterWorkerDao(): WateringWorkerResultStatusDao
+    abstract fun forgotWaterWorkerDao(): ForgotWaterWorkerResultStatusDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

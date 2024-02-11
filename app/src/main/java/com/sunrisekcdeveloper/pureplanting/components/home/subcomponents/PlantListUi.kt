@@ -28,14 +28,14 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.BoxWithBottomFade
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.pureplanting.business.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.components.home.ui.DeleteConfirmationDialog
 import com.sunrisekcdeveloper.pureplanting.components.home.ui.EmptyPlantList
 import com.sunrisekcdeveloper.pureplanting.components.home.ui.FilterBar
 import com.sunrisekcdeveloper.pureplanting.components.home.ui.PlantCard
-import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalFoundationApi::class)

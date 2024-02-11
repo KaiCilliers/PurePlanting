@@ -5,8 +5,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import com.sunrisekcdeveloper.pureplanting.library.db_tables.WateringWorkerResultStatusDao
-import com.sunrisekcdeveloper.pureplanting.library.db_tables.WateringWorkerResultStatusEntity
+import com.sunrisekcdeveloper.pureplanting.core.database.WateringWorkerResultStatusDao
+import com.sunrisekcdeveloper.pureplanting.core.database.WateringWorkerResultStatusEntity
 import com.sunrisekcdeveloper.pureplanting.business.notification.Notification
 import com.sunrisekcdeveloper.pureplanting.business.notification.NotificationRepository
 import com.sunrisekcdeveloper.pureplanting.business.notification.PlantTag

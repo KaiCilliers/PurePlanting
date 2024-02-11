@@ -1,6 +1,7 @@
-package com.sunrisekcdeveloper.pureplanting.library.design.ui
+package com.sunrisekcdeveloper.pureplanting.core.design.ui
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -11,10 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.theme.PurePlantingTheme
 
 @Composable
-fun PrimaryButton(
+fun SecondaryButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     enabled: Boolean = true,
@@ -22,7 +22,8 @@ fun PrimaryButton(
 ) {
     Button(
         onClick = { onClick() },
-        modifier = modifier,
+        modifier = modifier
+            .wrapContentSize(),
         shape = RoundedCornerShape(7.dp),
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 6.dp,
@@ -30,12 +31,12 @@ fun PrimaryButton(
         ),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-//            containerColor = accent500 // todo with MaterialTheme color
+//            containerColor = neutralus100 // todo with MaterialTheme color
         )
     ) {
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.background,
+//            color = neutralus500,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -47,8 +48,8 @@ fun PrimaryButton(
 
 @Preview
 @Composable
-fun PrimaryButton_Preview() {
-    PurePlantingTheme {
-        PrimaryButton(onClick = { }, enabled = true, label = "Press Me!")
+fun SecondaryButton_Preview() {
+    ThemeSurfaceWrapper {
+        SecondaryButton(onClick = { }, enabled = true, label = "Press Me!")
     }
 }

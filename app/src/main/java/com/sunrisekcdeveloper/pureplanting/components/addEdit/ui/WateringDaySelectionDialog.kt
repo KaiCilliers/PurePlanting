@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,9 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.SecondaryButton
+import com.sunrisekcdeveloper.pureplanting.core.design.noRippleClickable
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.PrimaryButton
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.SecondaryButton
 import java.time.DayOfWeek
 import java.util.Locale
 

@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.library.db_tables
+package com.sunrisekcdeveloper.pureplanting.core.database
 
 import androidx.room.Dao
 import androidx.room.Insert

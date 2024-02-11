@@ -1,5 +1,6 @@
-package com.sunrisekcdeveloper.pureplanting.library.design
+package com.sunrisekcdeveloper.pureplanting.core.design
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ fun Modifier.topStartIconPadding(): Modifier = this then startTopIconPadding
 
 fun Modifier.topEndIconPadding(): Modifier = this then endTopIconPadding
 
+@SuppressLint("ModifierFactoryUnreferencedReceiver")
 fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
     clickable(indication = null,
         interactionSource = remember { MutableInteractionSource() }) {

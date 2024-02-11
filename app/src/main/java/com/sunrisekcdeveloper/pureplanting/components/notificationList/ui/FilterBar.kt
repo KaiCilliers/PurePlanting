@@ -1,6 +1,5 @@
 package com.sunrisekcdeveloper.pureplanting.components.notificationList.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -19,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.pureplanting.library.design.noRippleClickable
+import com.sunrisekcdeveloper.pureplanting.core.design.noRippleClickable
 import com.sunrisekcdeveloper.pureplanting.components.notificationList.models.NotificationFilter
 
 @Composable

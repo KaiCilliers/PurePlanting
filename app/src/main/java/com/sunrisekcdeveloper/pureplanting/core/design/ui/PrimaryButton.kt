@@ -1,7 +1,6 @@
-package com.sunrisekcdeveloper.pureplanting.library.design.ui
+package com.sunrisekcdeveloper.pureplanting.core.design.ui
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -12,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunrisekcdeveloper.ui.ThemeSurfaceWrapper
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 
 @Composable
-fun SecondaryButton(
+fun PrimaryButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     enabled: Boolean = true,
@@ -23,8 +22,7 @@ fun SecondaryButton(
 ) {
     Button(
         onClick = { onClick() },
-        modifier = modifier
-            .wrapContentSize(),
+        modifier = modifier,
         shape = RoundedCornerShape(7.dp),
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 6.dp,
@@ -32,12 +30,12 @@ fun SecondaryButton(
         ),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-//            containerColor = neutralus100 // todo with MaterialTheme color
+//            containerColor = accent500 // todo with MaterialTheme color
         )
     ) {
         Text(
             text = label,
-//            color = neutralus500,
+            color = MaterialTheme.colorScheme.background,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -49,8 +47,8 @@ fun SecondaryButton(
 
 @Preview
 @Composable
-fun SecondaryButton_Preview() {
-    ThemeSurfaceWrapper {
-        SecondaryButton(onClick = { }, enabled = true, label = "Press Me!")
+fun PrimaryButton_Preview() {
+    PurePlantingTheme {
+        PrimaryButton(onClick = { }, enabled = true, label = "Press Me!")
     }
 }

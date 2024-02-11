@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,8 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.sunrisekcdeveloper.pureplanting.components.addEdit.models.PlantSize
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.PrimaryButton
-import com.sunrisekcdeveloper.pureplanting.library.design.ui.SecondaryButton
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.PrimaryButton
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.SecondaryButton
 
 @Composable
 fun PlantSizeSelectionDialog(

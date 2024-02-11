@@ -1,4 +1,4 @@
-package com.sunrisekcdeveloper.pureplanting.library.design.ui
+package com.sunrisekcdeveloper.pureplanting.core.design.ui
 
 sealed class SnackbarEmitterType {
     data class Text(val text: String) : SnackbarEmitterType()
