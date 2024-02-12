@@ -154,7 +154,7 @@ interface HomeViewModel {
     class Fake : HomeViewModel {
         override val filter: StateFlow<PlantTabFilter> = MutableStateFlow(PlantTabFilter.UPCOMING)
 
-        override val isLoading: StateFlow<Boolean> = MutableStateFlow(true)
+        override val isLoading: StateFlow<Boolean> = MutableStateFlow(false)
 
         override val plants: StateFlow<List<Plant>> = MutableStateFlow(
             listOf(

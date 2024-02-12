@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -60,7 +61,6 @@ internal fun PlantListUi(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(4.dp),
-//                        color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500
                     )
                 }
 
@@ -104,7 +104,7 @@ internal fun PlantListUi(
         if (!isLoading) {
             FloatingActionButton(
                 onClick = viewModel::onAddPlantClick,
-//                containerColor = com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500, // todo use MaterialTheme color
+                containerColor = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(bottom = 60.dp)

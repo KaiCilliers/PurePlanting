@@ -124,7 +124,6 @@ private fun SnackbarWrapper(
 
         Box(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {

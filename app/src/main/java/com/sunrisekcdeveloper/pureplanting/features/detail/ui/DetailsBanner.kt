@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.pureplanting.features.detail.models.DetailItem
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 
@@ -33,7 +34,7 @@ internal fun BannerDetails(
         shape = RoundedCornerShape(8.dp),
         modifier = modifier,
         tonalElevation = 5.dp,
-//        color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus0
+        color = MaterialTheme.colorScheme.surface,
     ) {
         Row(
             modifier = Modifier
@@ -44,7 +45,9 @@ internal fun BannerDetails(
         ) {
 
             val spacerModifier = Modifier.weight(1f)
-            val dividerModifier = Modifier.width(1.dp).fillMaxHeight()
+            val dividerModifier = Modifier
+                .width(1.dp)
+                .fillMaxHeight()
 
             labels.forEachIndexed { index, plantDetailLabel ->
                 PPDetailsItem(
@@ -66,22 +69,22 @@ private fun PPDetailsItem(
     modifier: Modifier = Modifier,
     smallLabel: String,
     bigLabel: String
-){
+) {
     Column(
         modifier = modifier
     ) {
         Text(
             text = smallLabel,
             textAlign = TextAlign.Left,
-//            color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus500,
-            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onTertiary,
+            style = MaterialTheme.typography.bodySmall,
 
             )
         Spacer(modifier = Modifier.height(5.dp))
         Text(
             text = bigLabel,
             textAlign = TextAlign.Left,
-//            color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500,
+            color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodyMedium,
 
             )
@@ -89,7 +92,7 @@ private fun PPDetailsItem(
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PlantDetailsBarPreview() {
 
@@ -98,8 +101,7 @@ private fun PlantDetailsBarPreview() {
         DetailItem(label = "Water", value = "250ml"),
         DetailItem(label = "Frequency", value = "2 times/week"),
     )
-
-    ThemeSurfaceWrapper {
+    PurePlantingTheme {
         BannerDetails(
             labels = labels,
             modifier = Modifier

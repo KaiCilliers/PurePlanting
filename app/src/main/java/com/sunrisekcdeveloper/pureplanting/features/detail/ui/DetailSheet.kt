@@ -16,8 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.PrimaryButton
 
 @Composable
@@ -30,7 +32,7 @@ internal fun DetailSheet(
 ) {
     Column(modifier) {
         Surface(
-//            color = MaterialTheme.colorScheme.secondaryContainer,
+            color = MaterialTheme.colorScheme.surface,
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
             modifier = Modifier
                 .weight(1f)
@@ -44,21 +46,23 @@ internal fun DetailSheet(
             ) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.displayLarge,
-//                    color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus900,
+                    style = MaterialTheme.typography.displayMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Text(
                     text = description,
-                    style = MaterialTheme.typography.displaySmall,
-//                    color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus500,
-                    modifier = Modifier.wrapContentHeight().fillMaxWidth(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onTertiary,
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth(),
                     lineHeight = 1.5.em,
                 )
             }
         }
         Surface(
-//            color = MaterialTheme.colorScheme.secondaryContainer,
+            color = MaterialTheme.colorScheme.surface,
         ) {
             PrimaryButton(
                 onClick = { onButtonClick() },
@@ -71,5 +75,18 @@ internal fun DetailSheet(
                     .fillMaxWidth()
             )
         }
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+private fun Preview_DetailSheet() {
+    PurePlantingTheme {
+        DetailSheet(
+            title = "Title",
+            description = "Description",
+            onButtonClick = {  },
+            needsWaterToday = true
+        )
     }
 }
