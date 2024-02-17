@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.home.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,6 +51,7 @@ internal fun PlantListUi(
     val selectedFilter by viewModel.filter.collectAsState()
     val plants by viewModel.plants.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val ctx = LocalContext.current
 
     var requestToDelete: Plant? by remember { mutableStateOf(null) }
 
@@ -108,7 +111,10 @@ internal fun PlantListUi(
 
         if (!isLoading) {
             FloatingActionButton(
-                onClick = viewModel::onAddPlantClick,
+                onClick = {
+                    viewModel.onAddPlantClick()
+                    Toast.makeText(ctx, "Tap", Toast.LENGTH_SHORT).show()
+                },
                 containerColor = MaterialTheme.ppColors.primary,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)

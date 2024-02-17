@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.core.navigation
 
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmScheduler
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
@@ -41,6 +42,7 @@ class NavigationServiceProvider : DefaultServiceProvider() {
                         router = plantListRouter,
                         notificationRepository = lookup(),
                         eventEmitter = lookup<SnackbarEmitter>(),
+                        alarmScheduler = lookup<AlarmScheduler>()
                     ).run {
                         add(this)
                         rebind<HomeViewModel>(this)

@@ -26,6 +26,7 @@ class WaterPlantReminder(
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         return try {
+            println("deadpool - worker needs water")
             val today = LocalDateTime.now(clock)
             val now = LocalTime.now(clock)
             val plantsThatNeedsWatering = plantRepository

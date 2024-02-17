@@ -1,5 +1,8 @@
 package com.sunrisekcdeveloper.pureplanting.features.home
 
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmInfo
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmScheduler
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmType
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitterType
 import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
@@ -19,6 +22,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.Clock
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -57,6 +61,7 @@ interface HomeViewModel {
     class Default(
         private val plantRepository: PlantRepository,
         private val notificationRepository: NotificationRepository,
+        private val alarmScheduler: AlarmScheduler,
         private val router: Router,
         private val clock: Clock = Clock.systemDefaultZone(),
         private val eventEmitter: SnackbarEmitter,
@@ -122,7 +127,8 @@ interface HomeViewModel {
                     SnackbarEmitterType.Undo(
                         text = "Deleted plant \"${plant.details.name}\"",
                         undoAction = ::onUndoDelete
-                    ))
+                    )
+                )
             }
         }
 
@@ -133,11 +139,27 @@ interface HomeViewModel {
         }
 
         override fun onPlantClick(plant: Plant) {
-            router.goToPlantDetail(plant)
+//            router.goToPlantDetail(plant)
+            viewModelScope.launch {
+                alarmScheduler.schedule(
+                    AlarmInfo(
+                        time = LocalDateTime.of(LocalDate.now(), LocalTime.now().plusSeconds(10)),
+                        type = AlarmType.ForgotToWater
+                    )
+                )
+            }
         }
 
         override fun onAddPlantClick() {
-            router.goToAddPlant()
+            viewModelScope.launch {
+                alarmScheduler.schedule(
+                    AlarmInfo(
+                        time = LocalDateTime.of(LocalDate.now(), LocalTime.now().plusSeconds(10)),
+                        type = AlarmType.NeedsWater
+                    )
+                )
+            }
+//            router.goToAddPlant()
         }
 
         override fun toBundle(): StateBundle = StateBundle().apply {

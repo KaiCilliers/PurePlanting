@@ -14,6 +14,10 @@ import com.sunrisekcdeveloper.pureplanting.app.workers.CompositeWorkerFactory
 import com.sunrisekcdeveloper.pureplanting.app.workers.ForgotToWaterReminder
 import com.sunrisekcdeveloper.pureplanting.app.workers.SystemNotification
 import com.sunrisekcdeveloper.pureplanting.app.workers.WaterPlantReminder
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmInfo
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmInfoRepository
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmScheduler
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmType
 import com.zhuinden.simplestack.GlobalServices
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.rebind
@@ -36,6 +40,8 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     private val systemNotification by lazy { SystemNotification(applicationContext, plantRepository) }
     private val notificationRepository by lazy { NotificationRepository.Default(db.notificationDao()) }
     private val snackbarEmitter by lazy { SnackbarEmitter() }
+    private val alarmInfoRepo by lazy { AlarmInfoRepository.Default(db.alarmInfoDao()) }
+    private val alarmScheduler by lazy { AlarmScheduler.Default(applicationContext, alarmInfoRepo) }
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
@@ -52,7 +58,16 @@ class PurePlantingApplication : Application(), Configuration.Provider {
             .add(notificationRepository)
             .rebind<NotificationRepository>(notificationRepository)
             .add(snackbarEmitter)
+            .add(alarmScheduler)
+            .rebind<AlarmScheduler>(alarmScheduler)
             .build()
+
+        MainScope().launch {
+            val midnight = LocalDateTime.of(LocalDateTime.now().toLocalDate().plusDays(1), LocalTime.MIDNIGHT)
+            alarmScheduler.schedule(
+                AlarmInfo(time = midnight, type = AlarmType.ForgotToWater)
+            )
+        }
     }
 
     private fun createCompositeWorkerFactory(): CompositeWorkerFactory {

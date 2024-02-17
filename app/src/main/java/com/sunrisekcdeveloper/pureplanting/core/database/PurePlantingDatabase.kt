@@ -5,6 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.sunrisekcdeveloper.pureplanting.core.database.alarm.AlarmInfoDao
+import com.sunrisekcdeveloper.pureplanting.core.database.alarm.AlarmInfoEntity
 
 @Database(
     entities = [
@@ -13,8 +17,9 @@ import androidx.room.TypeConverters
         com.sunrisekcdeveloper.pureplanting.library.db_tables.notification.NotificationEntity::class,
         WateringWorkerResultStatusEntity::class,
         ForgotWaterWorkerResultStatusEntity::class,
+        AlarmInfoEntity::class,
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(RoomTypeConverters::class)
 abstract class PurePlantingDatabase : RoomDatabase() {
@@ -22,6 +27,7 @@ abstract class PurePlantingDatabase : RoomDatabase() {
     abstract fun notificationDao(): com.sunrisekcdeveloper.pureplanting.library.db_tables.notification.NotificationDao
     abstract fun waterWorkerDao(): WateringWorkerResultStatusDao
     abstract fun forgotWaterWorkerDao(): ForgotWaterWorkerResultStatusDao
+    abstract fun alarmInfoDao(): AlarmInfoDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
@@ -37,11 +43,28 @@ abstract class PurePlantingDatabase : RoomDatabase() {
                     context.applicationContext,
                     PurePlantingDatabase::class.java,
                     "pureplanting_database"
-                ).build()
+                )
+                    .addMigrations(MIGRATION_1_2)
+                    .build()
                 INSTANCE = instance
                 // return instance
                 instance
             }
         }
+    }
+}
+
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            """
+            CREATE TABLE `AlarmInfoEntity` (
+                `createdAt` TEXT NOT NULL,
+                `scheduledTime` TEXT NOT NULL PRIMARY KEY,
+                `type` TEXT NOT NULL,
+                `repeatingInterval` INTEGER NOT NULL
+            )
+            """.trimIndent()
+        )
     }
 }
