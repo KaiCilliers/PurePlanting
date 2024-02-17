@@ -122,6 +122,7 @@ interface HomeViewModel {
         override fun onDeletePlant(plant: Plant) {
             viewModelScope.launch {
                 plantRepository.remove(plant.id)
+                // TODO clear alarms for plant
                 recentlyDeletedPlant = plant
                 eventEmitter.emit(
                     SnackbarEmitterType.Undo(
@@ -139,27 +140,11 @@ interface HomeViewModel {
         }
 
         override fun onPlantClick(plant: Plant) {
-//            router.goToPlantDetail(plant)
-            viewModelScope.launch {
-                alarmScheduler.schedule(
-                    AlarmInfo(
-                        time = LocalDateTime.of(LocalDate.now(), LocalTime.now().plusSeconds(10)),
-                        type = AlarmType.ForgotToWater
-                    )
-                )
-            }
+            router.goToPlantDetail(plant)
         }
 
         override fun onAddPlantClick() {
-            viewModelScope.launch {
-                alarmScheduler.schedule(
-                    AlarmInfo(
-                        time = LocalDateTime.of(LocalDate.now(), LocalTime.now().plusSeconds(10)),
-                        type = AlarmType.NeedsWater
-                    )
-                )
-            }
-//            router.goToAddPlant()
+            router.goToAddPlant()
         }
 
         override fun toBundle(): StateBundle = StateBundle().apply {

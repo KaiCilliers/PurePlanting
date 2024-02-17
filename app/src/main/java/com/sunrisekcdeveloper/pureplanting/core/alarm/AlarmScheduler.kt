@@ -4,6 +4,8 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
+import java.time.LocalTime
 import java.time.ZoneId
 
 interface AlarmScheduler {
@@ -12,7 +14,8 @@ interface AlarmScheduler {
 
     class Default(
         private val context: Context,
-        private val alarmInfoRepo: AlarmInfoRepository
+        private val alarmInfoRepo: AlarmInfoRepository,
+        private val plantRepository: PlantRepository,
     ) : AlarmScheduler {
 
         private val alarmManager = context.getSystemService(AlarmManager::class.java)
@@ -22,7 +25,7 @@ interface AlarmScheduler {
                 it.time == alarmInfo.time && it.type == alarmInfo.type
             }
 
-            if(containsAlarm) return
+            if (containsAlarm) return
 
             alarmInfoRepo.add(alarmInfo)
 
@@ -40,6 +43,19 @@ interface AlarmScheduler {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
             )
+
+            val allAlarms = alarmInfoRepo.all()
+            val allPlantWateringTimes = allPlantWateringTimes().toHashSet()
+
+            allAlarms
+                .filterNot { alarm ->
+                    allPlantWateringTimes.contains(alarm.time.toLocalTime())
+                }
+                .forEach { alarm -> cancel(alarm) }
+        }
+
+        private suspend fun allPlantWateringTimes(): List<LocalTime> {
+            return plantRepository.all().map { it.wateringInfo.time }
         }
 
         override suspend fun cancel(alarmInfo: AlarmInfo) {
@@ -48,7 +64,7 @@ interface AlarmScheduler {
                 PendingIntent.getBroadcast(
                     context,
                     alarmInfo.hashCode(),
-                    Intent(context, Class.forName("com.sunrisekcdeveloper.pureplanting.AlarmReceiver")::class.java),
+                    Intent(context, AlarmReceiver::class.java),
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
             )

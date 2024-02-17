@@ -33,7 +33,7 @@ class WaterPlantReminder(
                 .all()
                 .filter { it.waterTimeIsUpcoming(today) }
                 .filter { it.wateringInfo.time.isBefore(now.plusMinutes(15)) }
-                .filter { it.wateringInfo.time.isAfter(now) }
+                .filter { it.wateringInfo.time.isAfter(now.minusMinutes(1)) }
 
             var notificationId: String? = null
 

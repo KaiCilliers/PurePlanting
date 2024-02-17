@@ -41,7 +41,7 @@ class PurePlantingApplication : Application(), Configuration.Provider {
     private val notificationRepository by lazy { NotificationRepository.Default(db.notificationDao()) }
     private val snackbarEmitter by lazy { SnackbarEmitter() }
     private val alarmInfoRepo by lazy { AlarmInfoRepository.Default(db.alarmInfoDao()) }
-    private val alarmScheduler by lazy { AlarmScheduler.Default(applicationContext, alarmInfoRepo) }
+    private val alarmScheduler by lazy { AlarmScheduler.Default(applicationContext, alarmInfoRepo, plantRepository) }
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
@@ -63,9 +63,10 @@ class PurePlantingApplication : Application(), Configuration.Provider {
             .build()
 
         MainScope().launch {
-            val midnight = LocalDateTime.of(LocalDateTime.now().toLocalDate().plusDays(1), LocalTime.MIDNIGHT)
+            val twoHoursAfterMidnight = LocalDateTime.of(LocalDateTime.now().toLocalDate().plusDays(1), LocalTime.MIDNIGHT)
+                .plusHours(2)
             alarmScheduler.schedule(
-                AlarmInfo(time = midnight, type = AlarmType.ForgotToWater)
+                AlarmInfo(time = twoHoursAfterMidnight, type = AlarmType.ForgotToWater)
             )
         }
     }

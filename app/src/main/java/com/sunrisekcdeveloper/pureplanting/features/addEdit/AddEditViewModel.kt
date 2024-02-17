@@ -1,5 +1,8 @@
 package com.sunrisekcdeveloper.pureplanting.features.addEdit
 
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmInfo
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmScheduler
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmType
 import com.sunrisekcdeveloper.pureplanting.features.addEdit.models.PlantSize
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitterType
@@ -13,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -82,6 +86,7 @@ interface AddEditViewModel {
         private val plantRepository: PlantRepository,
         private val router: Router,
         private val eventEmitter: SnackbarEmitter,
+        private val alarmScheduler: AlarmScheduler,
         private val plant: Plant?,
     ) : AddEditViewModel, Bundleable {
 
@@ -108,6 +113,7 @@ interface AddEditViewModel {
             )
             // validation can be placed here or enforced in the UI OR both
             plantRepository.save(newPlant)
+            schedulePlantReminder(wateringTime.value)
             eventEmitter.emit(SnackbarEmitterType.Text("Created new plant \"${newPlant.details.name}\"!"))
             router.jumpToRoot()
         }
@@ -131,8 +137,20 @@ interface AddEditViewModel {
                 )
             )
             plantRepository.save(updatedPlant)
+            schedulePlantReminder(wateringTime.value)
             eventEmitter.emit(SnackbarEmitterType.Text("Updated \"${updatedPlant.details.name}\"!"))
             router.jumpToRoot()
+        }
+
+        private fun schedulePlantReminder(time: LocalTime) {
+            viewModelScope.launch {
+                alarmScheduler.schedule(
+                    AlarmInfo(
+                        time = LocalDateTime.of(LocalDate.now(), time),
+                        type = AlarmType.NeedsWater
+                    )
+                )
+            }
         }
 
         override fun onSavePlant() {

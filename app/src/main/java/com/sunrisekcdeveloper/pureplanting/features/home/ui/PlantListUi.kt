@@ -51,7 +51,6 @@ internal fun PlantListUi(
     val selectedFilter by viewModel.filter.collectAsState()
     val plants by viewModel.plants.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    val ctx = LocalContext.current
 
     var requestToDelete: Plant? by remember { mutableStateOf(null) }
 
@@ -111,10 +110,7 @@ internal fun PlantListUi(
 
         if (!isLoading) {
             FloatingActionButton(
-                onClick = {
-                    viewModel.onAddPlantClick()
-                    Toast.makeText(ctx, "Tap", Toast.LENGTH_SHORT).show()
-                },
+                onClick = viewModel::onAddPlantClick,
                 containerColor = MaterialTheme.ppColors.primary,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)

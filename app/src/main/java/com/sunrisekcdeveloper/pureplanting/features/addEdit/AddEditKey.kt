@@ -3,6 +3,7 @@ package com.sunrisekcdeveloper.pureplanting.features.addEdit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
+import com.sunrisekcdeveloper.pureplanting.core.alarm.AlarmScheduler
 import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.core.navigation.ComposeKey
 import com.zhuinden.simplestack.ServiceBinder
@@ -38,7 +39,8 @@ data class AddEditKey(
                     }
                 },
                 eventEmitter = lookup(),
-                plant = plant
+                plant = plant,
+                alarmScheduler = lookup<AlarmScheduler>()
             ).let {  viewModel ->
                 add(viewModel)
                 rebind<AddEditViewModel>(viewModel)
