@@ -1,18 +1,18 @@
 package com.sunrisekcdeveloper.pureplanting.app
 
 import android.content.Context
-import androidx.room.Room
+import androidx.room.Room.inMemoryDatabaseBuilder
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
-import com.sunrisekcdeveloper.notification.NotificationRepository
-import com.sunrisekcdeveloper.notification.PlantNotificationType
-import com.sunrisekcdeveloper.plant.PlantRepository
-import com.sunrisekcdeveloper.pureplanting.workers.SystemNotification
-import com.sunrisekcdeveloper.pureplanting.workers.WaterPlantReminder
-import com.sunrisekcdeveloper.pureplanting.database.PurePlantingDatabase
-import com.sunrisekcdeveloper.shared_test.MutableClock
-import com.sunrisekcdeveloper.shared_test.now
+import com.sunrisekcdeveloper.pureplanting.MutableClock
+import com.sunrisekcdeveloper.pureplanting.core.database.PurePlantingDatabase
+import com.sunrisekcdeveloper.pureplanting.domain.notification.NotificationRepository
+import com.sunrisekcdeveloper.pureplanting.domain.notification.PlantNotificationType
+import com.sunrisekcdeveloper.pureplanting.domain.plant.PlantRepository
+import com.sunrisekcdeveloper.pureplanting.app.workers.SystemNotification
+import com.sunrisekcdeveloper.pureplanting.app.workers.WaterPlantReminder
+import com.sunrisekcdeveloper.pureplanting.now
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.instanceOf
@@ -36,7 +36,7 @@ class WaterPlantReminderTest {
     @Before
     fun setup() {
         context = ApplicationProvider.getApplicationContext()
-        db = Room.inMemoryDatabaseBuilder(context, PurePlantingDatabase::class.java).build()
+        db = inMemoryDatabaseBuilder(context, PurePlantingDatabase::class.java).build()
         plantRepositoryFake = PlantRepository.Fake()
         notificationRepositoryFake = NotificationRepository.Fake()
         mutableClock = MutableClock(Clock.systemDefaultZone())
