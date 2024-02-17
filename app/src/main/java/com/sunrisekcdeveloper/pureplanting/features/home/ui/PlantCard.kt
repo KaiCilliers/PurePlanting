@@ -2,6 +2,7 @@ package com.sunrisekcdeveloper.pureplanting.features.home.ui
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.text.TextDirectionHeuristic
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -47,6 +48,8 @@ import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
 import com.sunrisekcdeveloper.pureplanting.core.design.theme.neutralus300
 import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppTypography
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 import com.sunrisekcdeveloper.pureplanting.features.home.HomeViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -76,7 +79,7 @@ fun PlantCard(
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(
             width = 1.dp,
-            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.2f)
+            color = MaterialTheme.ppColors.tagBackground.copy(0.2f)
         )
     ) {
         Column(
@@ -126,7 +129,7 @@ private fun TopSection(
 
     Box(
         modifier = modifier
-            .background(MaterialTheme.ppColors.plantCardBackground)
+            .background(MaterialTheme.ppColors.primaryMuted)
             .aspectRatio(1f)
     ) {
         val imageSrc = plant.details.imageSrcUri
@@ -182,14 +185,14 @@ private fun Tag(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        color = MaterialTheme.ppColors.tag,
+        color = MaterialTheme.ppColors.tagBackground,
         shape = RoundedCornerShape(5.dp),
         modifier = modifier.wrapContentSize()
     ) {
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.surface,
-            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.ppColors.onTagBackground,
+            style = MaterialTheme.ppTypography.captionSmall,
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp)
         )
     }
@@ -205,7 +208,7 @@ private fun BottomSection(
 ) {
     Row(
         modifier = modifier
-            .background(color = MaterialTheme.colorScheme.surface)
+            .background(color = MaterialTheme.ppColors.surface)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -214,17 +217,15 @@ private fun BottomSection(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.ppTypography.bodyMedium,
+                color = MaterialTheme.ppColors.onSurfacePrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.ppTypography.captionMedium,
+                color = MaterialTheme.ppColors.onSurfaceSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -250,17 +251,17 @@ private fun BottomSection(
 }
 
 @SuppressLint("StateFlowValueCalledInComposition")
-@Preview(widthDp = 200)
+@Preview(widthDp = 200, showBackground = true)
 @Composable
 private fun PlantCard_Preview() {
-    PurePlantingTheme {
+    ThemeSurfaceWrapper {
         val plant = HomeViewModel.Fake().plants.value.first()
         val now = remember { LocalDateTime.now() }
         val needsWater = remember(now.dayOfYear) { plant.needsWater(now) }
 
         PlantCard(
             plant = plant,
-            needsWater = needsWater,
+            needsWater = !needsWater,
             onWaterToggleClick = {},
             onDeletePlant = {},
             onCardClick = {},

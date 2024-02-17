@@ -23,3 +23,5 @@ val otherPink100 = Color(0xFFFFFAFC)
 val otherGreen100 = Color(0xFFF9FBF8)
 val otherBlue100 = Color(0xFFF5FAFC)
 val otherMud100 = Color(0xFFFDFFF1)
+
+val red = Color(0xFFFC1B1B)

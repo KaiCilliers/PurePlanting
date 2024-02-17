@@ -39,7 +39,7 @@ fun NotificationIconUi(
         Surface(
             modifier = Modifier
                 .clickable { onClick() },
-            color = MaterialTheme.ppColors.material.tertiary,
+            color = MaterialTheme.ppColors.surface,
             shape = RoundedCornerShape(percent = 50)
         ) {
             Image(

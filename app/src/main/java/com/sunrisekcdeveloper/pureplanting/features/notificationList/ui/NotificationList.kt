@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.notificationList.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -19,9 +20,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppTypography
 import com.sunrisekcdeveloper.pureplanting.domain.notification.Notification
 import com.sunrisekcdeveloper.pureplanting.features.notificationList.NotificationGroupedByDay
+import com.sunrisekcdeveloper.pureplanting.features.notificationList.NotificationListViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -55,8 +61,8 @@ internal fun NotificationList(
                         entry.key.first == today.minusDays(1).dayOfYear && entry.key.second == today.minusDays(1).year -> "Yesterday"
                         else -> LocalDate.ofYearDay(entry.key.second, entry.key.first).format(DateTimeFormatter.ofPattern("dd MMMM"))
                     },
-//                    color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus500,
-                    style = MaterialTheme.typography.displaySmall,
+                    color = MaterialTheme.ppColors.onSurfaceSecondary,
+                    style = MaterialTheme.ppTypography.bodySmall,
                     modifier = titleListItemPadding.animateItemPlacement()
                 )
             }
@@ -74,4 +80,16 @@ internal fun NotificationList(
         }
     }
 
+}
+
+@SuppressLint("StateFlowValueCalledInComposition")
+@Preview(showBackground = true)
+@Composable
+fun Preview_NotificationList() {
+    PurePlantingTheme {
+        NotificationList(
+            notifications = NotificationListViewModel.Fake().notifications.value,
+            onItemClick = {}
+        )
+    }
 }

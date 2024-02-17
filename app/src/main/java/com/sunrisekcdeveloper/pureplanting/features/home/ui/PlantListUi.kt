@@ -2,6 +2,7 @@ package com.sunrisekcdeveloper.pureplanting.features.home.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,12 +27,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.pureplanting.domain.plant.Plant
 import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 import com.sunrisekcdeveloper.pureplanting.features.home.HomeViewModel
 import java.time.LocalDateTime
@@ -51,7 +54,9 @@ internal fun PlantListUi(
 
     Box(modifier) {
         Column(
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(Color.Transparent),
         ) {
             FilterBar(selectedFilter = selectedFilter, onSelection = viewModel::onFilterChange)
             when {
@@ -104,7 +109,7 @@ internal fun PlantListUi(
         if (!isLoading) {
             FloatingActionButton(
                 onClick = viewModel::onAddPlantClick,
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.ppColors.primary,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(bottom = 60.dp)

@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.notificationList.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -17,8 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.core.design.noRippleClickable
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
 import com.sunrisekcdeveloper.pureplanting.features.notificationList.models.NotificationFilter
 
 @Composable
@@ -40,7 +44,7 @@ internal fun FilterBar(
         ) {
             Text(
                 text = text,
-//                color = if (selected) com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500 else com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus300,
+                color = if (selected) MaterialTheme.ppColors.primary else MaterialTheme.ppColors.onSurfaceMuted,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
                 modifier = Modifier
@@ -54,7 +58,7 @@ internal fun FilterBar(
                         .height(2.dp)
                         .fillMaxWidth(0.5f)
                         .clip(CircleShape)
-//                        .background(com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500)
+                        .background(MaterialTheme.colorScheme.primary)
                 )
             }
         }
@@ -85,5 +89,19 @@ internal fun FilterBar(
             onClick = { onSelection(NotificationFilter.NEEDS_WATER) }
         )
         Spacer(modifier = Modifier.weight(0.6f))
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Preview_FilterBar() {
+    PurePlantingTheme {
+        FilterBar(
+            selectedFilter = NotificationFilter.ALL,
+            onSelection = {},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        )
     }
 }

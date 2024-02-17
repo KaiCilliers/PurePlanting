@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.PrimaryButton
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SecondaryButton
 import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 
 @Composable
@@ -31,13 +32,20 @@ fun DeleteConfirmationDialog(
                         .padding(end = 10.dp),
                     contentDescription = "",
                 )
-                Text(text = "Are you sure?", Modifier.weight(1f))
+                Text(
+                    text = "Are you sure?",
+                    color = MaterialTheme.ppColors.onSurfacePrimary,
+                    modifier = Modifier.weight(1f),
+                )
             }
         },
         text = {
-            Text(text = "Do you really want to delete your plant \"$plantName\"?")
+            Text(
+                text = "Do you really want to delete your plant \"$plantName\"?",
+                color = MaterialTheme.ppColors.onSurfaceSecondary,
+            )
         },
-        containerColor = MaterialTheme.colorScheme.tertiary,
+        containerColor = MaterialTheme.ppColors.surface,
         onDismissRequest = { onDismiss() },
         confirmButton = {
             PrimaryButton(

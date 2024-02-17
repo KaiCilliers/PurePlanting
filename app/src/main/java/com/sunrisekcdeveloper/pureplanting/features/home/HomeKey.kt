@@ -15,6 +15,7 @@ import com.sunrisekcdeveloper.pureplanting.features.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.pureplanting.features.notificationList.NotificationListKey
 import com.zhuinden.simplestack.ScopeKey
 import com.zhuinden.simplestack.ServiceBinder
+import com.zhuinden.simplestackcomposeintegration.core.LocalBackstack
 import com.zhuinden.simplestackcomposeintegration.services.rememberService
 import com.zhuinden.simplestackextensions.servicesktx.add
 import com.zhuinden.simplestackextensions.servicesktx.lookup
@@ -30,7 +31,8 @@ data class HomeKey(
     @Composable
     override fun ScreenComposable(modifier: Modifier) {
         val viewModel = rememberService<HomeViewModel>()
-        HomeUi(viewModel)
+        val backstack = LocalBackstack.current
+        HomeUi(viewModel, backstack.lookup())
     }
 
     override fun getParentScopes() = listOf(NavigationServiceProvider.Scopes.HOME)

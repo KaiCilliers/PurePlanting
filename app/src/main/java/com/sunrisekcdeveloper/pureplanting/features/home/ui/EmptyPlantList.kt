@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -23,6 +24,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.BoxWithBottomFade
 import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppTypography
 import com.sunrisekcdeveloper.pureplanting.features.home.models.PlantTabFilter
 import com.sunrisekcdeveloper.pureplanting.features.home.models.PlantTabFilter.*
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
@@ -42,7 +45,7 @@ internal fun EmptyPlantList(
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .background(MaterialTheme.colorScheme.tertiary),
+                .background(Color.Transparent),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -56,14 +59,14 @@ internal fun EmptyPlantList(
 
             Text(
                 text = stringResource(id = text.title),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.ppTypography.headingSmall,
             )
             Spacer(modifier = Modifier.weight(0.05f))
 
             Text(
                 text = stringResource(id = text.description),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.ppTypography.bodySmall,
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
             Spacer(modifier = Modifier.weight(1f))

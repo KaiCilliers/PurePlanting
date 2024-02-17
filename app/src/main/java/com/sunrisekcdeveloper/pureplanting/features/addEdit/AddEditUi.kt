@@ -7,6 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -22,8 +23,10 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Keyboard
@@ -34,6 +37,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
@@ -44,11 +49,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -65,6 +72,8 @@ import com.sunrisekcdeveloper.pureplanting.features.addEdit.ui.PPTimePickerDialo
 import com.sunrisekcdeveloper.pureplanting.features.addEdit.ui.PlantSizeSelectionDialog
 import com.sunrisekcdeveloper.pureplanting.features.addEdit.ui.WateringDaySelectionDialog
 import com.sunrisekcdeveloper.pureplanting.core.design.theme.neutralus100
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
+import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -111,7 +120,9 @@ fun AddEditUi(viewModel: AddEditViewModel) {
             onGoToAppSettingsClick = { context.openAppSettings() })
     }
 
-    PlantBox {
+    PlantBox(
+        plain = false
+    ) {
         Header(
             imgSrc = imgSrc,
         )
@@ -219,7 +230,7 @@ private fun InputSheet(
 
     Column(modifier) {
         Surface(
-            color = MaterialTheme.colorScheme.secondaryContainer,
+            color = MaterialTheme.ppColors.surface,
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
             modifier = Modifier.weight(1f),
         ) {
@@ -312,7 +323,7 @@ private fun InputSheet(
             }
         }
         Surface(
-            color = MaterialTheme.colorScheme.secondaryContainer
+            color = MaterialTheme.ppColors.surface
         ) {
             PrimaryButton(
                 onClick = { viewModel.onSavePlant() },
@@ -339,10 +350,23 @@ private fun BasicInput(
     Column(modifier) {
         Text(text = label)
         Spacer(modifier = Modifier.height(8.dp))
-        InputText(
+        TextField(
             value = value,
-            onValueChange = { onValueChange(it) },
-            modifier = Modifier.fillMaxWidth(),
+            onValueChange = onValueChange,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                focusedContainerColor = MaterialTheme.ppColors.inputFieldBackground,
+                unfocusedContainerColor = MaterialTheme.ppColors.inputFieldBackground,
+                focusedTextColor = MaterialTheme.ppColors.onSurfaceSecondary,
+                unfocusedTextColor = MaterialTheme.ppColors.onSurfaceSecondary,
+            ),
+            shape = RoundedCornerShape(16.dp),
+            modifier = modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .background(MaterialTheme.ppColors.inputFieldBackground),
             singleLine = singleLine,
             maxLines = if (singleLine) 1 else Int.MAX_VALUE
         )
@@ -357,14 +381,17 @@ private fun DialogInput(
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {
-        Text(text = label)
+        Text(
+            text = label,
+            color = MaterialTheme.ppColors.onSurfaceSecondary
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Surface(
             modifier = Modifier
                 .noRippleClickable { onClick() }
                 .fillMaxSize(),
             shape = RoundedCornerShape(16.dp),
-            color = neutralus100
+            color = MaterialTheme.ppColors.surface
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -428,7 +455,7 @@ private fun PlantPlaceholderImage(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun AddEditUi_Preview() {
-    PurePlantingTheme {
+    ThemeSurfaceWrapper {
         AddEditUi(AddEditViewModel.Fake())
     }
 }

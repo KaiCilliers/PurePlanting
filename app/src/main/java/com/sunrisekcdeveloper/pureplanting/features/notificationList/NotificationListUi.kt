@@ -1,6 +1,7 @@
 package com.sunrisekcdeveloper.pureplanting.features.notificationList
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,8 @@ import com.sunrisekcdeveloper.pureplanting.features.notificationList.ui.Header
 import com.sunrisekcdeveloper.pureplanting.features.notificationList.ui.NotificationList
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 import com.sunrisekcdeveloper.pureplanting.R
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppTypography
 
 @Composable
 fun NotificationListUi(
@@ -43,7 +46,7 @@ fun NotificationListUi(
     val isLoading by viewModel.isLoading.collectAsState()
 
     BoxWithBottomFade(
-//        Modifier.background(otherOlive500.copy(alpha = 0.7f)) // todo uniform background color for screens, ie MaterialTheme :)
+        Modifier.background(MaterialTheme.ppColors.primaryMuted)
     ) {
         Image(
             painter = painterResource(id = R.drawable.banner_plant),
@@ -66,9 +69,10 @@ fun NotificationListUi(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(4.dp),
-//                            color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getAccent500
+                            color = MaterialTheme.ppColors.primary,
                         )
                     }
+
                     notifications.isEmpty() -> {
                         Column(
                             modifier = Modifier.fillMaxSize(),
@@ -85,22 +89,24 @@ fun NotificationListUi(
 
                             Text(
                                 text = "Nothing to see here.",
-                                style = MaterialTheme.typography.displayLarge,
+                                style = MaterialTheme.ppTypography.headingSmall,
+                                color = MaterialTheme.ppColors.onSurfacePrimary,
                             )
                             Spacer(modifier = Modifier.weight(0.05f))
 
                             Text(
                                 text = "Notifications that you receive will be placed here for you to review at any time",
                                 textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = MaterialTheme.ppTypography.bodySmall,
                                 modifier = Modifier.padding(horizontal = 30.dp)
                             )
                             Spacer(modifier = Modifier.weight(1f))
                         }
                     }
+
                     else -> {
                         Surface(
-//                            color = com.sunrisekcdeveloper.pureplanting.core.design.theme.getNeutralus100,
+                            color = MaterialTheme.ppColors.surface,
                             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
                         ) {
                             NotificationList(

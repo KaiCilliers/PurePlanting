@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.PurePlantingTheme
 import com.sunrisekcdeveloper.pureplanting.features.notificationList.headingPadding
 import com.sunrisekcdeveloper.pureplanting.features.notificationList.models.NotificationFilter
 
@@ -34,6 +36,17 @@ internal fun Header(
             selectedFilter = selectedFilter,
             onSelection = { onFilterChange(it) },
             modifier = Modifier.padding(vertical = 20.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview_Header() {
+    PurePlantingTheme {
+        Header(
+            selectedFilter = NotificationFilter.ALL,
+            onFilterChange = {}
         )
     }
 }

@@ -46,8 +46,8 @@ internal fun FilterBar(
         ) {
             Text(
                 text = text,
-                color = if (selected) MaterialTheme.ppColors.focused else MaterialTheme.ppColors.unfocused,
-                style = MaterialTheme.typography.bodySmall,
+                color = if (selected) MaterialTheme.ppColors.primary else MaterialTheme.ppColors.onSurfaceMuted,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
                 modifier = Modifier.width(IntrinsicSize.Max),
             )
@@ -58,7 +58,7 @@ internal fun FilterBar(
                         .height(2.dp)
                         .fillMaxWidth(0.5f)
                         .clip(CircleShape)
-                        .background(MaterialTheme.ppColors.focused)
+                        .background(MaterialTheme.ppColors.primary)
                 )
             }
         }

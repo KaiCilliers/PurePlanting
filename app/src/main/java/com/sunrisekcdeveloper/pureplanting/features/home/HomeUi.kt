@@ -1,5 +1,6 @@
 package com.sunrisekcdeveloper.pureplanting.features.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppColors
+import com.sunrisekcdeveloper.pureplanting.core.design.theme.ppTypography
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.PlantBox
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitter
 import com.sunrisekcdeveloper.pureplanting.core.design.ui.SnackbarEmitterType
@@ -37,20 +40,17 @@ import com.sunrisekcdeveloper.pureplanting.core.design.ui.ThemeSurfaceWrapper
 import com.sunrisekcdeveloper.pureplanting.features.home.ui.NotificationIconUi
 import com.sunrisekcdeveloper.pureplanting.features.home.ui.PlantListUi
 import com.zhuinden.liveevent.observe
-import com.zhuinden.simplestackcomposeintegration.core.LocalBackstack
-import com.zhuinden.simplestackextensions.servicesktx.lookup
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeUi(
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    snackbarEmitter: SnackbarEmitter,
 ) {
-
-    val backstack = LocalBackstack.current
 
     val isNotificationBadgeVisible by viewModel.isNotificationBadgeVisible.collectAsState()
 
-    SnackbarWrapper(backstack.lookup<SnackbarEmitter>()) {
+    SnackbarWrapper(snackbarEmitter) {
         PlantBox {
             Column {
                 Row(
@@ -63,8 +63,8 @@ fun HomeUi(
                 ) {
                     Text(
                         text = "Let's Care\nMy Plants!",
-                        style = MaterialTheme.typography.displayLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.ppTypography.title,
+                        color = MaterialTheme.ppColors.onSurfacePrimary,
                         modifier = Modifier.weight(1f)
                     )
                     NotificationIconUi(
@@ -84,6 +84,7 @@ fun HomeUi(
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun SnackbarWrapper(
     emitter: SnackbarEmitter,
@@ -96,7 +97,7 @@ private fun SnackbarWrapper(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         containerColor = Color.Transparent
-    ) { padding ->
+    ) { _ ->
 
         val lifecycleOwner = LocalLifecycleOwner.current
         LaunchedEffect(lifecycleOwner.lifecycle) {
@@ -136,6 +137,6 @@ private fun SnackbarWrapper(
 @Composable
 private fun HomeUi_Preview() {
     ThemeSurfaceWrapper {
-        HomeUi(HomeViewModel.Fake())
+        HomeUi(HomeViewModel.Fake(), SnackbarEmitter())
     }
 }
