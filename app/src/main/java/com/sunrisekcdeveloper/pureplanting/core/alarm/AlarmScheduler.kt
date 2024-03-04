@@ -35,7 +35,7 @@ interface AlarmScheduler {
             alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 alarmInfo.time.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
-                alarmInfo.repeatingInterval,
+                AlarmManager.INTERVAL_DAY,
                 PendingIntent.getBroadcast(
                     context,
                     alarmInfo.hashCode(),
