@@ -25,7 +25,6 @@ class ForgotToWaterReminder(
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         return try {
-            println("deadpool - worker forgot to water")
             if (runAttemptCount > 4) {
                 return Result.failure()
             }
