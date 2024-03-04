@@ -7,6 +7,5 @@ import java.time.LocalDateTime
 data class AlarmInfoEntity(
     val scheduledTime: LocalDateTime,
     val createdAt: LocalDateTime,
-    val repeatingInterval: Long,
     val type: String,
 )
