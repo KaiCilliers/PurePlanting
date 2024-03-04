@@ -49,7 +49,7 @@ interface AlarmScheduler {
 
             allAlarms
                 .filterNot { alarm ->
-                    allPlantWateringTimes.contains(alarm.time.toLocalTime())
+                    allPlantWateringTimes.contains(alarm.time.toLocalTime()) || alarm.type == AlarmType.ForgotToWater
                 }
                 .forEach { alarm -> cancel(alarm) }
         }
